@@ -20,8 +20,6 @@ public class ThirdPersonMovement : MonoBehaviour
 
     public bool enableJump;
     public float jump = 3f;
-    // Controls forward velocity when jumped
-    public bool forwardJump = true;
 
     public bool enableGravity;
     // Idle drag, keeps character on the floor
@@ -69,10 +67,7 @@ public class ThirdPersonMovement : MonoBehaviour
     void Jump()
     {
         if (Input.GetButtonDown("Jump") && isGrounded)
-        {
-            Debug.Log("+++");
             verticalVelocity.y = Mathf.Sqrt(jump * -2.0f * gravity);
-        }
     }
 
     void Movement()
@@ -85,9 +80,8 @@ public class ThirdPersonMovement : MonoBehaviour
 
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
 
-        // If input is on, and forward velocity is true
         // Todo: Bug #1 => Moving forward when jumping and hits a object, drag back effects. Solved.
-        if (direction.magnitude >= 0.1f && forwardJump)
+        if (direction.magnitude >= 0.1f)
         {
             // Direction of movement rotation
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cameraTransform.eulerAngles.y;
@@ -105,34 +99,15 @@ public class ThirdPersonMovement : MonoBehaviour
     {
         // Apply gravity when character not on the ground
         // Todo: Bug #2 => when collide when a wall is also considered as grounded, which is incorrect, need to change to vertical calculation not sphere calculation
+        // Quick Fixed - set the radius smaller
         isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundMask);
 
-        // When jump finished and start descending, which is fall, allow forward velocity
-        if (verticalVelocity.y < 0)
-        {
-            forwardJump = true;
-        }
-        // When 
+        // When player is grounded and vertical velocity is less than 0 - descending 
         if (isGrounded && verticalVelocity.y < 0)
-        {
             verticalVelocity.y = baseDrag;
-        }
 
         verticalVelocity.y += gravity * Time.deltaTime * 2;
         controller.Move(verticalVelocity * Time.deltaTime);
     }
-
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        // When starts jump and collides with object, disable forward velocity
-        if (null != hit && verticalVelocity.y >= 0)
-        {
-            forwardJump = false;
-        }
-        // When there is no collision, allow forward velocity
-        if (null == hit)
-        {
-            forwardJump = true;
-        }
-    }
+    
 }
