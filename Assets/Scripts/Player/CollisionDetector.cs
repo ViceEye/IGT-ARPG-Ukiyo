@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum Types
@@ -20,43 +22,47 @@ public class CollisionDetector : MonoBehaviour
     
     private void Update()
     {
-        if (null != playerTransform)
+        if (null != playerTransform && debug)
         {
+            bool result = false;
+            
             Debug.DrawLine(playerTransform.position, playerTransform.position + playerTransform.forward * 6, Color.yellow);
-        }
+            
+            switch (type)
+            {
+                case Types.Circle:
+                {
+                    result = CircleCheck(playerTransform, targetTransform, 6);
+                    break;
+                }
+                case Types.Triangle:
+                {
+                    result = TriangleCheck(playerTransform, targetTransform, 3, 6);
+                    break;
+                }
+                case Types.FanShaped:
+                {
+                    result = FanShapedCheck(playerTransform, targetTransform, 30, 6);
+                    break;
+                }
+                case Types.Rectangle:
+                {
+                    result = RectangleCheck(playerTransform, targetTransform, 3, 6);
+                    break;
+                }
+                case Types.Sector:
+                {
+                    result = SectorCheck(playerTransform, targetTransform, 30, 3, 6, 6);
+                    break;
+                }
+                case Types.Ring:
+                {
+                    result = RingCheck(playerTransform, targetTransform, 3, 6);
+                    break;
+                }
+            }
 
-        switch (type)
-        {
-            case Types.Circle:
-            {
-                CircleCheck(playerTransform, targetTransform, 6);
-                break;
-            }
-            case Types.Triangle:
-            {
-                TriangleCheck(playerTransform, targetTransform, 3, 6);
-                break;
-            }
-            case Types.FanShaped:
-            {
-                TriangleCheck(playerTransform, targetTransform, 3, 6);
-                break;
-            }
-            case Types.Rectangle:
-            {
-                TriangleCheck(playerTransform, targetTransform, 3, 6);
-                break;
-            }
-            case Types.Sector:
-            {
-                TriangleCheck(playerTransform, targetTransform, 3, 6);
-                break;
-            }
-            case Types.Ring:
-            {
-                TriangleCheck(playerTransform, targetTransform, 3, 6);
-                break;
-            }
+            Debug.Log(type + ": " + result);
         }
     }
 
@@ -106,7 +112,7 @@ public class CollisionDetector : MonoBehaviour
         return false;
     }
 
-    public bool TriangleCheck(Transform self, Transform target, float halfWidth, float distance)
+    public bool TriangleCheck(Transform self, Transform target, float halfWidth, float distance, float allowedHeightDifference = 5.0f)
     {
         if (null == self || null == target)
             return false;
@@ -130,9 +136,358 @@ public class CollisionDetector : MonoBehaviour
         }
         //--------------------- Draw Debug Line ---------------------
 
-        return IsPointInsideTriangle(leftPoint, forwardPoint, rightPoint, targetPosition);
+        return IsPointInsideTriangle(leftPoint, forwardPoint, rightPoint, targetPosition) 
+               && Mathf.Abs(self.position.y - target.position.y) < allowedHeightDifference;
+    }
+    
+    public List<Vector3> vector3S = new List<Vector3>();
+    
+    // Determine if a point is inside an angle
+    // References #1: https://stackoverflow.com/questions/1167022/2d-geometry-how-to-check-if-a-point-is-inside-an-angle
+    public bool FanShapedCheck(Transform self, Transform target, float halfAngle, float distance, float allowedHeightDifference = 5.0f)
+    {
+        if (null == self || null == target)
+            return false;
+        
+        Vector3 selfPosition = NormalizePosition(self.position, self.position.y);
+        Vector3 targetPosition = NormalizePosition(target.position, self.position.y);
+        
+        Quaternion rotation = self.rotation;
+        
+        //--------------------- Draw Debug Line ---------------------
+        if (type == Types.FanShaped && debug)
+        {
+            Vector3 firstPoint = Vector3.zero;
+            firstPoint.y = selfPosition.y;
+            Vector3 beginPoint = selfPosition;
+            Vector3 endPoint = Vector3.zero;
+            endPoint.y = selfPosition.y;
+
+            float y = self.eulerAngles.y;
+            
+            for (float i = -halfAngle + y; i <= halfAngle + y; i += 1.0f)
+            {
+                float x = Mathf.Sin(i * Mathf.Deg2Rad) * distance;
+                float z = Mathf.Cos(i * Mathf.Deg2Rad) * distance;
+                endPoint.x = selfPosition.x + x;
+                endPoint.z = selfPosition.z + z;
+                
+                Debug.DrawLine(selfPosition, endPoint, Color.red);
+            }
+            
+            //////////////////////////////////////////
+            // Version 2 Double Shape and Weird Line
+            // int nCircleSlices = 180;
+            //
+            // Vector3 firstPoint = Vector3.zero;
+            // firstPoint.y = selfPosition.y;
+            // Vector3 beginPoint = selfPosition;
+            // Vector3 endPoint = Vector3.zero;
+            // endPoint.y = selfPosition.y;
+            //
+            // float tempStep = 2 * Mathf.PI / nCircleSlices;
+            //
+            // for (float step = 0; step < Mathf.PI * 2; step += tempStep)
+            // {
+            //     float x = distance * Mathf.Cos(step);
+            //     float z = distance * Mathf.Sin(step);
+            //     endPoint.x = selfPosition.x + x;
+            //     endPoint.z = selfPosition.z + z;
+            //
+            //     Vector3 direction1 = endPoint - beginPoint;
+            //
+            //     // Dor product of direction vector and forward vector
+            //     float dotForward1 = Vector3.Dot(direction1.normalized, (rotation * Vector3.forward).normalized);
+            //
+            //     // Get the angle radians and convert to angles by the arccos
+            //     float radian1 = Mathf.Acos(dotForward1);
+            //     float currentAngle1 = Mathf.Rad2Deg * radian1;
+            //
+            //     if (currentAngle1 >= 90 - halfAngle && currentAngle1 <= 90 + halfAngle)
+            //     {
+            //         Debug.DrawLine(selfPosition, endPoint, Color.red);
+            //     }
+            //     
+            //     beginPoint = endPoint;
+            // }
+            //////////////////////////////////////////
+            
+            //////////////////////////////////////////
+            // Version 1 Not Rotating
+            // int nCircleSlices = 180;
+            //
+            // Vector3 firstPoint = Vector3.zero;
+            // firstPoint.y = selfPosition.y;
+            // Vector3 beginPoint = selfPosition;
+            // Vector3 endPoint = Vector3.zero;
+            // endPoint.y = selfPosition.y;
+            //
+            // float tempStep = 2 * Mathf.PI / nCircleSlices;
+            //
+            // float leftRadianHalfAngle =  Mathf.PI / 2  + Mathf.Deg2Rad * halfAngle;
+            // float rightRadianHalfAngle = Mathf.PI / 2 - Mathf.Deg2Rad * halfAngle;
+            //
+            // bool bFirst = true;
+            // for (float step = 0; step < 2 * Mathf.PI; step += tempStep)
+            // {
+            //     float x = distance * Mathf.Cos(step);
+            //     float z = distance * Mathf.Sin(step);
+            //
+            //     if (step >= rightRadianHalfAngle && step <= leftRadianHalfAngle)
+            //     {
+            //         endPoint.x = selfPosition.x + x;
+            //         endPoint.z = selfPosition.z + z;
+            //         
+            //         if (bFirst) {
+            //             firstPoint = endPoint;
+            //             bFirst = false;
+            //         }
+            //         
+            //         Debug.DrawLine(beginPoint, endPoint, Color.red);
+            //         beginPoint = endPoint;
+            //     }
+            // }
+            // Debug.DrawLine(selfPosition, firstPoint, Color.blue);
+            // Debug.DrawLine(selfPosition, endPoint, Color.blue);
+            //////////////////////////////////////////
+        }
+        //--------------------- Draw Debug Line ---------------------
+        
+        
+        //----------------------- Calculation -----------------------
+        // Calculate Distance
+        float currentDistance = Vector3.Distance(selfPosition, targetPosition);
+        if (currentDistance > distance)
+            return false;
+ 
+        // Vector direction from self to target
+        Vector3 direction = targetPosition - selfPosition;
+ 
+        // Dor product of direction vector and forward vector
+        float dotForward = Vector3.Dot(direction.normalized, (rotation * Vector3.forward).normalized);
+ 
+        // Get the angle radians and convert to angles by the arccos
+        float radian = Mathf.Acos(dotForward);
+        float currentAngle = Mathf.Rad2Deg * radian;
+ 
+        if (Mathf.Abs(currentAngle) <= halfAngle && Mathf.Abs(self.position.y - target.position.y) < allowedHeightDifference)
+            return true;
+        //----------------------- Calculation -----------------------
+ 
+        return false;
+
+    }
+    
+    public bool RectangleCheck(Transform self, Transform target, float halfWidth, float distance, float allowedHeightDifference = 5.0f)
+    {
+        if (null == self || null == target)
+            return false;
+        
+        Vector3 selfPosition = NormalizePosition(self.position, self.position.y);
+        Vector3 targetPosition = NormalizePosition(target.position, self.position.y);
+        
+        Quaternion rotation = self.rotation;
+        
+        // Rectangle's four points
+        Vector3 leftPoint = selfPosition + rotation * Vector3.left * halfWidth;
+        Vector3 rightPoint = selfPosition + rotation * Vector3.right * halfWidth;
+        Vector3 forwardLeftPoint = leftPoint + rotation * Vector3.forward * distance;
+        Vector3 forwardRightPoint = rightPoint + rotation * Vector3.forward * distance;
+
+        //--------------------- Draw Debug Line ---------------------
+        if (type == Types.Rectangle && debug)
+        {
+            Debug.DrawLine(leftPoint, forwardLeftPoint, Color.red);
+            Debug.DrawLine(rightPoint, forwardRightPoint, Color.red);
+            Debug.DrawLine(leftPoint, rightPoint, Color.red);
+            Debug.DrawLine(forwardRightPoint, forwardLeftPoint, Color.red);
+        }
+        //--------------------- Draw Debug Line ---------------------
+        
+        //----------------------- Calculation -----------------------
+        return IsPointInsideRectangle(forwardLeftPoint, forwardRightPoint, leftPoint, rightPoint, targetPosition) 
+               && Mathf.Abs(self.position.y - target.position.y) < allowedHeightDifference;
+        //----------------------- Calculation -----------------------
     }
 
+    // Similar to fan shaped, but with one more distance check
+    public bool SectorCheck(Transform self, Transform target, float halfAngle, float nearDistance, float farDistance, float allowedHeightDifference = 5.0f)
+    {
+        if (null == self || null == target)
+            return false;
+
+        if (nearDistance > farDistance)
+            (nearDistance, farDistance) = (farDistance, nearDistance);
+        
+        Vector3 selfPosition = NormalizePosition(self.position, self.position.y);
+        Vector3 targetPosition = NormalizePosition(target.position, self.position.y);
+        
+        Quaternion rotation = self.rotation;
+        
+        //--------------------- Draw Debug Line ---------------------
+        if (type == Types.Sector && debug)
+        {
+            int nCircleSlices = 180;
+
+            Vector3 nearFirstPoint = Vector3.zero;
+            Vector3 nearBeginPoint = selfPosition;
+            Vector3 nearEndPoint = Vector3.zero;
+            nearFirstPoint.y = selfPosition.y;
+            nearEndPoint.y = selfPosition.y;
+            
+            Vector3 farFirstPoint = Vector3.zero;
+            Vector3 farBeginPoint = selfPosition;
+            Vector3 farEndPoint = Vector3.zero;
+            farFirstPoint.y = selfPosition.y;
+            farEndPoint.y = selfPosition.y;
+        
+            float tempStep = 2 * Mathf.PI / nCircleSlices;
+            
+            float leftRadianHalfAngle =  Mathf.PI / 2  + Mathf.Deg2Rad * halfAngle;
+            float rightRadianHalfAngle = Mathf.PI / 2 - Mathf.Deg2Rad * halfAngle;
+        
+            bool bFirst = true;
+            for (float step = 0; step < 2 * Mathf.PI; step += tempStep)
+            {
+                float nearX = nearDistance * Mathf.Cos(step);
+                float nearZ = nearDistance * Mathf.Sin(step);
+                
+                float farX = farDistance * Mathf.Cos(step);
+                float farZ = farDistance * Mathf.Sin(step);
+
+                if (step >= rightRadianHalfAngle && step <= leftRadianHalfAngle)
+                {
+                    // Draw near
+                    nearEndPoint.x = selfPosition.x + nearX;
+                    nearEndPoint.z = selfPosition.z + nearZ;
+ 
+                    // Draw far
+                    farEndPoint.x = selfPosition.x + farX;
+                    farEndPoint.z = selfPosition.z + farZ;
+                    
+                    if (bFirst) {
+                        nearFirstPoint = nearEndPoint;
+                        farFirstPoint = farEndPoint;
+                        bFirst = false;
+                    }
+                    
+                    Debug.DrawLine(nearBeginPoint, nearEndPoint, Color.red);
+                    Debug.DrawLine(farBeginPoint, farEndPoint, Color.red);
+                    nearBeginPoint = nearEndPoint;
+                    farBeginPoint = farEndPoint;
+                }
+            }
+            Debug.DrawLine(nearFirstPoint, farFirstPoint, Color.red);
+            Debug.DrawLine(nearEndPoint, farEndPoint, Color.red);
+            Debug.DrawLine(selfPosition, nearFirstPoint, Color.blue);
+            Debug.DrawLine(selfPosition, nearEndPoint, Color.blue);
+        }
+        //--------------------- Draw Debug Line ---------------------
+        
+        
+        //----------------------- Calculation -----------------------
+        // Calculate Distance
+        float currentDistance = Vector3.Distance(selfPosition, targetPosition);
+        if (currentDistance < nearDistance ||  currentDistance > farDistance)
+            return false;
+ 
+        // Vector direction from self to target
+        Vector3 direction = targetPosition - selfPosition;
+ 
+        // Dor product of direction vector and forward vector
+        float dotForward = Vector3.Dot(direction.normalized, (rotation * Vector3.forward).normalized);
+ 
+        // Get the angle radians and convert to angles by the arccos
+        float radian = Mathf.Acos(dotForward);
+        float currentAngle = Mathf.Rad2Deg * radian;
+ 
+        if (Mathf.Abs(currentAngle) <= halfAngle && Mathf.Abs(self.position.y - target.position.y) < allowedHeightDifference)
+            return true;
+        //----------------------- Calculation -----------------------
+ 
+        return false;
+    }
+    
+    public bool RingCheck(Transform self, Transform target, float nearDistance, float farDistance, float allowedHeightDifference = 5.0f)
+    {
+        if (null == self || null == target)
+            return false;
+ 
+        if (nearDistance > farDistance)
+            (nearDistance, farDistance) = (farDistance, nearDistance);
+        
+        Vector3 selfPosition = NormalizePosition(self.position, self.position.y);
+        Vector3 targetPosition = NormalizePosition(target.position, self.position.y);
+        
+        //--------------------- Draw Debug Line ---------------------
+        if (type == Types.Ring && debug)
+        {
+            int nCircleSlices = 180;
+        
+            Vector3 nearBeginPoint = selfPosition;
+            Vector3 nearEndPoint = Vector3.zero;
+            nearEndPoint.y = selfPosition.y;
+        
+            Vector3 farBeginPoint = selfPosition;
+            Vector3 farEndPoint = Vector3.zero;
+            farEndPoint.y = selfPosition.y;
+        
+            float tempStep = 2 * Mathf.PI / nCircleSlices;
+        
+            bool bFirst = true;
+            for (float step = 0; step < 2 * Mathf.PI; step += tempStep)
+            {
+                float nearX = nearDistance * Mathf.Cos(step);
+                float nearZ = nearDistance * Mathf.Sin(step);
+                nearEndPoint.x = selfPosition.x + nearX;
+                nearEndPoint.z = selfPosition.z + nearZ;
+ 
+                float farX = farDistance * Mathf.Cos(step);
+                float farZ = farDistance * Mathf.Sin(step);
+                farEndPoint.x = selfPosition.x + farX;
+                farEndPoint.z = selfPosition.z + farZ;
+ 
+                if (bFirst)
+                    bFirst = false;
+                else
+                {
+                    Debug.DrawLine(nearBeginPoint, nearEndPoint, Color.red);
+                    Debug.DrawLine(farBeginPoint, farEndPoint, Color.red);
+                }
+ 
+                nearBeginPoint = nearEndPoint;
+                farBeginPoint = farEndPoint;
+            }
+        }
+        //--------------------- Draw Debug Line ---------------------
+ 
+        //----------------------- Calculation -----------------------
+        float currDistance = Vector3.Distance(selfPosition, targetPosition);
+        if (currDistance >= nearDistance && currDistance <= farDistance)
+            return true;
+        //----------------------- Calculation -----------------------
+ 
+        return false;
+    }
+
+    // Check tp is inside Rec(p1, p2, p3, p4)
+    // Using Cross Product to determine the point inside the triangle
+    // References #1: https://math.stackexchange.com/questions/190111/how-to-check-if-a-point-is-inside-a-rectangle
+    //            #2: https://stackoverflow.com/questions/2752725/finding-whether-a-point-lies-inside-a-rectangle-or-not
+    private bool IsPointInsideRectangle(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 tp)
+    {
+        return GetCross(p1, p2, tp) * GetCross(p3, p4, tp) >= 0 && 
+               GetCross(p2, p3, tp) * GetCross(p4, p1, tp) >= 0;
+    }
+
+    // Calculate |p1 p2| * |p1 p3|
+    private float GetCross(Vector2 p1, Vector2 p2, Vector2 tp)
+    {
+        return (p2.x - p1.x) * (tp.y - p1.y) - (tp.x - p1.x) * (p2.y - p1.y);
+    }
+    
+    // Math Barycentric Technique algorithm
+    // References #1: https://blackpawn.com/texts/pointinpoly/default.html
     private bool IsPointInsideTriangle(Vector3 point1, Vector3 point2, Vector3 point3, Vector3 targetPoint)
     {
         Vector3 v0 = point2 - point1;
