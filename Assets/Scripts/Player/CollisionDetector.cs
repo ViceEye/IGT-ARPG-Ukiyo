@@ -140,8 +140,6 @@ public class CollisionDetector : MonoBehaviour
                && Mathf.Abs(self.position.y - target.position.y) < allowedHeightDifference;
     }
     
-    public List<Vector3> vector3S = new List<Vector3>();
-    
     // Determine if a point is inside an angle
     // References #1: https://stackoverflow.com/questions/1167022/2d-geometry-how-to-check-if-a-point-is-inside-an-angle
     public bool FanShapedCheck(Transform self, Transform target, float halfAngle, float distance, float allowedHeightDifference = 5.0f)
@@ -165,6 +163,7 @@ public class CollisionDetector : MonoBehaviour
 
             float y = self.eulerAngles.y;
             
+            bool bFirst = true;
             for (float i = -halfAngle + y; i <= halfAngle + y; i += 1.0f)
             {
                 float x = Mathf.Sin(i * Mathf.Deg2Rad) * distance;
@@ -172,84 +171,15 @@ public class CollisionDetector : MonoBehaviour
                 endPoint.x = selfPosition.x + x;
                 endPoint.z = selfPosition.z + z;
                 
-                Debug.DrawLine(selfPosition, endPoint, Color.red);
+                if (bFirst) {
+                    firstPoint = endPoint;
+                    bFirst = false;
+                }
+                Debug.DrawLine(beginPoint, endPoint, Color.red);
+                beginPoint = endPoint;
             }
-            
-            //////////////////////////////////////////
-            // Version 2 Double Shape and Weird Line
-            // int nCircleSlices = 180;
-            //
-            // Vector3 firstPoint = Vector3.zero;
-            // firstPoint.y = selfPosition.y;
-            // Vector3 beginPoint = selfPosition;
-            // Vector3 endPoint = Vector3.zero;
-            // endPoint.y = selfPosition.y;
-            //
-            // float tempStep = 2 * Mathf.PI / nCircleSlices;
-            //
-            // for (float step = 0; step < Mathf.PI * 2; step += tempStep)
-            // {
-            //     float x = distance * Mathf.Cos(step);
-            //     float z = distance * Mathf.Sin(step);
-            //     endPoint.x = selfPosition.x + x;
-            //     endPoint.z = selfPosition.z + z;
-            //
-            //     Vector3 direction1 = endPoint - beginPoint;
-            //
-            //     // Dor product of direction vector and forward vector
-            //     float dotForward1 = Vector3.Dot(direction1.normalized, (rotation * Vector3.forward).normalized);
-            //
-            //     // Get the angle radians and convert to angles by the arccos
-            //     float radian1 = Mathf.Acos(dotForward1);
-            //     float currentAngle1 = Mathf.Rad2Deg * radian1;
-            //
-            //     if (currentAngle1 >= 90 - halfAngle && currentAngle1 <= 90 + halfAngle)
-            //     {
-            //         Debug.DrawLine(selfPosition, endPoint, Color.red);
-            //     }
-            //     
-            //     beginPoint = endPoint;
-            // }
-            //////////////////////////////////////////
-            
-            //////////////////////////////////////////
-            // Version 1 Not Rotating
-            // int nCircleSlices = 180;
-            //
-            // Vector3 firstPoint = Vector3.zero;
-            // firstPoint.y = selfPosition.y;
-            // Vector3 beginPoint = selfPosition;
-            // Vector3 endPoint = Vector3.zero;
-            // endPoint.y = selfPosition.y;
-            //
-            // float tempStep = 2 * Mathf.PI / nCircleSlices;
-            //
-            // float leftRadianHalfAngle =  Mathf.PI / 2  + Mathf.Deg2Rad * halfAngle;
-            // float rightRadianHalfAngle = Mathf.PI / 2 - Mathf.Deg2Rad * halfAngle;
-            //
-            // bool bFirst = true;
-            // for (float step = 0; step < 2 * Mathf.PI; step += tempStep)
-            // {
-            //     float x = distance * Mathf.Cos(step);
-            //     float z = distance * Mathf.Sin(step);
-            //
-            //     if (step >= rightRadianHalfAngle && step <= leftRadianHalfAngle)
-            //     {
-            //         endPoint.x = selfPosition.x + x;
-            //         endPoint.z = selfPosition.z + z;
-            //         
-            //         if (bFirst) {
-            //             firstPoint = endPoint;
-            //             bFirst = false;
-            //         }
-            //         
-            //         Debug.DrawLine(beginPoint, endPoint, Color.red);
-            //         beginPoint = endPoint;
-            //     }
-            // }
-            // Debug.DrawLine(selfPosition, firstPoint, Color.blue);
-            // Debug.DrawLine(selfPosition, endPoint, Color.blue);
-            //////////////////////////////////////////
+            Debug.DrawLine(selfPosition, firstPoint, Color.red);
+            Debug.DrawLine(selfPosition, endPoint, Color.red);
         }
         //--------------------- Draw Debug Line ---------------------
         
@@ -275,7 +205,6 @@ public class CollisionDetector : MonoBehaviour
         //----------------------- Calculation -----------------------
  
         return false;
-
     }
     
     public bool RectangleCheck(Transform self, Transform target, float halfWidth, float distance, float allowedHeightDifference = 5.0f)
@@ -327,8 +256,6 @@ public class CollisionDetector : MonoBehaviour
         //--------------------- Draw Debug Line ---------------------
         if (type == Types.Sector && debug)
         {
-            int nCircleSlices = 180;
-
             Vector3 nearFirstPoint = Vector3.zero;
             Vector3 nearBeginPoint = selfPosition;
             Vector3 nearEndPoint = Vector3.zero;
@@ -340,42 +267,33 @@ public class CollisionDetector : MonoBehaviour
             Vector3 farEndPoint = Vector3.zero;
             farFirstPoint.y = selfPosition.y;
             farEndPoint.y = selfPosition.y;
-        
-            float tempStep = 2 * Mathf.PI / nCircleSlices;
-            
-            float leftRadianHalfAngle =  Mathf.PI / 2  + Mathf.Deg2Rad * halfAngle;
-            float rightRadianHalfAngle = Mathf.PI / 2 - Mathf.Deg2Rad * halfAngle;
-        
-            bool bFirst = true;
-            for (float step = 0; step < 2 * Mathf.PI; step += tempStep)
-            {
-                float nearX = nearDistance * Mathf.Cos(step);
-                float nearZ = nearDistance * Mathf.Sin(step);
-                
-                float farX = farDistance * Mathf.Cos(step);
-                float farZ = farDistance * Mathf.Sin(step);
 
-                if (step >= rightRadianHalfAngle && step <= leftRadianHalfAngle)
-                {
-                    // Draw near
-                    nearEndPoint.x = selfPosition.x + nearX;
-                    nearEndPoint.z = selfPosition.z + nearZ;
- 
-                    // Draw far
-                    farEndPoint.x = selfPosition.x + farX;
-                    farEndPoint.z = selfPosition.z + farZ;
-                    
-                    if (bFirst) {
-                        nearFirstPoint = nearEndPoint;
-                        farFirstPoint = farEndPoint;
-                        bFirst = false;
-                    }
-                    
-                    Debug.DrawLine(nearBeginPoint, nearEndPoint, Color.red);
-                    Debug.DrawLine(farBeginPoint, farEndPoint, Color.red);
-                    nearBeginPoint = nearEndPoint;
-                    farBeginPoint = farEndPoint;
+            float y = self.eulerAngles.y;
+            
+            bool bFirst = true;
+            for (float i = -halfAngle + y; i <= halfAngle + y; i += 1.0f)
+            {
+                // Draw Near
+                float nearX = Mathf.Sin(i * Mathf.Deg2Rad) * nearDistance;
+                float nearZ = Mathf.Cos(i * Mathf.Deg2Rad) * nearDistance;
+                nearEndPoint.x = selfPosition.x + nearX;
+                nearEndPoint.z = selfPosition.z + nearZ;
+                
+                // Draw Far
+                float farX = Mathf.Sin(i * Mathf.Deg2Rad) * farDistance;
+                float farZ = Mathf.Cos(i * Mathf.Deg2Rad) * farDistance;
+                farEndPoint.x = selfPosition.x + farX;
+                farEndPoint.z = selfPosition.z + farZ;
+                
+                if (bFirst) {
+                    nearFirstPoint = nearEndPoint;
+                    farFirstPoint = farEndPoint;
+                    bFirst = false;
                 }
+                Debug.DrawLine(nearBeginPoint, nearEndPoint, Color.red);
+                Debug.DrawLine(farBeginPoint, farEndPoint, Color.red);
+                nearBeginPoint = nearEndPoint;
+                farBeginPoint = farEndPoint;
             }
             Debug.DrawLine(nearFirstPoint, farFirstPoint, Color.red);
             Debug.DrawLine(nearEndPoint, farEndPoint, Color.red);
