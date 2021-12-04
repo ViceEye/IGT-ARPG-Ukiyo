@@ -234,7 +234,8 @@ public class CollisionDetector : MonoBehaviour
         //--------------------- Draw Debug Line ---------------------
         
         //----------------------- Calculation -----------------------
-        return IsPointInsideRectangle(forwardLeftPoint, forwardRightPoint, leftPoint, rightPoint, targetPosition) 
+        return IsPointInsideRectangle(V3ToV2(forwardLeftPoint), V3ToV2(forwardRightPoint), 
+                   V3ToV2(leftPoint), V3ToV2(rightPoint), V3ToV2(targetPosition)) 
                && Mathf.Abs(self.position.y - target.position.y) < allowedHeightDifference;
         //----------------------- Calculation -----------------------
     }
@@ -381,7 +382,7 @@ public class CollisionDetector : MonoBehaviour
  
         //----------------------- Calculation -----------------------
         float currDistance = Vector3.Distance(selfPosition, targetPosition);
-        if (currDistance >= nearDistance && currDistance <= farDistance)
+        if (currDistance >= nearDistance && currDistance <= farDistance && Mathf.Abs(self.position.y - target.position.y) < allowedHeightDifference)
             return true;
         //----------------------- Calculation -----------------------
  
@@ -389,7 +390,7 @@ public class CollisionDetector : MonoBehaviour
     }
 
     // Check tp is inside Rec(p1, p2, p3, p4)
-    // Using Cross Product to determine the point inside the triangle
+    // Using Cross Product to determine the point inside the rectangle
     // References #1: https://math.stackexchange.com/questions/190111/how-to-check-if-a-point-is-inside-a-rectangle
     //            #2: https://stackoverflow.com/questions/2752725/finding-whether-a-point-lies-inside-a-rectangle-or-not
     private bool IsPointInsideRectangle(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector2 tp)
@@ -403,7 +404,15 @@ public class CollisionDetector : MonoBehaviour
     {
         return (p2.x - p1.x) * (tp.y - p1.y) - (tp.x - p1.x) * (p2.y - p1.y);
     }
-    
+
+    private Vector2 V3ToV2(Vector3 vector3)
+    {
+        Vector2 vector2 = Vector2.zero;
+        vector2.x = vector3.x;
+        vector2.y = vector3.z;
+        return vector2;
+    }
+
     // Math Barycentric Technique algorithm
     // References #1: https://blackpawn.com/texts/pointinpoly/default.html
     private bool IsPointInsideTriangle(Vector3 point1, Vector3 point2, Vector3 point3, Vector3 targetPoint)

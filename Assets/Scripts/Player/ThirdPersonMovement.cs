@@ -15,6 +15,9 @@ public class ThirdPersonMovement : MonoBehaviour
     public CinemachineFreeLook cinemachineFreeLookPar;
     public SkillManager skillManager;
 
+    [Header("Animator")] 
+    public Animator animator;
+    
     [Header("Attributes")]
     public float speed = 7f;
 
@@ -70,6 +73,12 @@ public class ThirdPersonMovement : MonoBehaviour
             verticalVelocity.y = Mathf.Sqrt(jump * -2.0f * gravity);
     }
 
+    private bool run = false;
+    private static readonly int IdleTrigger = Animator.StringToHash("idleTrigger");
+    private static readonly int WalkTrigger = Animator.StringToHash("walkTrigger");
+    private static readonly int RunTrigger = Animator.StringToHash("runTrigger");
+    private static readonly int BowTrigger = Animator.StringToHash("bowTrigger");
+
     void Movement()
     {
         if (enableGravity)
@@ -83,6 +92,11 @@ public class ThirdPersonMovement : MonoBehaviour
         // Todo: Bug #1 => Moving forward when jumping and hits a object, drag back effects. Solved.
         if (direction.magnitude >= 0.1f)
         {
+            if (!run)
+            {
+                TriggerRun();
+                run = true;
+            }
             // Direction of movement rotation
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cameraTransform.eulerAngles.y;
             // Smoothed direction of movement rotation
@@ -93,21 +107,50 @@ public class ThirdPersonMovement : MonoBehaviour
             Vector3 moveDirection = (Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward).normalized;
             controller.Move(moveDirection * speed * Time.deltaTime);
         }
+        else
+        {
+            if (run)
+            {
+                TriggerIdle();
+                run = false;
+            }
+        }
     }
 
+    // Apply gravity when character not on the ground
     void Gravity()
     {
-        // Apply gravity when character not on the ground
         // Todo: Bug #2 => when collide when a wall is also considered as grounded, which is incorrect, need to change to vertical calculation not sphere calculation
         // Quick Fixed - set the radius smaller
         isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundMask);
 
-        // When player is grounded and vertical velocity is less than 0 - descending 
+        // When player is grounded and vertical velocity is less than 0 = descending 
         if (isGrounded && verticalVelocity.y < 0)
             verticalVelocity.y = baseDrag;
 
         verticalVelocity.y += gravity * Time.deltaTime * 2;
         controller.Move(verticalVelocity * Time.deltaTime);
+    }
+    
+
+    public void TriggerIdle()
+    {
+        animator.SetTrigger(IdleTrigger);
+    }
+
+    public void TriggerWalk()
+    {
+        animator.SetTrigger(WalkTrigger);
+    }
+
+    public void TriggerRun()
+    {
+        animator.SetTrigger(RunTrigger);
+    }
+
+    public void TriggerBow()
+    {
+        animator.SetTrigger(BowTrigger);
     }
     
 }
