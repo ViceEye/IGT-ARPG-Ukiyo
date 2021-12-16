@@ -42,7 +42,7 @@ public class CollisionDetector : MonoBehaviour
                 }
                 case Types.FanShaped:
                 {
-                    result = FanShapedCheck(playerTransform, targetTransform, 30, 6);
+                    result = FanShapedCheck(playerTransform, targetTransform, 80, 2);
                     break;
                 }
                 case Types.Rectangle:
@@ -62,7 +62,7 @@ public class CollisionDetector : MonoBehaviour
                 }
             }
 
-            Debug.Log(type + ": " + result);
+            //Debug.Log(type + ": " + result);
         }
     }
 

@@ -16,7 +16,7 @@ public class ThirdPersonMovement : MonoBehaviour
     public SkillManager skillManager;
 
     [Header("Animator")] 
-    public Animator animator;
+    public AnimationManager animationManager;
     
     [Header("Attributes")]
     public float speed = 7f;
@@ -33,6 +33,7 @@ public class ThirdPersonMovement : MonoBehaviour
     public Vector3 verticalVelocity;
     [SerializeField]
     private bool isGrounded;
+    public  bool IsGrounded => isGrounded;
     public float groundCheckRadius = 0.5f;
 
     [Header("Camera")]
@@ -41,49 +42,54 @@ public class ThirdPersonMovement : MonoBehaviour
     public float cameraYAxisSpeed = 2.0f;
     public float cameraXAxisSpeed = 300.0f;
 
+    private void Start()
+    {
+        animationManager = gameObject.AddComponent<AnimationManager>();
+    }
+
     private void Update()
     {
-        if (enableJump)
+        CameraLock();
+        if (enableJump && animationManager.IsAttacking())
             Jump();
-
-        if (Input.GetButtonDown("Fire1"))
-        {
-            skillManager.testSkill(skillPoint);
-        }
     }
     
     void FixedUpdate()
     {
-        CameraLock();
-
-        Movement();
+        if (animationManager.IsAttacking())
+        {
+            Movement();
+        }
+        if (enableGravity)
+            Gravity();
     }
 
+    private bool rightClicked = false;
+    
     void CameraLock()
     {
         float rightClick = Input.GetAxisRaw("Fire2");
+        rightClicked = rightClick > 0;
         // If rightClicked unlock camera
-        cinemachineFreeLookPar.m_YAxis.m_MaxSpeed = rightClick > 0 ? cameraYAxisSpeed : 0;
-        cinemachineFreeLookPar.m_XAxis.m_MaxSpeed = rightClick > 0 ? cameraXAxisSpeed : 0;
+        cinemachineFreeLookPar.m_YAxis.m_MaxSpeed = rightClicked ? cameraYAxisSpeed : 0;
+        cinemachineFreeLookPar.m_XAxis.m_MaxSpeed = rightClicked ? cameraXAxisSpeed : 0;
+        
+        // When camera unlocked, scroll could change fov.
+        float scroll = Input.GetAxisRaw("Mouse ScrollWheel");
+        float fov = cinemachineFreeLookPar.m_Lens.FieldOfView;
+        cinemachineFreeLookPar.m_Lens.FieldOfView = rightClicked ? fov - scroll * 5 : fov;
     }
 
     void Jump()
     {
         if (Input.GetButtonDown("Jump") && isGrounded)
+        {
             verticalVelocity.y = Mathf.Sqrt(jump * -2.0f * gravity);
+        }
     }
-
-    private bool run = false;
-    private static readonly int IdleTrigger = Animator.StringToHash("idleTrigger");
-    private static readonly int WalkTrigger = Animator.StringToHash("walkTrigger");
-    private static readonly int RunTrigger = Animator.StringToHash("runTrigger");
-    private static readonly int BowTrigger = Animator.StringToHash("bowTrigger");
 
     void Movement()
     {
-        if (enableGravity)
-            Gravity();
-        
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
@@ -92,28 +98,16 @@ public class ThirdPersonMovement : MonoBehaviour
         // Todo: Bug #1 => Moving forward when jumping and hits a object, drag back effects. Solved.
         if (direction.magnitude >= 0.1f)
         {
-            if (!run)
-            {
-                TriggerRun();
-                run = true;
-            }
             // Direction of movement rotation
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cameraTransform.eulerAngles.y;
             // Smoothed direction of movement rotation
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity,
+                turnSmoothTime);
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
             // Movement
             Vector3 moveDirection = (Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward).normalized;
             controller.Move(moveDirection * speed * Time.deltaTime);
-        }
-        else
-        {
-            if (run)
-            {
-                TriggerIdle();
-                run = false;
-            }
         }
     }
 
@@ -126,31 +120,12 @@ public class ThirdPersonMovement : MonoBehaviour
 
         // When player is grounded and vertical velocity is less than 0 = descending 
         if (isGrounded && verticalVelocity.y < 0)
+        {
             verticalVelocity.y = baseDrag;
-
+        }
+        
         verticalVelocity.y += gravity * Time.deltaTime * 2;
         controller.Move(verticalVelocity * Time.deltaTime);
     }
-    
 
-    public void TriggerIdle()
-    {
-        animator.SetTrigger(IdleTrigger);
-    }
-
-    public void TriggerWalk()
-    {
-        animator.SetTrigger(WalkTrigger);
-    }
-
-    public void TriggerRun()
-    {
-        animator.SetTrigger(RunTrigger);
-    }
-
-    public void TriggerBow()
-    {
-        animator.SetTrigger(BowTrigger);
-    }
-    
 }
