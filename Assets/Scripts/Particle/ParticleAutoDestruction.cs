@@ -1,43 +1,42 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-
-public class ParticleAutoDestruction : MonoBehaviour
+namespace Ukiyo.Particle
 {
-    private ParticleSystem[] particleSystems;
- 
-    void Start()
+    public class ParticleAutoDestruction : MonoBehaviour
     {
-        particleSystems = GetComponentsInChildren<ParticleSystem>();
-        // Disable all loop animation of particle systems
-        foreach (ParticleSystem ps in particleSystems)
-        {
-            var main = ps.main;
-            main.loop = false;
-        }
-    }
-	
-    void Update ()
-    {
-        bool allStopped = true;
+        private ParticleSystem[] particleSystems;
  
-        foreach (ParticleSystem ps in particleSystems)
+        void Start()
         {
-            // Check all particle system finished play and destroy the object
-            if (!ps.isStopped)
+            particleSystems = GetComponentsInChildren<ParticleSystem>();
+            // Disable all loop animation of particle systems
+            foreach (ParticleSystem ps in particleSystems)
             {
-                allStopped = false;
+                var main = ps.main;
+                main.loop = false;
             }
         }
+	
+        void Update ()
+        {
+            bool allStopped = true;
  
-        if (allStopped)
-            Destroy(gameObject);
-    }
+            foreach (ParticleSystem ps in particleSystems)
+            {
+                // Check all particle system finished play and destroy the object
+                if (!ps.isStopped)
+                {
+                    allStopped = false;
+                }
+            }
+ 
+            if (allStopped)
+                Destroy(gameObject);
+        }
 
-    private void OnParticleCollision(GameObject other)
-    {
-        Debug.Log(other);
+        private void OnParticleCollision(GameObject other)
+        {
+            Debug.Log(other);
+        }
     }
 }
