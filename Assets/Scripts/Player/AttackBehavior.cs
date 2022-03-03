@@ -4,19 +4,6 @@ namespace Ukiyo.Player
 {
     public class AttackBehavior : StateMachineBehaviour
     {
-        // OnStateEnter is called before OnStateEnter is called on any state inside this state machine
-        //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-        //{
-        //    
-        //}
-
-        // OnStateUpdate is called before OnStateUpdate is called on any state inside this state machine
-        //override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-        //{
-        //    
-        //}
-    
-        #region AttackState
 
         private static readonly int AttackState = Animator.StringToHash("AttackState");
         private static readonly int One = Animator.StringToHash("1");
@@ -47,8 +34,6 @@ namespace Ukiyo.Player
             animator.SetFloat(AttackState, (float) state);
         }
 
-        #endregion
-
         // OnStateExit is called before OnStateExit is called on any state inside this state machine
         public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
@@ -58,29 +43,6 @@ namespace Ukiyo.Player
                 SetAttackState(animator, 0);
             }
         }
-    
-        // OnStateMove is called before OnStateMove is called on any state inside this state machine
-        //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-        //{
-        //    
-        //}
-
-        // OnStateIK is called before OnStateIK is called on any state inside this state machine
-        //override public void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-        //{
-        //    
-        //}
-
-        // // OnStateMachineEnter is called when entering a state machine via its Entry Node
-        // public override void OnStateMachineEnter(Animator animator, int stateMachinePathHash)
-        // {
-        //     Debug.Log("OnStateMachineEnter");
-        // }
-        //
-        // // OnStateMachineExit is called when exiting a state machine via its Exit Node
-        // public override void OnStateMachineExit(Animator animator, int stateMachinePathHash)
-        // {
-        //     Debug.Log("OnStateMachineExit");
-        // }
+        
     }
 }
