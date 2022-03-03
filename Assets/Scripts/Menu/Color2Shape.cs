@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,13 +26,13 @@ namespace Ukiyo.Menu
         private void Start()
         {
             newMaterial = GenerateMaterial();
-            targetImage.material = newMaterial;
+            //targetImage.material = newMaterial;
         }
 
         private void Update()
         {
-            if (Application.isEditor && targetImage.IsActive())
-                targetImage.material = newMaterial;
+            //if (Application.isEditor && targetImage.IsActive())
+                //targetImage.material = newMaterial;
         }
 
         private Material GenerateMaterial()

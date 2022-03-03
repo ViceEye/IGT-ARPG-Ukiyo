@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6090475539597813626}
   - component: {fileID: 6090475539597813621}
+  - component: {fileID: 5681734346947459555}
   - component: {fileID: 815651535552034047}
   m_Layer: 5
   m_Name: ProgressSlider
@@ -93,6 +94,18 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!225 &5681734346947459555
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6090475539597813627}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!114 &815651535552034047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,9 +118,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51fa53c259c32bf458b6a75bf7e85f26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 5681734346947459555}
   slider: {fileID: 6090475539597813621}
   percentage: {fileID: 6090475540435476724}
   loading: {fileID: 7943612610484083063}
+  refresh: {fileID: 0}
 --- !u!1 &6090475539945787365
 GameObject:
   m_ObjectHideFlags: 0
@@ -394,9 +409,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -580,4 +595,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Loading....
+  m_Text: Loading..
