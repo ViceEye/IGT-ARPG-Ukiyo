@@ -26,13 +26,17 @@ namespace Ukiyo.Menu
         private void Start()
         {
             newMaterial = GenerateMaterial();
-            //targetImage.material = newMaterial;
+            targetImage.material = newMaterial;
         }
 
         private void Update()
         {
-            //if (Application.isEditor && targetImage.IsActive())
-                //targetImage.material = newMaterial;
+            // DEBUG ONLY
+            if (Application.isEditor && targetImage.IsActive())
+            {
+                newMaterial = GenerateMaterial();
+                targetImage.material = newMaterial;
+            }
         }
 
         private Material GenerateMaterial()

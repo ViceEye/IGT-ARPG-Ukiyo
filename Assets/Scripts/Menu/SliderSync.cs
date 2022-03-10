@@ -73,7 +73,7 @@ namespace Ukiyo.Menu
 
         private IEnumerator FadeInRefreshHideSelf()
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.2f);
             canvasGroup.alpha = 0;
             if (refresh != null)
             {
@@ -91,7 +91,7 @@ namespace Ukiyo.Menu
 
         private IEnumerator AysncLoadNewScene(string sceneName)
         {
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(0.5f);
             AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
 
             if (async == null) yield break;

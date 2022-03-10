@@ -281,8 +281,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 958586626}
-        m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
+      - m_Target: {fileID: 1321779915}
+        m_TargetAssemblyTypeName: Ukiyo.Menu.MenuManager, Assembly-CSharp
         m_MethodName: ExitGame
         m_Mode: 1
         m_Arguments:
@@ -306,14 +306,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.27450982, g: 0.3647059, b: 0.45098042, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 02ed0f4e2d6844d5a8cae85c16e05348, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f5cc1bdbc3cc14cba98f22fc73ebf394, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -322,7 +322,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 150
 --- !u!222 &222012395
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -348,7 +348,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &547432594
 RectTransform:
   m_ObjectHideFlags: 0
@@ -486,7 +486,7 @@ GameObject:
   m_Component:
   - component: {fileID: 958586624}
   - component: {fileID: 958586625}
-  - component: {fileID: 958586626}
+  - component: {fileID: 958586627}
   m_Layer: 5
   m_Name: Buttons
   m_TagString: Untagged
@@ -523,18 +523,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 958586623}
   m_CullTransparentMesh: 1
---- !u!114 &958586626
-MonoBehaviour:
+--- !u!225 &958586627
+CanvasGroup:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 958586623}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66415512cc03f214f877ca043bd4a089, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &969774937 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6090475539597813627, guid: 0a4bc49a54504ab4aae6b451e6610627,
@@ -774,6 +774,7 @@ GameObject:
   - component: {fileID: 1321779913}
   - component: {fileID: 1321779912}
   - component: {fileID: 1321779911}
+  - component: {fileID: 1321779915}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -830,8 +831,8 @@ Canvas:
   m_GameObject: {fileID: 1321779910}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 1271059125}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -866,6 +867,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1321779915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1321779910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66415512cc03f214f877ca043bd4a089, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetFadeOutObjects:
+  - {fileID: 958586623}
+  - {fileID: 1675768155}
+  targetFadeInObjects:
+  - {fileID: 969774937}
+  slider: {fileID: 969774938}
 --- !u!1 &1489622684
 GameObject:
   m_ObjectHideFlags: 0
@@ -1010,8 +1029,8 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 0.33333328
-  m_FillClockwise: 0
+  m_FillAmount: 0
+  m_FillClockwise: 1
   m_FillOrigin: 2
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
@@ -1047,6 +1066,7 @@ GameObject:
   - component: {fileID: 1675768156}
   - component: {fileID: 1675768158}
   - component: {fileID: 1675768157}
+  - component: {fileID: 1675768159}
   m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
@@ -1116,6 +1136,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1675768155}
   m_CullTransparentMesh: 1
+--- !u!225 &1675768159
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1675768155}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!224 &1679516311 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6090475539597813626, guid: 0a4bc49a54504ab4aae6b451e6610627,
@@ -1284,46 +1316,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 969774937}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 969774938}
-        m_TargetAssemblyTypeName: Ukiyo.Menu.SliderSync, Assembly-CSharp
-        m_MethodName: OpenScene
+      - m_Target: {fileID: 1321779915}
+        m_TargetAssemblyTypeName: Ukiyo.Menu.MenuManager, Assembly-CSharp
+        m_MethodName: FadeOutObjects
         m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 958586623}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1675768155}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1345,14 +1341,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.27450982, g: 0.3647059, b: 0.45098042, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 02ed0f4e2d6844d5a8cae85c16e05348, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f5cc1bdbc3cc14cba98f22fc73ebf394, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1361,7 +1357,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 150
 --- !u!222 &1835613861
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1464,12 +1460,22 @@ PrefabInstance:
     - target: {fileID: 6090475539597813626, guid: 0a4bc49a54504ab4aae6b451e6610627,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 160
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 6090475539597813626, guid: 0a4bc49a54504ab4aae6b451e6610627,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 20
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6090475539597813626, guid: 0a4bc49a54504ab4aae6b451e6610627,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6090475539597813626, guid: 0a4bc49a54504ab4aae6b451e6610627,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6090475539597813626, guid: 0a4bc49a54504ab4aae6b451e6610627,
         type: 3}
@@ -1541,30 +1547,25 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6090475540003392631, guid: 0a4bc49a54504ab4aae6b451e6610627,
+    - target: {fileID: 6090475540435476724, guid: 0a4bc49a54504ab4aae6b451e6610627,
         type: 3}
-      propertyPath: m_IsActive
-      value: 1
+      propertyPath: m_FontData.m_FontSize
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 6090475540982147776, guid: 0a4bc49a54504ab4aae6b451e6610627,
         type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 2100000, guid: eff76ac3efc5a314d8734c29b6044039, type: 2}
+      objectReference: {fileID: 1962109417}
     - target: {fileID: 6090475540982147777, guid: 0a4bc49a54504ab4aae6b451e6610627,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.607
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 6090475540982147777, guid: 0a4bc49a54504ab4aae6b451e6610627,
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6090475540982147777, guid: 0a4bc49a54504ab4aae6b451e6610627,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6090475541275969007, guid: 0a4bc49a54504ab4aae6b451e6610627,
         type: 3}
@@ -1574,7 +1575,7 @@ PrefabInstance:
     - target: {fileID: 6090475541342238687, guid: 0a4bc49a54504ab4aae6b451e6610627,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.607
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 6090475541342238687, guid: 0a4bc49a54504ab4aae6b451e6610627,
         type: 3}
@@ -1584,7 +1585,7 @@ PrefabInstance:
     - target: {fileID: 6090475541342238687, guid: 0a4bc49a54504ab4aae6b451e6610627,
         type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.607
+      value: 0.01
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0a4bc49a54504ab4aae6b451e6610627, type: 3}
