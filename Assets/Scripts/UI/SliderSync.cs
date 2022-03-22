@@ -1,11 +1,9 @@
-using System;
 using System.Collections;
-using System.Timers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace Ukiyo.Menu
+namespace Ukiyo.UI
 {
     [ExecuteInEditMode]
     public class SliderSync : MonoBehaviour

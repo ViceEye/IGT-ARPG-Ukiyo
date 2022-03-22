@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6090475539597813626}
   - component: {fileID: 6090475539597813621}
-  - component: {fileID: 5681734346947459555}
   m_Layer: 5
   m_Name: PureProgressSlider
   m_TagString: Untagged
@@ -87,22 +86,10 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.05
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!225 &5681734346947459555
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6090475539597813627}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1 &6090475539945787365
 GameObject:
   m_ObjectHideFlags: 0

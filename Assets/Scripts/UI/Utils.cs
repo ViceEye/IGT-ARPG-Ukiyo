@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace Ukiyo.Menu
+namespace Ukiyo.UI
 {
     public static class Utils
     {

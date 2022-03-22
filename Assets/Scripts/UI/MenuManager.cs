@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Ukiyo.Menu
+namespace Ukiyo.UI
 {
     public class MenuManager : MonoBehaviour
     {

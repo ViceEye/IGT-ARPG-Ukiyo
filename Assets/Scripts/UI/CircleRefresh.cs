@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Ukiyo.Menu
+namespace Ukiyo.UI
 {
     [ExecuteInEditMode]
     public class CircleRefresh : MonoBehaviour

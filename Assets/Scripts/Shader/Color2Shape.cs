@@ -32,7 +32,7 @@ namespace Ukiyo.Menu
         private void Update()
         {
             // DEBUG ONLY
-            if (Application.isEditor && targetImage.IsActive())
+            if (!Application.isPlaying && targetImage.IsActive())
             {
                 newMaterial = GenerateMaterial();
                 targetImage.material = newMaterial;

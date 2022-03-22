@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Image = UnityEngine.UIElements.Image;
 
-namespace Ukiyo.Menu
+namespace Ukiyo.UI
 {
     [ExecuteInEditMode]
     public class RightCornerSync : MonoBehaviour
