@@ -21,6 +21,8 @@ namespace Ukiyo.Menu
         private Texture2D targetColor;
         [SerializeField] 
         private Material newMaterial;
+        [SerializeField]
+        private bool doUpdate = true;
 
 
         private void Start()
@@ -32,10 +34,13 @@ namespace Ukiyo.Menu
         private void Update()
         {
             // DEBUG ONLY
-            if (!Application.isPlaying && targetImage.IsActive())
+            if (doUpdate)
             {
-                newMaterial = GenerateMaterial();
-                targetImage.material = newMaterial;
+                if (!Application.isPlaying && targetImage.IsActive())
+                {
+                    newMaterial = GenerateMaterial();
+                    targetImage.material = newMaterial;
+                }
             }
         }
 

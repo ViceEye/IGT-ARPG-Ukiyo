@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-namespace Ukiyo.Utils
+namespace Ukiyo.Common
 {
     public static class Utils
     {
-        #region UI
+        #region UI Animation
 
         public static IEnumerator Zoom(GameObject transform, Vector3 scale, float duration)
         {
@@ -57,6 +58,80 @@ namespace Ukiyo.Utils
             group.alpha = alpha;
         }
         
+        public static IEnumerator MoveX(GameObject transform, float xValue, float duration)
+        {
+            if (transform != null)
+            {
+                yield return MoveX(transform.GetComponent<RectTransform>(), xValue, duration);
+            }
+            yield return null;
+        }
+        
+        public static IEnumerator MoveX(RectTransform transform, float xValue, float duration)
+        {
+            var time = 0.0f;
+            var originalPosition = transform.localPosition;
+            while (time < duration)
+            {
+                time += Time.deltaTime;
+                transform.localScale = new Vector3(
+                    Mathf.Lerp(originalPosition.x, xValue, time / duration),
+                    originalPosition.y,
+                    originalPosition.z);
+                yield return new WaitForEndOfFrame();
+            }
+
+            transform.localPosition = new Vector3(xValue, originalPosition.y, originalPosition.z);
+        }
+        
+        public static IEnumerator MoveY(GameObject transform, float yValue, float duration)
+        {
+            if (transform != null)
+            {
+                yield return MoveY(transform.GetComponent<RectTransform>(), yValue, duration);
+            }
+            yield return null;
+        }
+        
+        public static IEnumerator MoveY(RectTransform transform, float yValue, float duration)
+        {
+            var time = 0.0f;
+            var originalPosition = transform.localPosition;
+            while (time < duration)
+            {
+                time += Time.deltaTime;
+                transform.localScale = new Vector3(
+                    originalPosition.x,
+                    Mathf.Lerp(originalPosition.y, yValue, time / duration),
+                    originalPosition.z);
+                yield return new WaitForEndOfFrame();
+            }
+
+            transform.localPosition = new Vector3(originalPosition.x, yValue, originalPosition.z);
+        }
+        
+        public static IEnumerator Coloring(GameObject color, Color target, float duration)
+        {
+            if (color != null)
+            {
+                yield return Coloring(color.GetComponent<Image>(), target, duration);
+            }
+            yield return null;
+        }
+
+        public static IEnumerator Coloring(Image color, Color target, float duration)
+        {
+            var time = 0.0f;
+            var originalColor = color.color;
+            while (time < duration)
+            {
+                time += Time.deltaTime;
+                color.color = Color.Lerp(originalColor, target, time / duration);
+                yield return new WaitForEndOfFrame();
+            }
+
+            color.color = target;
+        }
 
         #endregion
 

@@ -23,16 +23,10 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/DebugScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/AssetPack/Environment/Polyart/PolyartStudio/DreamscapeMeadows/Scenes/Demo.unity
-    guid: c955e02741ea51045828cd5cf1d842e9
+    path: Assets/Scenes/DebugScene2.unity
+    guid: 4bf27473bcaae6649b3ae9441738c073
   m_configObjects: {}
