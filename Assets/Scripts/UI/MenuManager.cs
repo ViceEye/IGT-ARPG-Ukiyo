@@ -1,3 +1,4 @@
+using Ukiyo.Common;
 using UnityEngine;
 
 namespace Ukiyo.UI
@@ -15,8 +16,8 @@ namespace Ukiyo.UI
         {
             foreach (var targetFadeObject in targetFadeOutObjects)
             {
-                StartCoroutine(Utils.Utils.Zoom(targetFadeObject, new Vector3(0.5f, 0.5f, 0.5f), 1.0f));
-                StartCoroutine(Utils.Utils.Fade(targetFadeObject, 0.0f, 0.5f));
+                StartCoroutine(Utils.Zoom(targetFadeObject, new Vector3(0.5f, 0.5f, 0.5f), 1.0f));
+                StartCoroutine(Utils.Fade(targetFadeObject, 0.0f, 0.5f));
             }
             Invoke(nameof(FadeInObjects), 1.0f);
         }
@@ -26,8 +27,8 @@ namespace Ukiyo.UI
             foreach (var targetFadeObject in targetFadeInObjects)
             {
                 targetFadeObject.SetActive(true);
-                StartCoroutine(Utils.Utils.Zoom(targetFadeObject, new Vector3(5.0f, 5.0f, 1.0f), 0.5f));
-                StartCoroutine(Utils.Utils.Fade(targetFadeObject, 1.0f, 1.0f));
+                StartCoroutine(Utils.Zoom(targetFadeObject, new Vector3(5.0f, 5.0f, 1.0f), 0.5f));
+                StartCoroutine(Utils.Fade(targetFadeObject, 1.0f, 1.0f));
             }
             Invoke(nameof(OpenScene), 1.0f);
         }

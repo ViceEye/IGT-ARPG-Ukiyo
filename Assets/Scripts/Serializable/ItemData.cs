@@ -1,7 +1,11 @@
 ﻿using System;
+using UnityEngine.Purchasing.MiniJSON;
 
 namespace Ukiyo.Serializable
 {
+    /// <summary>
+    /// Item detail for storage
+    /// </summary>
     [Serializable]
     public class ItemData
     {
@@ -22,6 +26,11 @@ namespace Ukiyo.Serializable
         public void ReduceFromStack()
         {
             stackSize--;
+        }
+
+        public void SetTheStack(int stack)
+        {
+            stackSize = stack;
         }
     }
 }

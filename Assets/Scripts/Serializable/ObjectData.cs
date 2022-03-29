@@ -1,9 +1,13 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Purchasing.MiniJSON;
 
 namespace Ukiyo.Serializable
 {
-    [CreateAssetMenu(fileName = "Player", menuName = "Ukiyo/New Object Data")]
+    /// <summary>
+    /// Item detail for editor
+    /// </summary>
+    [CreateAssetMenu(fileName = "Item", menuName = "Ukiyo/New Object Data")]
     public class ObjectData : ScriptableObject, IObjectBase
     {
         public string __id;
@@ -17,9 +21,12 @@ namespace Ukiyo.Serializable
         public Sprite __icon;
         [NonSerialized] protected Sprite _icon;
         public Sprite Icon { get => _icon; set => _icon = value; }
-        
-        public GameObject __prefab;
-        [NonSerialized] protected GameObject _prefab;
-        public GameObject Prefab { get => _prefab; set => _prefab = value; }
+
+        public ObjectData()
+        {
+            ID = __id;
+            DisplayName = __displayName;
+            Icon = __icon;
+        }
     }
 }

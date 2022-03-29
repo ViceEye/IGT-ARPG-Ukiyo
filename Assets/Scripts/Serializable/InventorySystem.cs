@@ -7,12 +7,19 @@ namespace Ukiyo.Serializable
     public class InventorySystem : MonoBehaviour
     {
         private Dictionary<ObjectData, ItemData> m_itemDictionary;
-        public List<ItemData> inventoryItems { get; private set; }
+
+        private int maxInventorySize = 64;
+
+        public List<ObjectData> itemData;
+
+        public List<ItemData> __inventoryItems;
+        [NonSerialized]protected List<ItemData> _inventoryItems;
+        public List<ItemData> InventoryItems { get => _inventoryItems; set => _inventoryItems = value; }
 
         private void Awake()
         {
+            InventoryItems = __inventoryItems;
             m_itemDictionary = new Dictionary<ObjectData, ItemData>();
-            inventoryItems = new List<ItemData>();
         }
 
         public void Add(ObjectData source)
@@ -24,7 +31,7 @@ namespace Ukiyo.Serializable
             else
             {
                 ItemData newItemData = new ItemData(source);
-                inventoryItems.Add(newItemData);
+                InventoryItems.Add(newItemData);
             }
         }
 
@@ -36,7 +43,7 @@ namespace Ukiyo.Serializable
 
                 if (value.stackSize == 0)
                 {
-                    inventoryItems.Remove(value);
+                    InventoryItems.Remove(value);
                     m_itemDictionary.Remove(source);
                 }
                 
