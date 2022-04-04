@@ -1,4 +1,5 @@
 ﻿using System;
+using Ukiyo.Common;
 using UnityEngine;
 using UnityEngine.Purchasing.MiniJSON;
 
@@ -7,8 +8,8 @@ namespace Ukiyo.Serializable
     /// <summary>
     /// Item detail for editor
     /// </summary>
-    [CreateAssetMenu(fileName = "Item", menuName = "Ukiyo/New Object Data")]
-    public class ObjectData : ScriptableObject, IObjectBase
+    [Serializable]
+    public class ObjectData
     {
         public string __id;
         [NonSerialized] protected string _id;
@@ -22,11 +23,22 @@ namespace Ukiyo.Serializable
         [NonSerialized] protected Sprite _icon;
         public Sprite Icon { get => _icon; set => _icon = value; }
 
+        [TextArea]
+        public string __description;
+        [NonSerialized] protected string _description;
+        public string Description { get => _description; set => _description = value; }
+
+        public EnumInventoryItemType __type;
+        [NonSerialized] protected EnumInventoryItemType _type;
+        public EnumInventoryItemType Type { get => _type; set => _type = value; }
+        
         public ObjectData()
         {
             ID = __id;
             DisplayName = __displayName;
             Icon = __icon;
+            Description = __description;
+            Type = __type;
         }
     }
 }

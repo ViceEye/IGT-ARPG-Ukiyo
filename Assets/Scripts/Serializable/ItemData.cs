@@ -1,10 +1,9 @@
 ﻿using System;
-using UnityEngine.Purchasing.MiniJSON;
 
 namespace Ukiyo.Serializable
 {
     /// <summary>
-    /// Item detail for storage
+    /// Item detail for inventory
     /// </summary>
     [Serializable]
     public class ItemData

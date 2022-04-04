@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Ukiyo.Serializable
 {
     /// <summary>
-    /// Item Interface
+    /// Deprecated, unnecessary 
     /// </summary>
     public interface IObjectBase
     {

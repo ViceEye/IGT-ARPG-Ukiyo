@@ -11,7 +11,7 @@ namespace Ukiyo.Serializable
 
         public void onInteract()
         {
-            Debug.Log("do interact");
+            Debug.Log("do interact such as ");
         }
     }
 }
