@@ -1,1 +1,65 @@
-{}
+[
+  {
+    "ID": 10001,
+    "DisplayName": "TestSword",
+    "Icon": "Assets/UI/Clean&Minimalist/Sprites/Icons-HighResolution/Icons/Icons-White_PNG/Sword-Icon.png",
+    "Description": "This is a test sword",
+    "Type": 0
+  },
+  {
+    "ID": 10002,
+    "DisplayName": "TestSword",
+    "Icon": "Assets/UI/Clean&Minimalist/Sprites/Icons-Demo-Small/Icons-Small-White_PNG/Ability-Icon.png",
+    "Description": "This is a test sword",
+    "Type": 0
+  },
+  {
+    "ID": 10003,
+    "DisplayName": "TestSword",
+    "Icon": "Assets/UI/Clean&Minimalist/Sprites/Icons-HighResolution/Icons/Icons-White_PNG/Angel-Icon.png",
+    "Description": "This is a test sword",
+    "Type": 0
+  },
+  {
+    "ID": 10004,
+    "DisplayName": "TestSword",
+    "Icon": "Assets/UI/Clean&Minimalist/Sprites/Icons-HighResolution/Icons/Icons-White_PNG/Apple-Icon.png",
+    "Description": "This is a test sword",
+    "Type": 0
+  },
+  {
+    "ID": 10005,
+    "DisplayName": "TestSword",
+    "Icon": "Assets/UI/Clean&Minimalist/Sprites/Icons-HighResolution/Icons/Icons-White_PNG/Axe-Scythe-Fight-Icon.png",
+    "Description": "This is a test sword",
+    "Type": 0
+  },
+  {
+    "ID": 10006,
+    "DisplayName": "TestSword",
+    "Icon": "Assets/UI/Clean&Minimalist/Sprites/Icons-HighResolution/Icons/Icons-White_PNG/Bag-Icon.png",
+    "Description": "This is a test sword",
+    "Type": 0
+  },
+  {
+    "ID": 10007,
+    "DisplayName": "TestSword",
+    "Icon": "Assets/UI/Clean&Minimalist/Sprites/Icons-Demo-Small/Icons-Small-White_PNG/Badge-Icon.png",
+    "Description": "This is a test sword",
+    "Type": 0
+  },
+  {
+    "ID": 10008,
+    "DisplayName": "TestSword",
+    "Icon": "Assets/UI/Clean&Minimalist/Sprites/Icons-HighResolution/Smileys/Smileys_PNG/Angry-Smiley.png",
+    "Description": "This is a test sword",
+    "Type": 0
+  },
+  {
+    "ID": 10009,
+    "DisplayName": "TestSword",
+    "Icon": "Assets/UI/Clean&Minimalist/Sprites/Icons-HighResolution/Icons/Icons-White_PNG/Amulet-Icon.png",
+    "Description": "This is a test sword",
+    "Type": 0
+  }
+]

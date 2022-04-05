@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Ukiyo.Common.Singleton;
 using UnityEngine;
 
 namespace Ukiyo.Player
@@ -15,7 +16,7 @@ namespace Ukiyo.Player
     }
 
     [ExecuteInEditMode]
-    public class CollisionDetector : MonoBehaviour
+    public class CollisionDetector : MonoSingleton<CollisionDetector>
     {
         public Types type = Types.Circle;
         public bool debug;

@@ -6,10 +6,6 @@ namespace Ukiyo.Skill
 {
     public class SkillManager : MonoBehaviour
     {
-
-        [Header("Collision Detector")] 
-        public CollisionDetector collisionDetector;
-
         public Transform position;
         public GameObject[] prefabs;
 
@@ -41,7 +37,7 @@ namespace Ukiyo.Skill
             GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Enemy");
             foreach (GameObject obj in gameObjects)
             {
-                bool attack = collisionDetector.FanShapedCheck(transform, obj.transform, 160, 2);
+                bool attack = CollisionDetector.Instance.FanShapedCheck(transform, obj.transform, 160, 2);
                 Debug.Log(attack);
                 if (attack)
                 {

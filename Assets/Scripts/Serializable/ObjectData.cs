@@ -1,7 +1,7 @@
 ﻿using System;
 using Ukiyo.Common;
+using UnityEditor;
 using UnityEngine;
-using UnityEngine.Purchasing.MiniJSON;
 
 namespace Ukiyo.Serializable
 {
@@ -9,11 +9,11 @@ namespace Ukiyo.Serializable
     /// Item detail for editor
     /// </summary>
     [Serializable]
-    public class ObjectData
+    public class ObjectData : ISerializationCallbackReceiver
     {
-        public string __id;
-        [NonSerialized] protected string _id;
-        public string ID { get => _id; set => _id = value; }
+        public int __id;
+        [NonSerialized] protected int _id;
+        public int ID { get => _id; set => _id = value; }
         
         public string __displayName;
         [NonSerialized] protected string _displayName;
@@ -32,7 +32,11 @@ namespace Ukiyo.Serializable
         [NonSerialized] protected EnumInventoryItemType _type;
         public EnumInventoryItemType Type { get => _type; set => _type = value; }
         
-        public ObjectData()
+        public void OnBeforeSerialize()
+        {
+        }
+
+        public void OnAfterDeserialize()
         {
             ID = __id;
             DisplayName = __displayName;

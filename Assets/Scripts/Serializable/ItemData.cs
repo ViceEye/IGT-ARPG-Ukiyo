@@ -16,6 +16,12 @@ namespace Ukiyo.Serializable
             data = source;
             AddToStack();
         }
+        
+        public ItemData(ObjectData source, int stack)
+        {
+            data = source;
+            stackSize = stack;
+        }
 
         public void AddToStack()
         {

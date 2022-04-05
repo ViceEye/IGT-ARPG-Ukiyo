@@ -8,6 +8,7 @@ namespace Ukiyo.UI.Inventory
     public class Grid : MonoBehaviour
     {
         public GameObject slotGO;
+        public GameObject itemGO;
         public List<InventorySlot> slotList;
         
         public int __maxGridSize;

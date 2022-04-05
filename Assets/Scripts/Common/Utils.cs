@@ -1,5 +1,9 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
+using System.IO;
+using System.Text.RegularExpressions;
+using LitJson;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,7 +11,8 @@ namespace Ukiyo.Common
 {
     public static class Utils
     {
-        #region UI Animation
+        // Aysnc user interface animation
+        #region UI Animations
 
         public static IEnumerator Zoom(GameObject transform, Vector3 scale, float duration)
         {
@@ -74,7 +79,7 @@ namespace Ukiyo.Common
             while (time < duration)
             {
                 time += Time.deltaTime;
-                transform.localScale = new Vector3(
+                transform.localPosition = new Vector3(
                     Mathf.Lerp(originalPosition.x, xValue, time / duration),
                     originalPosition.y,
                     originalPosition.z);
@@ -100,7 +105,7 @@ namespace Ukiyo.Common
             while (time < duration)
             {
                 time += Time.deltaTime;
-                transform.localScale = new Vector3(
+                transform.localPosition = new Vector3(
                     originalPosition.x,
                     Mathf.Lerp(originalPosition.y, yValue, time / duration),
                     originalPosition.z);
@@ -114,12 +119,12 @@ namespace Ukiyo.Common
         {
             if (color != null)
             {
-                yield return Coloring(color.GetComponent<Image>(), target, duration);
+                yield return Coloring(color.GetComponent<Graphic>(), target, duration);
             }
             yield return null;
         }
 
-        public static IEnumerator Coloring(Image color, Color target, float duration)
+        public static IEnumerator Coloring(Graphic color, Color target, float duration)
         {
             var time = 0.0f;
             var originalColor = color.color;
@@ -135,34 +140,49 @@ namespace Ukiyo.Common
 
         #endregion
 
-        #region Tool
-
-        public static void Move<T>(this List<T> list, int oldIndex, int newIndex)
+        #region Tools
+        
+        public static string GetJsonStr(string savaDataFilePath, string fileName)
         {
-            // exit if positions are equal or outside array
-            if ((oldIndex == newIndex) || (0 > oldIndex) || (oldIndex >= list.Count) || (0 > newIndex) ||
-                (newIndex >= list.Count)) return;
-            // local variables
-            var i = 0;
-            T tmp = list[oldIndex];
-            // move element down and shift other elements up
-            if (oldIndex < newIndex)
+            string filePath = Application.dataPath + savaDataFilePath + fileName;
+            
+            string jsonStr = string.Empty;
+
+            if (File.Exists(filePath))
             {
-                for (i = oldIndex; i < newIndex; i++)
-                {
-                    list[i] = list[i + 1];
-                }
+                jsonStr = File.ReadAllText(filePath);
             }
-            // move element up and shift other elements down
-            else
+            
+            return jsonStr;
+        }
+        
+        public static void WriteIntoFile(object obj, string savaDataFilePath, string fileName)
+        {
+            string str = JsonMapper.ToJson(obj);
+            str = Unicode2String(str);
+            string filePath = Application.dataPath + savaDataFilePath;
+
+            File.WriteAllText(filePath + fileName, str);
+        }
+
+        public static string Unicode2String(string source)
+        {
+            return new Regex(@"\\u([0-9A-F]{4})", RegexOptions.IgnoreCase | RegexOptions.None).Replace(
+                source, x => string.Empty + Convert.ToChar(Convert.ToUInt16(x.Result("$1"), 16)));
+        }
+
+        public static T LoadResource<T>(string path) where T : UnityEngine.Object
+        {
+            T obj = null;
+            try
             {
-                for (i = oldIndex; i > newIndex; i--)
-                {
-                    list[i] = list[i - 1];
-                }
+                obj = AssetDatabase.LoadAssetAtPath<T>(path);
             }
-            // put element from position 1 to destination
-            list[newIndex] = tmp;
+            catch (Exception e)
+            {
+                Debug.LogError(e.ToString());
+            }
+            return obj;
         }
 
         #endregion

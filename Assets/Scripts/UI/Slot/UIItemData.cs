@@ -1,4 +1,5 @@
 ﻿using System;
+using Ukiyo.Common;
 using Ukiyo.Serializable;
 using UnityEngine;
 using UnityEngine.Purchasing.MiniJSON;
@@ -11,7 +12,6 @@ namespace Ukiyo.UI.Slot
     /// </summary>
     public class UIItemData : MonoBehaviour
     {
-        public ObjectData debugData;
         public ItemData Item { get; private set; }
 
         protected Image image;
@@ -27,6 +27,9 @@ namespace Ukiyo.UI.Slot
         {
             Item = itemData;
             image.sprite = itemData.data.Icon;
+            
+            item = Item.stackSize + " × " + JsonUtility.ToJson(Item.data);
+            stack.text = Item.stackSize == 1 ? "" : Item.stackSize.ToString();
         }
 
         public bool AddStack()
@@ -65,10 +68,11 @@ namespace Ukiyo.UI.Slot
             image = GetComponent<Image>();
             cdMask = transform.Find("CD").GetComponent<Image>();
             stack = GetComponentInChildren<Text>();
+        }
 
-            Item = new ItemData(debugData);
-            item = JsonUtility.ToJson(debugData);
-            Debug.Log(JsonUtility.ToJson(debugData));
+        private void Start()
+        {
+            stack.text = Item.stackSize == 1 ? "" : Item.stackSize.ToString();
         }
 
         private void OnDestroy()

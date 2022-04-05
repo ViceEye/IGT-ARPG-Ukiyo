@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
 using LitJson;
+using Ukiyo.Common;
+using UnityEditor;
 using UnityEngine;
 
 namespace Ukiyo.Serializable
@@ -16,28 +14,70 @@ namespace Ukiyo.Serializable
         
         [SerializeField]
         private List<ObjectData> listItemDataSettings;
+        [SerializeField]
+        private List<ObjectData> previewListItemDataSettings;
 
         [ContextMenu("GenerateItemJsonFile")]
         private void GenerateItemJsonFile()
         {
-            WriteIntoFile(listItemDataSettings, itemsFileName);
-            Debug.Log("Generated");
+            List<ObjectDataJson> listItemJsons = new List<ObjectDataJson>();
+            foreach (var listItemDataSetting in listItemDataSettings)
+            {
+                listItemJsons.Add(new ObjectDataJson(listItemDataSetting));
+            }
+            Utils.WriteIntoFile(listItemJsons, savaDataFilePath, itemsFileName);
+            Debug.Log("Generated Item Json");
         }
 
-        private void WriteIntoFile(object obj, string fileName)
+        [ContextMenu("LoadItemsFromJsonFile")]
+        private void LoadItemsFromJsonFile()
         {
-            string str = JsonMapper.ToJson(obj);
-            str = Unicode2String(str);
-            string filePath = Application.dataPath + savaDataFilePath;
+            List<ObjectData> listItems = new List<ObjectData>();
 
-            File.WriteAllText(filePath + fileName, str);
+            string allItemsJson = Utils.GetJsonStr(savaDataFilePath, itemsFileName);
+            
+            if (allItemsJson != "" && allItemsJson != "[{}]")
+            {
+                JsonData allItemsJsonData = JsonMapper.ToObject(allItemsJson);
+
+                foreach (JsonData jsonData in allItemsJsonData)
+                {
+                    ObjectData objectData = new ObjectData
+                    {
+                        __id = int.Parse(jsonData["ID"].ToString()),
+                        __displayName = jsonData["DisplayName"].ToString(),
+                        __icon = Utils.LoadResource<Sprite>(jsonData["Icon"].ToString()),
+                        __description = jsonData["Description"].ToString(),
+                        __type = (EnumInventoryItemType) int.Parse(jsonData["Type"].ToString())
+                    };
+                    listItems.Add(objectData);
+                }
+
+                previewListItemDataSettings = listItems;
+            }
         }
 
-        private string Unicode2String(string source)
-        {
-            return new Regex(@"\\u([0-9A-F]{4})", RegexOptions.IgnoreCase | RegexOptions.None).Replace(
-                source, x => string.Empty + Convert.ToChar(Convert.ToUInt16(x.Result("$1"), 16)));
-        }
+    }
+
+    class ObjectDataJson
+    {
+        public int ID { get; set; }
+
+        public string DisplayName { get; set; }
+
+        public string Icon { get; set; }
+
+        public string Description { get; set; }
+
+        public EnumInventoryItemType Type { get; set; }
         
+        public ObjectDataJson(ObjectData objectData)
+        {
+            ID = objectData.ID;
+            DisplayName = objectData.DisplayName;
+            Icon = AssetDatabase.GetAssetPath(objectData.Icon);
+            Description = objectData.Description;
+            Type = objectData.Type;
+        }
     }
 }

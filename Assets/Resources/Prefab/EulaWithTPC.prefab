@@ -3613,10 +3613,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72d381e17613532468185f4d5cf52cf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collisionDetector: {fileID: 0}
   position: {fileID: 0}
-  prefabs:
-  - {fileID: 1893723492503102, guid: bf9f848a24682054e9fddc30f1184e46, type: 3}
+  prefabs: []
 --- !u!1 &6375107091846978539
 GameObject:
   m_ObjectHideFlags: 0

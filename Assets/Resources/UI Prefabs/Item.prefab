@@ -110,7 +110,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 78, y: -52}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2390940954382997896
 CanvasRenderer:
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -143,19 +143,17 @@ MonoBehaviour:
   m_FontData:
     m_Font: {fileID: 12800000, guid: 2dfacf906aa5a4ac08f806f703e61283, type: 3}
     m_FontSize: 14
-    m_FontStyle: 0
+    m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
-    m_Alignment: 0
+    m_MaxSize: 50
+    m_Alignment: 8
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: '
-
-'
+    m_LineSpacing: 0
+  m_Text: 
 --- !u!1 &2390940954550890790
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,7 +236,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c41d570aae74804b65e74380883d149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugData: {fileID: 11400000, guid: eb8bfee3361fc8b41ac0f300d73cbd92, type: 2}
   item: 
   maxStackSize: 32
 --- !u!222 &2390940954550890811
