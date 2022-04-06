@@ -32,6 +32,11 @@ namespace Ukiyo.UI.Slot
             stack.text = Item.stackSize == 1 ? "" : Item.stackSize.ToString();
         }
 
+        public void SetEmpty()
+        {
+            Destroy(this);
+        }
+
         public bool AddStack()
         {
             // todo: Create another data

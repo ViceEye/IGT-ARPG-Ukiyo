@@ -33,7 +33,7 @@ namespace Ukiyo.Serializable
             
             foreach (var itemData in value)
             {
-                inventoryJsonDataList.Add(new InventoryJsonData(itemData));
+                inventoryJsonDataList.Add(new InventoryJsonData(1, itemData));
             }
             
             Utils.WriteIntoFile(inventoryJsonDataList, savaDataFilePath, inventoryFileName);
@@ -71,11 +71,13 @@ namespace Ukiyo.Serializable
     [Serializable]
     class InventoryJsonData
     {
+        public int slotId { get; set; }
         public int itemId { get; set; }
         public int stack { get; set; }
 
-        public InventoryJsonData(ItemData itemData)
+        public InventoryJsonData(int slotId, ItemData itemData)
         {
+            slotId = slotId;
             itemId = itemData.data.ID;
             stack = itemData.stackSize;
         }

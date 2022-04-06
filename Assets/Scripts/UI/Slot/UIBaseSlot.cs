@@ -21,9 +21,27 @@ namespace Ukiyo.UI.Slot
         protected int slotID;
         public int SlotId => slotID;
 
-        public void Init(int id)
+        public virtual void Init(int id)
         {
             slotID = id;
+        }
+        
+        public virtual void SetItem(UIItemData item)
+        {
+            if (item == null)
+            {
+                SetEmpty();
+                return;
+            }
+
+            uiItem = item;
+        }
+
+        public virtual void SetEmpty()
+        {
+            if (uiItem == null) return;
+            uiItem.SetEmpty();
+            uiItem = null;
         }
         
         public void OnPointerEnter(PointerEventData eventData)

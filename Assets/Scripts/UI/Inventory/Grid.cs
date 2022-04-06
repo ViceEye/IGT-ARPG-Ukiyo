@@ -21,6 +21,7 @@ namespace Ukiyo.UI.Inventory
             for (int i = 1; i <= MaxGridSize; i++)
             {
                 GameObject slot = Instantiate(slotGO, transform);
+                slot.name = "Slot-" + i;
                 InventorySlot inventorySlot = slot.GetComponent<InventorySlot>();
                 inventorySlot.Init(i);
                 slotList.Add(inventorySlot);

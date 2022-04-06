@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Ukiyo.Common;
 using Ukiyo.Common.Object;
@@ -13,11 +12,13 @@ namespace Ukiyo.UI.Inventory
 {
     public class InventorySystem : MonoBehaviour
     {
+        // Inventory runtime data
         [Header("Inventory Data")]
-        protected Grid gridObj;
-
+        protected Grid _gridObj;
         private Dictionary<int, ItemData> _itemDictionary;
+        private CanvasGroup _canvasGroup;
 
+        // Panel Button Settings
         [Header("Panel Button Settings")]
         public Color openTagTextColor;
         public Color closeTagTextColor;
@@ -26,7 +27,6 @@ namespace Ukiyo.UI.Inventory
         
         [SerializeField] private EnumInventoryItemType _currentOpenedPanel;
         public EnumInventoryItemType CurrentOpenedPanel => _currentOpenedPanel;
-
         [SerializeField] private float btnAnimationDuration = 0.2f;
 
         private void Awake()
@@ -37,8 +37,9 @@ namespace Ukiyo.UI.Inventory
             
             // Initialization
             _itemDictionary = DataSaver.Instance.LoadInventoryData();
-            gridObj = GetComponentInChildren<Grid>();
-            if (gridObj == null)
+            _gridObj = GetComponentInChildren<Grid>();
+            _canvasGroup = GetComponent<CanvasGroup>();
+            if (_gridObj == null)
                 Debug.LogWarning("Inventory System has no grid component");
         }
 
@@ -52,19 +53,23 @@ namespace Ukiyo.UI.Inventory
             var inventoryList = _itemDictionary.ToList();
             for (var i = 0; i < inventoryList.Count; i++)
             {
-                UIItemData uiItemData = gridObj.slotList[i].gameObject.GetComponentInChildren<UIItemData>();
+                UIItemData uiItemData = _gridObj.slotList[i].gameObject.GetComponentInChildren<UIItemData>();
                 if (uiItemData == null)
                 {
-                    GameObject item = Instantiate(gridObj.itemGO, gridObj.slotList[i].gameObject.transform);
+                    GameObject item = Instantiate(_gridObj.itemGO, _gridObj.slotList[i].gameObject.transform);
                     uiItemData = item.GetComponent<UIItemData>();
                 }
                 uiItemData.SetItem(inventoryList[i].Value);
+                _gridObj.slotList[i].SetItem(uiItemData);
             }
         }
 
-        private void FixedUpdate()
+        private void Update()
         {
-            test = _itemDictionary.Values.ToList();
+            if (Input.GetKeyUp(KeyCode.E))
+            {
+                _canvasGroup.alpha = _canvasGroup.alpha == 1.0f ? 0.0f : 1.0f;
+            }
         }
 
         public void SaveInventoryData()
