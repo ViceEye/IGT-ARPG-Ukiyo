@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Ukiyo.Player
 {
@@ -6,15 +7,15 @@ namespace Ukiyo.Player
     {
     
         public Animator animator;
-        public ThirdPersonMovement thirdPersonMovement;
-    
+        public ThirdPersonController thirdPersonController;
+        
         public void Awake()
         {
             GameObject mPlayer = GameObject.FindWithTag("Player");
             if (null != mPlayer)
             {
                 animator = mPlayer.GetComponent<Animator>();
-                thirdPersonMovement = mPlayer.GetComponent<ThirdPersonMovement>();
+                thirdPersonController = mPlayer.GetComponent<ThirdPersonController>();
             }
             else
                 Debug.Log("Animator Failed #1");
@@ -43,15 +44,15 @@ namespace Ukiyo.Player
             animator.SetFloat(X, horizontal);
             
             // Controls Jump begin, loop and end.
-            animator.SetFloat(Y, thirdPersonMovement.verticalVelocity.y);
+            animator.SetFloat(Y, thirdPersonController.verticalVelocity.y);
             animator.SetFloat(Z, vertical);
             
             // Controls transition between IdleNRun and Jump
             animator.SetBool(IsIdle, false);
 
-            if (thirdPersonMovement.IsGrounded)
+            if (thirdPersonController.IsGrounded)
                 animator.SetBool(IsIdle, true);
-            else if (!thirdPersonMovement.IsGrounded && thirdPersonMovement.verticalVelocity.y > 0)
+            else if (!thirdPersonController.IsGrounded && thirdPersonController.verticalVelocity.y > 0)
                 animator.SetBool(IsIdle, false);
             
             // todo: Attack State should be accept after animation is finish
@@ -62,7 +63,7 @@ namespace Ukiyo.Player
 
         #region AttackState
 
-        public bool IsAttacking()
+        public bool IsNotAttacking()
         {
             return GetAttackState() == 0;
         }

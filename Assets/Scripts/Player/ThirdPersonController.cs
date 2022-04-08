@@ -1,40 +1,20 @@
 ﻿using Cinemachine;
+using Ukiyo.Common;
 using Ukiyo.Skill;
 using UnityEngine;
 
 namespace Ukiyo.Player
 {
-    public class ThirdPersonMovement : MonoBehaviour
+    public class ThirdPersonController : BaseController
     {
         [Header("Components")]
-        public CharacterController controller;
         public Transform cameraTransform;
-        public Transform groundCheck;
         public Transform skillPoint;
-        public LayerMask groundMask;
         public CinemachineFreeLook cinemachineFreeLookPar;
         public SkillManager skillManager;
 
         [Header("Animator")] 
         public AnimationManager animationManager;
-    
-        [Header("Attributes")]
-        public float speed = 7f;
-
-        public bool enableJump;
-        public float jump = 3f;
-
-        public bool enableGravity;
-        // Idle drag, keeps character on the floor
-        public float baseDrag = -1.5f;
-        public float gravity = -9.81f;
-    
-        // Vertical velocity for jump
-        public Vector3 verticalVelocity;
-        [SerializeField]
-        private bool isGrounded;
-        public  bool IsGrounded => isGrounded;
-        public float groundCheckRadius = 0.5f;
 
         [Header("Camera")]
         public float turnSmoothTime = 0.2f;
@@ -42,34 +22,33 @@ namespace Ukiyo.Player
         public float cameraYAxisSpeed = 2.0f;
         public float cameraXAxisSpeed = 300.0f;
 
-        private void Start()
+        protected override void Start()
         {
             animationManager = gameObject.AddComponent<AnimationManager>();
+            cameraTransform = GameObject.FindGameObjectWithTag("MainCamera").transform;
+            cinemachineFreeLookPar = GameObject.FindGameObjectWithTag("Cinemachine").GetComponent<CinemachineFreeLook>();
         }
 
-        private void Update()
+        protected override void Update()
         {
             CameraLock();
-            if (enableJump && animationManager.IsAttacking())
+            if (enableJump && animationManager.IsNotAttacking())
                 Jump();
         }
-    
-        void FixedUpdate()
+
+        protected override void FixedUpdate()
         {
-            if (animationManager.IsAttacking())
+            base.FixedUpdate();
+            if (animationManager.IsNotAttacking())
             {
                 Movement();
             }
-            if (enableGravity)
-                Gravity();
         }
-
-        private bool rightClicked = false;
-    
+        
         void CameraLock()
         {
             float rightClick = Input.GetAxisRaw("Fire2");
-            rightClicked = rightClick > 0;
+            bool rightClicked = rightClick > 0;
             // If rightClicked unlock camera
             cinemachineFreeLookPar.m_YAxis.m_MaxSpeed = rightClicked ? cameraYAxisSpeed : 0;
             cinemachineFreeLookPar.m_XAxis.m_MaxSpeed = rightClicked ? cameraXAxisSpeed : 0;
@@ -80,9 +59,9 @@ namespace Ukiyo.Player
             cinemachineFreeLookPar.m_Lens.FieldOfView = rightClicked ? fov - scroll * 5 : fov;
         }
 
-        void Jump()
+        protected override void Jump()
         {
-            if (Input.GetButtonDown("Jump") && isGrounded)
+            if (Input.GetButtonDown("Jump") && IsGrounded)
             {
                 verticalVelocity.y = Mathf.Sqrt(jump * -2.0f * gravity);
             }
@@ -95,7 +74,6 @@ namespace Ukiyo.Player
 
             Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
 
-            // Todo: Bug #1 => Moving forward when jumping and hits a object, drag back effects. Solved.
             if (direction.magnitude >= 0.1f)
             {
                 // Direction of movement rotation
@@ -109,23 +87,6 @@ namespace Ukiyo.Player
                 Vector3 moveDirection = (Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward).normalized;
                 controller.Move(moveDirection * speed * Time.deltaTime);
             }
-        }
-
-        // Apply gravity when character not on the ground
-        void Gravity()
-        {
-            // Todo: Bug #2 => when collide when a wall is also considered as grounded, which is incorrect, need to change to vertical calculation not sphere calculation
-            // Quick Fixed - set the radius smaller
-            isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundMask);
-
-            // When player is grounded and vertical velocity is less than 0 = descending 
-            if (isGrounded && verticalVelocity.y < 0)
-            {
-                verticalVelocity.y = baseDrag;
-            }
-        
-            verticalVelocity.y += gravity * Time.deltaTime * 2;
-            controller.Move(verticalVelocity * Time.deltaTime);
         }
 
     }

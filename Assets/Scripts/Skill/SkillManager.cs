@@ -41,8 +41,14 @@ namespace Ukiyo.Skill
                 Debug.Log(attack);
                 if (attack)
                 {
-                    obj.GetComponent<MeshRenderer>().materials[0].SetColor("_AlbedoTint", Color.red);
-                    StartCoroutine(ResetMaterial(0.2f, obj));
+                    //obj.GetComponent<MeshRenderer>().materials[0].SetColor("_AlbedoTint", Color.red);
+                    //StartCoroutine(ResetMaterial(0.2f, obj));
+
+                    EnemyController ec = obj.GetComponent<EnemyController>();
+                    if (ec != null)
+                    {
+                        ec.TakeHit(gameObject);
+                    }
                 }
             }
         }

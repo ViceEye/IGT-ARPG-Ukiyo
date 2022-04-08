@@ -75,9 +75,9 @@ namespace Ukiyo.Serializable
         public int itemId { get; set; }
         public int stack { get; set; }
 
-        public InventoryJsonData(int slotId, ItemData itemData)
+        public InventoryJsonData(int slot, ItemData itemData)
         {
-            slotId = slotId;
+            slotId = slot;
             itemId = itemData.data.ID;
             stack = itemData.stackSize;
         }
