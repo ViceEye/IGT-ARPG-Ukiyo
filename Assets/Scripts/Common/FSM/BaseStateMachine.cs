@@ -14,14 +14,12 @@ namespace Ukiyo.Common.FSM
         
         protected virtual void Awake()
         {
-            Debug.Log("Awake");
             CurrentState = _initialState;
             _cachedComponents = new Dictionary<Type, Component>();
         }
 
         protected virtual void Start()
         {
-            Debug.Log("Start");
             CurrentState.BeforeExecute(this);
         }
 

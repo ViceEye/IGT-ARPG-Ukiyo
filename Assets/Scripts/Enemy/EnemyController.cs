@@ -43,7 +43,6 @@ public class EnemyController : BaseController
     {
         followTarget = from;
         animator.SetTrigger(Hit);
-        Debug.Log("Taking hit");
     }
 
     public void SetDizzy(float dizzyTime)

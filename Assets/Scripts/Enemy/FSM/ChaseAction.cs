@@ -13,7 +13,6 @@ namespace Enemy.FSM
 
         public override void FixedExecute(BaseStateMachine stateMachine)
         {
-            Debug.Log("Chasing");
             var navAgent = stateMachine.GetComponent<NavMeshAgent>();
             var sensor = stateMachine.GetComponent<EnemySightSensor>();
 

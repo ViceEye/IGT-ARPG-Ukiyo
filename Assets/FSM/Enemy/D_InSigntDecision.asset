@@ -10,5 +10,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7b88feb9405b4962b4e84ac6ee824540, type: 3}
-  m_Name: S_InSigntDecision
+  m_Name: D_InSigntDecision
   m_EditorClassIdentifier: 

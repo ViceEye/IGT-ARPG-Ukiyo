@@ -17,7 +17,6 @@ namespace Ukiyo.Common.FSM
 
         public override void BeforeExecute(BaseStateMachine stateMachine)
         {
-            Debug.Log("Inner");
             foreach (var fsmAction in Actions)
                 fsmAction.BeforeExecute(stateMachine);
             
@@ -29,7 +28,6 @@ namespace Ukiyo.Common.FSM
         {
             if (isExit) return;
             
-            Debug.Log("BaseState Execution");
             foreach (var action in Actions)
                 action.Execute(stateMachine);
 

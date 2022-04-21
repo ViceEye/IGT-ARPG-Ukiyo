@@ -9,7 +9,6 @@ namespace Enemy.FSM
 
         public override void FixedExecute(BaseStateMachine stateMachine)
         {
-            Debug.Log("Idling");
         }
     }
 }

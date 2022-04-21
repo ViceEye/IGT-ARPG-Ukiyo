@@ -9,7 +9,6 @@ namespace Enemy.FSM
         public override bool Decide(BaseStateMachine stateMachine)
         {
             var sensor = stateMachine.GetComponent<EnemySightSensor>();
-            Debug.Log("Detecting: " + sensor.Ping());
             return sensor.Ping();
         }
     }

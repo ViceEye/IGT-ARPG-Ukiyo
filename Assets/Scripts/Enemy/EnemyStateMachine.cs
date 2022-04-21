@@ -20,7 +20,6 @@ namespace Enemy
     {
         public override void BeforeExecute(BaseStateMachine stateMachine)
         {
-            Debug.Log("Outer");
             Actions.Add(CreateInstance<IdleAction>());
             Transitions.Add(CreateInstance<DetectingTransition>());
             base.BeforeExecute(stateMachine);
@@ -31,7 +30,6 @@ namespace Enemy
     {
         public override void BeforeExecute(BaseStateMachine stateMachine)
         {
-            Debug.Log("Chase");
             Actions.Add(CreateInstance<ChaseAction>());
             base.BeforeExecute(stateMachine);
         }
