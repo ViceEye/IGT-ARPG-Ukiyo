@@ -27,9 +27,9 @@ namespace Ukiyo.Common.Object
         {
         }
 
+        // Load Al Items From Json File and cache to Item Pool
         private void LoadItemsFromJsonFile()
         {
-            
             string allItemsJson = Utils.GetJsonStr(savaDataFilePath, itemsFileName);
 
             if (allItemsJson != "" && allItemsJson != "[{}]")
@@ -48,13 +48,11 @@ namespace Ukiyo.Common.Object
                     };
                     // Deserialize object or Capital access will be none.
                     objectData.OnAfterDeserialize();
+                    // Cache item to item pool
                     if (!itemPool.ContainsKey(objectData.ID))
-                    {
                         itemPool.Add(objectData.ID, objectData);
-                    }
                 }
             }
-
         }
 
         public ObjectData GetItemById(int id)

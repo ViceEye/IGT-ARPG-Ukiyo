@@ -27,6 +27,7 @@ namespace Ukiyo.Serializable
         {
         }
         
+        // Save Inventory Data
         public void SaveInventoryData(List<ItemData> value)
         {
             List<InventoryJsonData> inventoryJsonDataList = new List<InventoryJsonData>();
@@ -39,6 +40,7 @@ namespace Ukiyo.Serializable
             Utils.WriteIntoFile(inventoryJsonDataList, savaDataFilePath, inventoryFileName);
         }
 
+        // Load Inventory Data
         [ContextMenu("LoadInventoryData")]
         public Dictionary<int, ItemData> LoadInventoryData()
         {
@@ -50,6 +52,7 @@ namespace Ukiyo.Serializable
             {
                 JsonData inventoryData = JsonMapper.ToObject(inventoryJson);
 
+                // Convert JsonData to Object
                 foreach (JsonData jsonData in inventoryData)
                 {
                     int id = int.Parse(jsonData["itemId"].ToString());

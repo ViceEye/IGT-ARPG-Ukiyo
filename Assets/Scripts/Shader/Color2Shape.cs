@@ -41,6 +41,7 @@ namespace Ukiyo.Menu
                     newMaterial = GenerateMaterial();
                     targetImage.material = newMaterial;
                 }
+                doUpdate = false;
             }
         }
 

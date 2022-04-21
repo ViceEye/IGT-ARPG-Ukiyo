@@ -27,23 +27,16 @@ public class EnemyController : BaseController
 
     protected override void Update()
     {
+        // Move Speed Calculation
         var position = transform.position;
         Vector3 currentPosition = position - previousPosition;
         currentSpeed = currentPosition.magnitude / Time.deltaTime;
         previousPosition = position;
         
+        // Controls IdleNRun Animate State
         animator.SetFloat(XZ, currentSpeed);
+        // If self is in dizzy state, pause the navigation
         agent.isStopped = animator.GetFloat(Dizzy) > -1.0f;
-
-        if (followTarget != null)
-        {
-            SetDestination(followTarget.transform.position);
-        }
-    }
-
-    public void SetDestination(Vector3 vector3)
-    {
-        agent.SetDestination(vector3);
     }
     
     public void TakeHit(GameObject from)
