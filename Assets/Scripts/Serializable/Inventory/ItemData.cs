@@ -6,36 +6,26 @@ namespace Ukiyo.Serializable
     /// Item detail for inventory
     /// </summary>
     [Serializable]
-    public class ItemData
+    public class ItemData : ObjectData
     {
-        public ObjectData data { get; private set; }
-        public int stackSize { get; private set; }
+        public int _stack { get; protected set; }
 
         public ItemData(ObjectData source)
         {
-            data = source;
-            AddToStack();
+            Init(source);
+            SetStack(1);
         }
         
         public ItemData(ObjectData source, int stack)
         {
-            data = source;
-            stackSize = stack;
+            Init(source);
+            _stack = stack;
         }
+        
 
-        public void AddToStack()
+        public void SetStack(int stack)
         {
-            stackSize++;
-        }
-
-        public void ReduceFromStack()
-        {
-            stackSize--;
-        }
-
-        public void SetTheStack(int stack)
-        {
-            stackSize = stack;
+            _stack = stack;
         }
     }
 }

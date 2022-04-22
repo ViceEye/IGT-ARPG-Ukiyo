@@ -5,6 +5,8 @@ using LitJson;
 using Ukiyo.Common;
 using Ukiyo.Common.Object;
 using Ukiyo.Common.Singleton;
+using Ukiyo.UI.Inventory;
+using Ukiyo.UI.Slot;
 using UnityEngine;
 
 namespace Ukiyo.Serializable
@@ -28,21 +30,20 @@ namespace Ukiyo.Serializable
         }
         
         // Save Inventory Data
-        public void SaveInventoryData(List<ItemData> value)
+        public void SaveInventoryData(List<InventorySlot> value)
         {
             List<InventoryJsonData> inventoryJsonDataList = new List<InventoryJsonData>();
             
-            foreach (var itemData in value)
+            foreach (var slot in value)
             {
-                inventoryJsonDataList.Add(new InventoryJsonData(1, itemData));
+                inventoryJsonDataList.Add(new InventoryJsonData(slot.SlotId, slot.UIItem.Item));
             }
             
             Utils.WriteIntoFile(inventoryJsonDataList, savaDataFilePath, inventoryFileName);
         }
 
         // Load Inventory Data
-        [ContextMenu("LoadInventoryData")]
-        public Dictionary<int, ItemData> LoadInventoryData()
+        public Dictionary<int, ItemData> LoadInventoryData(InventoryModule module)
         {
             Dictionary<int, ItemData> inventoryItemDataList = new Dictionary<int, ItemData>();
 
@@ -55,6 +56,7 @@ namespace Ukiyo.Serializable
                 // Convert JsonData to Object
                 foreach (JsonData jsonData in inventoryData)
                 {
+                    int slotId = int.Parse(jsonData["slotId"].ToString());
                     int id = int.Parse(jsonData["itemId"].ToString());
                     int stack = int.Parse(jsonData["stack"].ToString());
 
@@ -62,7 +64,7 @@ namespace Ukiyo.Serializable
                     if (objData != null)
                     {
                         ItemData data = new ItemData(objData, stack);
-                        inventoryItemDataList.Add(data.data.ID, data);
+                        inventoryItemDataList.Add(slotId, data);
                     }
                 }
             }
@@ -81,8 +83,8 @@ namespace Ukiyo.Serializable
         public InventoryJsonData(int slot, ItemData itemData)
         {
             slotId = slot;
-            itemId = itemData.data.ID;
-            stack = itemData.stackSize;
+            itemId = itemData.ID;
+            stack = itemData._stack;
         }
     }
 }

@@ -14,8 +14,8 @@ namespace Ukiyo.UI.Inventory
     {
         // Inventory runtime data
         [Header("Inventory Data")]
-        protected Grid _gridObj;
-        private Dictionary<int, ItemData> _itemDictionary;
+        protected InventoryGrid _gridObj;
+        public List<string> _itemDictionary;
         private CanvasGroup _canvasGroup;
 
         // Panel Button Settings
@@ -29,18 +29,28 @@ namespace Ukiyo.UI.Inventory
         public EnumInventoryItemType CurrentOpenedPanel => _currentOpenedPanel;
         [SerializeField] private float btnAnimationDuration = 0.2f;
 
+        protected InventoryModule inventoryModule;
+        protected int _maxGridSize = 64;
+        
         private void Awake()
         {
             // Pre Initialization
             ObjectPool.Instance.Init();
             DataSaver.Instance.Init();
+            _itemDictionary = new List<string>();
             
             // Initialization
-            _itemDictionary = DataSaver.Instance.LoadInventoryData();
-            _gridObj = GetComponentInChildren<Grid>();
+            _gridObj = GetComponentInChildren<InventoryGrid>();
             _canvasGroup = GetComponent<CanvasGroup>();
             if (_gridObj == null)
                 Debug.LogWarning("Inventory System has no grid component");
+            
+            inventoryModule = new InventoryModule { slotDataMap = _gridObj.Init() };
+            for (var i = 0; i < inventoryModule.slotDataMap.Values.Count; i++)
+            {
+                _itemDictionary.Add(inventoryModule.slotDataMap.Values.ToArray()[i].ToString());
+            }
+            inventoryModule.LoadInventoryData(DataSaver.Instance.LoadInventoryData(inventoryModule));
         }
 
         private void Start()
@@ -50,17 +60,9 @@ namespace Ukiyo.UI.Inventory
 
         public void UpdatePanel()
         {
-            var inventoryList = _itemDictionary.ToList();
-            for (var i = 0; i < inventoryList.Count; i++)
+            for (var i = 0; i < inventoryModule.slotDataMap.Values.Count; i++)
             {
-                UIItemData uiItemData = _gridObj.slotList[i].gameObject.GetComponentInChildren<UIItemData>();
-                if (uiItemData == null)
-                {
-                    GameObject item = Instantiate(_gridObj.itemGO, _gridObj.slotList[i].gameObject.transform);
-                    uiItemData = item.GetComponent<UIItemData>();
-                }
-                uiItemData.SetItem(inventoryList[i].Value);
-                _gridObj.slotList[i].SetItem(uiItemData);
+                _itemDictionary.Add(inventoryModule.slotDataMap.Values.ToArray()[i].ToString());
             }
         }
 
@@ -68,51 +70,30 @@ namespace Ukiyo.UI.Inventory
         {
             if (Input.GetKeyUp(KeyCode.E))
             {
-                _canvasGroup.alpha = _canvasGroup.alpha == 1.0f ? 0.0f : 1.0f;
+                _canvasGroup.alpha = _canvasGroup.alpha >= 1.0f ? 0.0f : 1.0f;
             }
         }
 
         public void SaveInventoryData()
         {
-            DataSaver.Instance.SaveInventoryData(_itemDictionary.Values.ToList());
+            
         }
 
         public void TestAdd()
         {
-            int random = new Random().Next(10000, 10010);
+            int random = new Random().Next(10001, 10010);
             Add(random);
         }
 
         public void Add(int source)
         {
             Debug.Log(source);
-            if (_itemDictionary.TryGetValue(source, out ItemData value))
-            {
-                value.AddToStack();
-            }
-            else
-            {
-                ObjectData objData = ObjectPool.Instance.GetItemById(source);
-                
-                if (objData != null)
-                {
-                    ItemData newItemData = new ItemData(objData);
-                    _itemDictionary.Add(source, newItemData);
-                }
-            }
+            inventoryModule.AddItem(source);
         }
 
         public void Remove(int source)
         {
-            if (_itemDictionary.TryGetValue(source, out ItemData value))
-            {
-                value.ReduceFromStack();
-
-                if (value.stackSize == 0)
-                {
-                    _itemDictionary.Remove(source);
-                }
-            }
+            inventoryModule.RemoveItem(source);
         }
 
         public void SwitchPanel()

@@ -9,40 +9,40 @@ namespace Ukiyo.Serializable
     /// Item detail for editor
     /// </summary>
     [Serializable]
-    public class ObjectData : ISerializationCallbackReceiver
+    public class ObjectData
     {
-        public int __id;
-        [NonSerialized] protected int _id;
+        [SerializeField]
+        protected int _id;
         public int ID { get => _id; set => _id = value; }
         
-        public string __displayName;
-        [NonSerialized] protected string _displayName;
+        [SerializeField]
+        protected string _displayName;
         public string DisplayName { get => _displayName; set => _displayName = value; }
-
-        public Sprite __icon;
-        [NonSerialized] protected Sprite _icon;
+        
+        [SerializeField]
+        protected Sprite _icon;
         public Sprite Icon { get => _icon; set => _icon = value; }
+        
+        [SerializeField]
+        protected int _capacity;
+        public int Capacity { get => _capacity; set => _capacity = value; }
 
-        [TextArea]
-        public string __description;
-        [NonSerialized] protected string _description;
+        [SerializeField]
+        protected string _description;
         public string Description { get => _description; set => _description = value; }
 
-        public EnumInventoryItemType __type;
-        [NonSerialized] protected EnumInventoryItemType _type;
+        [SerializeField]
+        protected EnumInventoryItemType _type;
         public EnumInventoryItemType Type { get => _type; set => _type = value; }
-        
-        public void OnBeforeSerialize()
-        {
-        }
 
-        public void OnAfterDeserialize()
+        public void Init(ObjectData data)
         {
-            ID = __id;
-            DisplayName = __displayName;
-            Icon = __icon;
-            Description = __description;
-            Type = __type;
+            ID = data._id;
+            DisplayName = data._displayName;
+            Icon = data._icon;
+            Capacity = data._capacity;
+            Description = data._description;
+            Type = data._type;
         }
     }
 }

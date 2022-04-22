@@ -162,6 +162,7 @@ namespace Ukiyo.Common
             str = Unicode2String(str);
             string filePath = Application.dataPath + savaDataFilePath;
 
+            Debug.Log(str);
             File.WriteAllText(filePath + fileName, str);
         }
 
@@ -173,17 +174,29 @@ namespace Ukiyo.Common
 
         public static T LoadResource<T>(string path) where T : UnityEngine.Object
         {
+            Debug.Log(path);
             T obj = null;
             try
             {
-                obj = AssetDatabase.LoadAssetAtPath<T>(path);
+                obj = Resources.Load<T>(path);
             }
             catch (Exception e)
             {
                 Debug.LogError(e.ToString());
             }
+            Debug.Log(obj);
             return obj;
         }
+
+#if UNITY_EDITOR
+        public static string GetResourcePath(UnityEngine.Object obj)
+        {
+            string fullPath = AssetDatabase.GetAssetPath(obj);
+            Debug.Log(fullPath);
+            string resourcePath = fullPath.Replace("Assets/Resources/", "");
+            return resourcePath.Substring(0, resourcePath.LastIndexOf("."));
+        }
+#endif
 
         #endregion
     }

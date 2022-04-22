@@ -17,6 +17,8 @@ namespace Ukiyo.UI.Slot
 
         [SerializeField]
         protected UIItemData uiItem;
+        public UIItemData UIItem => uiItem;
+        
         [SerializeField]
         protected int slotID;
         public int SlotId => slotID;
@@ -24,6 +26,19 @@ namespace Ukiyo.UI.Slot
         public virtual void Init(int id)
         {
             slotID = id;
+            name = "Slot-" + id;
+        }
+
+        public virtual void CreateItem(ItemData itemData)
+        {
+            GameObject itemGo = Resources.Load<GameObject>("UI Prefabs/Item");
+            GameObject item = Instantiate(itemGo, transform);
+            item.SetActive(true);
+            UIItemData uiItemData = item.GetComponent<UIItemData>();
+            uiItemData.Init();
+            uiItemData.SetItem(itemData);
+
+            SetItem(uiItemData);
         }
         
         public virtual void SetItem(UIItemData item)
@@ -37,11 +52,13 @@ namespace Ukiyo.UI.Slot
             uiItem = item;
         }
 
-        public virtual void SetEmpty()
+        public virtual int SetEmpty()
         {
-            if (uiItem == null) return;
+            if (uiItem == null) return 0;
+            int tempAmount = UIItem.Amount;
             uiItem.SetEmpty();
             uiItem = null;
+            return tempAmount;
         }
         
         public void OnPointerEnter(PointerEventData eventData)
@@ -63,6 +80,11 @@ namespace Ukiyo.UI.Slot
         {
             image = GetComponent<Image>();
             uiItem = GetComponentInChildren<UIItemData>();
+        }
+
+        public override string ToString()
+        {
+            return SlotId + ": " + (UIItem == null ? "null" : UIItem.item);
         }
     }
 }

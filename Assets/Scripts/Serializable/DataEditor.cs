@@ -17,6 +17,12 @@ namespace Ukiyo.Serializable
         [SerializeField]
         private List<ObjectData> previewListItemDataSettings;
 
+        [ContextMenu("Test")]
+        public void Test()
+        {
+            Utils.GetResourcePath(this);
+        }
+        
         [ContextMenu("GenerateItemJsonFile")]
         private void GenerateItemJsonFile()
         {
@@ -44,11 +50,12 @@ namespace Ukiyo.Serializable
                 {
                     ObjectData objectData = new ObjectData
                     {
-                        __id = int.Parse(jsonData["ID"].ToString()),
-                        __displayName = jsonData["DisplayName"].ToString(),
-                        __icon = Utils.LoadResource<Sprite>(jsonData["Icon"].ToString()),
-                        __description = jsonData["Description"].ToString(),
-                        __type = (EnumInventoryItemType) int.Parse(jsonData["Type"].ToString())
+                        ID = int.Parse(jsonData["ID"].ToString()),
+                        DisplayName = jsonData["DisplayName"].ToString(),
+                        Icon = Utils.LoadResource<Sprite>(jsonData["Icon"].ToString()),
+                        Capacity = int.Parse(jsonData["Capacity"].ToString()),
+                        Description = jsonData["Description"].ToString(),
+                        Type = (EnumInventoryItemType) int.Parse(jsonData["Type"].ToString())
                     };
                     listItems.Add(objectData);
                 }
@@ -66,6 +73,8 @@ namespace Ukiyo.Serializable
         public string DisplayName { get; set; }
 
         public string Icon { get; set; }
+        
+        public int Capacity { get; set; }
 
         public string Description { get; set; }
 
@@ -75,7 +84,8 @@ namespace Ukiyo.Serializable
         {
             ID = objectData.ID;
             DisplayName = objectData.DisplayName;
-            Icon = AssetDatabase.GetAssetPath(objectData.Icon);
+            Icon = Utils.GetResourcePath(objectData.Icon);
+            Capacity = objectData.Capacity;
             Description = objectData.Description;
             Type = objectData.Type;
         }

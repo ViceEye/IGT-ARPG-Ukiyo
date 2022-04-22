@@ -103,7 +103,6 @@ namespace Ukiyo.UI
                 slider.value = progress;
                     
                 // When the scene is loaded, wait 3s and load scene
-                // todo: Add transition animation/images
                 if (progress >= 1.0f)
                 {
                     if (allowOpenScene)

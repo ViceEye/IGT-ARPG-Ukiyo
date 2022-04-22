@@ -55,7 +55,7 @@ namespace Ukiyo.Player
             else if (!thirdPersonController.IsGrounded && thirdPersonController.verticalVelocity.y > 0)
                 animator.SetBool(IsIdle, false);
             
-            // todo: Attack State should be accept after animation is finish
+            // todo: Attack State should be accept when animation is nearly finish
             if (Input.GetButtonDown("Fire1"))
                 // Combo + 1
                 SetAttackState(GetAttackState() + 1);

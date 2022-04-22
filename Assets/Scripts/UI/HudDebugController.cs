@@ -20,12 +20,10 @@ namespace Ukiyo.UI
             // UnityEditor.EditorApplication.QueuePlayerLoopUpdate();
             
             // Call when changes
-            # if (UNITY_EDITOR)
-            {  
-                UnityEditor.EditorApplication.delayCall += UnityEditor.EditorApplication.QueuePlayerLoopUpdate;
-                UnityEditor.SceneView.RepaintAll();
-            }
-            #endif
+# if (UNITY_EDITOR)
+            UnityEditor.EditorApplication.delayCall += UnityEditor.EditorApplication.QueuePlayerLoopUpdate;
+            UnityEditor.SceneView.RepaintAll();
+#endif
         }
 
         private void Update()

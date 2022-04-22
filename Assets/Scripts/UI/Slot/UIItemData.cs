@@ -18,73 +18,70 @@ namespace Ukiyo.UI.Slot
         protected Image cdMask;
         protected Text stack;
 
-        [SerializeField]
-        protected string item;
-        [SerializeField] 
-        protected int maxStackSize;
+        public string item; // Debug data
 
         public void SetItem(ItemData itemData)
         {
             Item = itemData;
-            image.sprite = itemData.data.Icon;
+            image.sprite = itemData.Icon;
             
-            item = Item.stackSize + " × " + JsonUtility.ToJson(Item.data);
-            stack.text = Item.stackSize == 1 ? "" : Item.stackSize.ToString();
+            item = Item._stack + " × " + JsonUtility.ToJson(Item);
+            UpdateStackText();
         }
 
         public void SetEmpty()
         {
-            Destroy(this);
+            Item = null;
+            image = null;  // Change back to transparent image
+
+            if (stack != null) stack.text = "";
+            item = "";
         }
 
-        public bool AddStack()
+        #region Capacity Modification
+        public int Space => Item.Capacity - Item._stack;
+        public int Amount
         {
-            // todo: Create another data
-            if (Item.stackSize == maxStackSize) return false;
-            
-            Item.AddToStack();
-            stack.text = Item.stackSize == 1 ? "" : Item.stackSize.ToString();
-            return true;
-        }
-        
-        public bool Reduce()
-        {
-            // todo: Search another data
-            if (Item.stackSize == 0) return false;
-            
-            Item.ReduceFromStack();
-            stack.text = Item.stackSize == 1 ? "" : Item.stackSize.ToString();
-            return true;
-        }
+            get
+            {
+                if (Item == null)
+                {
+                    return 0;
+                }
+                return Item._stack;
+            }
+            set
+            {
+                Item.SetStack(value);
+                UpdateStackText();
 
-        public bool Set(int amount)
-        {
-            // Validation
-            if (amount <= 0 || amount > maxStackSize) return false;
-            
-            Item.SetTheStack(amount);
-            stack.text = Item.stackSize == 1 ? "" : Item.stackSize.ToString();
-            return true;
+                if (Item._stack <= 0) SetEmpty();
+            }
         }
-        
+        public int Fill()
+        {
+            int lastAmount = Amount;
+            Amount = Item.Capacity;
+            return Amount - lastAmount;
+        }
+        #endregion
 
-        private void Awake()
+        public void Init()
         {
             image = GetComponent<Image>();
             cdMask = transform.Find("CD").GetComponent<Image>();
             stack = GetComponentInChildren<Text>();
         }
 
-        private void Start()
-        {
-            stack.text = Item.stackSize == 1 ? "" : Item.stackSize.ToString();
-        }
-
         private void OnDestroy()
         {
             image.sprite = null;
             stack.text = "";
-            
+        }
+
+        public void UpdateStackText()
+        {
+            stack.text = Item._stack == 1 ? "" : Item._stack.ToString();
         }
     }
 }

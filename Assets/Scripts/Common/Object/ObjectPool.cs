@@ -40,14 +40,13 @@ namespace Ukiyo.Common.Object
                 {
                     ObjectData objectData = new ObjectData
                     {
-                        __id = int.Parse(jsonData["ID"].ToString()),
-                        __displayName = jsonData["DisplayName"].ToString(),
-                        __icon = Utils.LoadResource<Sprite>(jsonData["Icon"].ToString()),
-                        __description = jsonData["Description"].ToString(),
-                        __type = (EnumInventoryItemType) int.Parse(jsonData["Type"].ToString())
+                        ID = int.Parse(jsonData["ID"].ToString()),
+                        DisplayName = jsonData["DisplayName"].ToString(),
+                        Icon = Utils.LoadResource<Sprite>(jsonData["Icon"].ToString()),
+                        Capacity = int.Parse(jsonData["Capacity"].ToString()),
+                        Description = jsonData["Description"].ToString(),
+                        Type = (EnumInventoryItemType) int.Parse(jsonData["Type"].ToString())
                     };
-                    // Deserialize object or Capital access will be none.
-                    objectData.OnAfterDeserialize();
                     // Cache item to item pool
                     if (!itemPool.ContainsKey(objectData.ID))
                         itemPool.Add(objectData.ID, objectData);

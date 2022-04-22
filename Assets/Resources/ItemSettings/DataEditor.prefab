@@ -44,94 +44,112 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listItemDataSettings:
-  - __id: 10001
-    __displayName: TestSword
-    __icon: {fileID: 21300000, guid: 28643c05b2f474320ad779e7413d4075, type: 3}
-    __description: This is a test sword
-    __type: 0
-  - __id: 10002
-    __displayName: TestSword
-    __icon: {fileID: 21300000, guid: d2b7320dc78ba41ed9abb3cc1686761c, type: 3}
-    __description: This is a test sword
-    __type: 0
-  - __id: 10003
-    __displayName: TestSword
-    __icon: {fileID: 21300000, guid: 445e53f09434f4f52a36cb210325a4e3, type: 3}
-    __description: This is a test sword
-    __type: 0
-  - __id: 10004
-    __displayName: TestSword
-    __icon: {fileID: 21300000, guid: 8b47688febd314a10adff30d0e54afea, type: 3}
-    __description: This is a test sword
-    __type: 0
-  - __id: 10005
-    __displayName: TestSword
-    __icon: {fileID: 21300000, guid: b9cbcb1a3006045659ddfb882404879d, type: 3}
-    __description: This is a test sword
-    __type: 0
-  - __id: 10006
-    __displayName: TestSword
-    __icon: {fileID: 21300000, guid: df1fbf4ce5da74582abef2e6ec19bd83, type: 3}
-    __description: This is a test sword
-    __type: 0
-  - __id: 10007
-    __displayName: TestSword
-    __icon: {fileID: 21300000, guid: b5be64fa1bcfd406ebb9d7ae09aebf61, type: 3}
-    __description: This is a test sword
-    __type: 0
-  - __id: 10008
-    __displayName: TestSword
-    __icon: {fileID: 21300000, guid: 36c8545403cd44197b46b17ee8c65aa5, type: 3}
-    __description: This is a test sword
-    __type: 0
-  - __id: 10009
-    __displayName: TestSword
-    __icon: {fileID: 21300000, guid: 3681198dab0f34a2d9ff1ca149540089, type: 3}
-    __description: This is a test sword
-    __type: 0
+  - _id: 10001
+    _displayName: Sword1
+    _icon: {fileID: 21300000, guid: b168113ccc4565144b01ab1b037f7f1e, type: 3}
+    _capacity: 1
+    _description: This is a test sword
+    _type: 0
+  - _id: 10002
+    _displayName: Sword2
+    _icon: {fileID: 21300000, guid: 0f7e4bed16ca51546b0f2ef5efca50a7, type: 3}
+    _capacity: 1
+    _description: This is a test sword
+    _type: 0
+  - _id: 10003
+    _displayName: Sword3
+    _icon: {fileID: 21300000, guid: 3682c1eb48c2bf446bc56de6c0c7fa90, type: 3}
+    _capacity: 1
+    _description: This is a test sword
+    _type: 0
+  - _id: 10004
+    _displayName: Sword4
+    _icon: {fileID: 21300000, guid: 9ebc98e8eae8e16468952066d20d5223, type: 3}
+    _capacity: 1
+    _description: This is a test sword
+    _type: 0
+  - _id: 10005
+    _displayName: Sword5
+    _icon: {fileID: 21300000, guid: a6626553603ccdc448451d0bb5ea8cf2, type: 3}
+    _capacity: 1
+    _description: This is a test sword
+    _type: 0
+  - _id: 10006
+    _displayName: Sword6
+    _icon: {fileID: 21300000, guid: 0db6e5dfb91b3a74ab081b6502c99f42, type: 3}
+    _capacity: 1
+    _description: This is a test sword
+    _type: 0
+  - _id: 10007
+    _displayName: Book1
+    _icon: {fileID: 21300000, guid: c41e74d2d0d479149a7da7e14e74ed2e, type: 3}
+    _capacity: 1
+    _description: This is a test sword
+    _type: 0
+  - _id: 10008
+    _displayName: Book2
+    _icon: {fileID: 21300000, guid: 0748e95d38e996246a258493485fd574, type: 3}
+    _capacity: 1
+    _description: This is a test sword
+    _type: 0
+  - _id: 10009
+    _displayName: Book3
+    _icon: {fileID: 21300000, guid: 3f27d24b25f0ab64c934144415346a15, type: 3}
+    _capacity: 1
+    _description: This is a test sword
+    _type: 0
   previewListItemDataSettings:
-  - __id: 10001
-    __displayName: TestSword
-    __icon: {fileID: 21300000, guid: 28643c05b2f474320ad779e7413d4075, type: 3}
-    __description: This is a test sword
-    __type: 0
-  - __id: 10002
-    __displayName: TestSword
-    __icon: {fileID: 21300000, guid: d2b7320dc78ba41ed9abb3cc1686761c, type: 3}
-    __description: This is a test sword
-    __type: 0
-  - __id: 10003
-    __displayName: TestSword
-    __icon: {fileID: 21300000, guid: 445e53f09434f4f52a36cb210325a4e3, type: 3}
-    __description: This is a test sword
-    __type: 0
-  - __id: 10004
-    __displayName: TestSword
-    __icon: {fileID: 21300000, guid: 8b47688febd314a10adff30d0e54afea, type: 3}
-    __description: This is a test sword
-    __type: 0
-  - __id: 10005
-    __displayName: TestSword
-    __icon: {fileID: 21300000, guid: b9cbcb1a3006045659ddfb882404879d, type: 3}
-    __description: This is a test sword
-    __type: 0
-  - __id: 10006
-    __displayName: TestSword
-    __icon: {fileID: 21300000, guid: df1fbf4ce5da74582abef2e6ec19bd83, type: 3}
-    __description: This is a test sword
-    __type: 0
-  - __id: 10007
-    __displayName: TestSword
-    __icon: {fileID: 21300000, guid: bb836d4e409ef4e6e88833c25521a84e, type: 3}
-    __description: This is a test sword
-    __type: 0
-  - __id: 10008
-    __displayName: TestSword
-    __icon: {fileID: 21300000, guid: 36c8545403cd44197b46b17ee8c65aa5, type: 3}
-    __description: This is a test sword
-    __type: 0
-  - __id: 10009
-    __displayName: TestSword
-    __icon: {fileID: 21300000, guid: 3681198dab0f34a2d9ff1ca149540089, type: 3}
-    __description: This is a test sword
-    __type: 0
+  - _id: 10001
+    _displayName: Sword1
+    _icon: {fileID: 21300000, guid: b168113ccc4565144b01ab1b037f7f1e, type: 3}
+    _capacity: 1
+    _description: This is a test sword
+    _type: 0
+  - _id: 10002
+    _displayName: Sword2
+    _icon: {fileID: 21300000, guid: 0f7e4bed16ca51546b0f2ef5efca50a7, type: 3}
+    _capacity: 1
+    _description: This is a test sword
+    _type: 0
+  - _id: 10003
+    _displayName: Sword3
+    _icon: {fileID: 21300000, guid: 3682c1eb48c2bf446bc56de6c0c7fa90, type: 3}
+    _capacity: 1
+    _description: This is a test sword
+    _type: 0
+  - _id: 10004
+    _displayName: Sword4
+    _icon: {fileID: 21300000, guid: 9ebc98e8eae8e16468952066d20d5223, type: 3}
+    _capacity: 1
+    _description: This is a test sword
+    _type: 0
+  - _id: 10005
+    _displayName: Sword5
+    _icon: {fileID: 21300000, guid: a6626553603ccdc448451d0bb5ea8cf2, type: 3}
+    _capacity: 1
+    _description: This is a test sword
+    _type: 0
+  - _id: 10006
+    _displayName: Sword6
+    _icon: {fileID: 21300000, guid: 0db6e5dfb91b3a74ab081b6502c99f42, type: 3}
+    _capacity: 1
+    _description: This is a test sword
+    _type: 0
+  - _id: 10007
+    _displayName: Book1
+    _icon: {fileID: 21300000, guid: c41e74d2d0d479149a7da7e14e74ed2e, type: 3}
+    _capacity: 1
+    _description: This is a test sword
+    _type: 0
+  - _id: 10008
+    _displayName: Book2
+    _icon: {fileID: 21300000, guid: 0748e95d38e996246a258493485fd574, type: 3}
+    _capacity: 1
+    _description: This is a test sword
+    _type: 0
+  - _id: 10009
+    _displayName: Book3
+    _icon: {fileID: 21300000, guid: 3f27d24b25f0ab64c934144415346a15, type: 3}
+    _capacity: 1
+    _description: This is a test sword
+    _type: 0
