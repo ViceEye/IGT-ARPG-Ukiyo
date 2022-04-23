@@ -3,19 +3,22 @@ using System.Linq;
 using Ukiyo.Common;
 using Ukiyo.Common.Object;
 using Ukiyo.Serializable;
-using Ukiyo.UI.Slot;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = System.Random;
 
 namespace Ukiyo.UI.Inventory
 {
+    /// <summary>
+    /// Manager of controller(InventoryModule) and view(InventoryGrid)
+    /// </summary>
     public class InventorySystem : MonoBehaviour
     {
         // Inventory runtime data
-        [Header("Inventory Data")]
-        protected InventoryGrid _gridObj;
+        [Header("Inventory Debug Data")]
         public List<string> _itemDictionary;
+        
+        protected InventoryGrid _gridObj;
         private CanvasGroup _canvasGroup;
 
         // Panel Button Settings
@@ -25,12 +28,20 @@ namespace Ukiyo.UI.Inventory
         public List<RectTransform> panelBtnList;
         public List<Text> panelBtnTextList;
         
+        [Header("Inventory Settings")]
+        [SerializeField]
+        protected int _maxGridSize = 64;
+        public int MaxGridSize { get => _maxGridSize; set => _maxGridSize = value; }
+        
         [SerializeField] private EnumInventoryItemType _currentOpenedPanel;
         public EnumInventoryItemType CurrentOpenedPanel => _currentOpenedPanel;
         [SerializeField] private float btnAnimationDuration = 0.2f;
 
-        protected InventoryModule inventoryModule;
-        protected int _maxGridSize = 64;
+        /// <summary>
+        /// Inventory Module holds CRUD functions
+        /// </summary>
+        protected InventoryModule _inventoryModule;
+        public InventoryModule InventoryModule => _inventoryModule;
         
         private void Awake()
         {
@@ -39,18 +50,22 @@ namespace Ukiyo.UI.Inventory
             DataSaver.Instance.Init();
             _itemDictionary = new List<string>();
             
-            // Initialization
+            // Register Components
             _gridObj = GetComponentInChildren<InventoryGrid>();
             _canvasGroup = GetComponent<CanvasGroup>();
+            
+            // Initialization
             if (_gridObj == null)
                 Debug.LogWarning("Inventory System has no grid component");
+            _gridObj.Init(MaxGridSize);
+
+            _inventoryModule = new InventoryModule { _maxGridSize = MaxGridSize };
+
+            // Debug content
+            for (var i = 0; i < _inventoryModule.slotDataMap.Values.Count; i++)
+                _itemDictionary.Add(_inventoryModule.slotDataMap.Values.ToArray()[i].ToString());
             
-            inventoryModule = new InventoryModule { slotDataMap = _gridObj.Init() };
-            for (var i = 0; i < inventoryModule.slotDataMap.Values.Count; i++)
-            {
-                _itemDictionary.Add(inventoryModule.slotDataMap.Values.ToArray()[i].ToString());
-            }
-            inventoryModule.LoadInventoryData(DataSaver.Instance.LoadInventoryData(inventoryModule));
+            _inventoryModule.LoadInventoryData();
         }
 
         private void Start()
@@ -60,23 +75,51 @@ namespace Ukiyo.UI.Inventory
 
         public void UpdatePanel()
         {
-            for (var i = 0; i < inventoryModule.slotDataMap.Values.Count; i++)
+            // Debug data viewer
+            _itemDictionary.Clear();
+            for (var i = 0; i < _inventoryModule.slotDataMap.Values.Count; i++)
+                _itemDictionary.Add(_inventoryModule.slotDataMap.Values.ToArray()[i].ToString());
+            
+            foreach (var itemSlotData in _inventoryModule.slotDataMap.Values)
             {
-                _itemDictionary.Add(inventoryModule.slotDataMap.Values.ToArray()[i].ToString());
+                _gridObj.slotList[itemSlotData.SlotId].SetItem(itemSlotData.Item);
+                _gridObj.slotList[itemSlotData.SlotId].active = true;
             }
+
+            SaveInventoryData();
         }
 
         private void Update()
         {
             if (Input.GetKeyUp(KeyCode.E))
             {
-                _canvasGroup.alpha = _canvasGroup.alpha >= 1.0f ? 0.0f : 1.0f;
+                if (_canvasGroup.alpha >= 1.0f)
+                {
+                    _canvasGroup.alpha = 0;
+                    foreach (var slot in _gridObj.slotList.Values)
+                    {
+                        if (slot != null && slot.UIItem != null)
+                        {
+                            slot.active = false;
+                            slot.toolTip.Hide();
+                        }
+                    }
+                }
+                else
+                {
+                    _canvasGroup.alpha = 1.0f;
+                    foreach (var slot in _gridObj.slotList.Values)
+                    {
+                        if (slot != null && slot.UIItem != null)
+                            slot.active = true;
+                    }
+                }
             }
         }
 
         public void SaveInventoryData()
         {
-            
+            DataSaver.Instance.SaveInventoryData(_inventoryModule.slotDataMap.Values.ToList());
         }
 
         public void TestAdd()
@@ -88,12 +131,12 @@ namespace Ukiyo.UI.Inventory
         public void Add(int source)
         {
             Debug.Log(source);
-            inventoryModule.AddItem(source);
+            _inventoryModule.AddItem(source);
         }
 
         public void Remove(int source)
         {
-            inventoryModule.RemoveItem(source);
+            _inventoryModule.RemoveItem(source);
         }
 
         public void SwitchPanel()

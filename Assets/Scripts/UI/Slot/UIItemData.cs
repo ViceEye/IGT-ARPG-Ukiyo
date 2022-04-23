@@ -73,12 +73,6 @@ namespace Ukiyo.UI.Slot
             stack = GetComponentInChildren<Text>();
         }
 
-        private void OnDestroy()
-        {
-            image.sprite = null;
-            stack.text = "";
-        }
-
         public void UpdateStackText()
         {
             stack.text = Item._stack == 1 ? "" : Item._stack.ToString();

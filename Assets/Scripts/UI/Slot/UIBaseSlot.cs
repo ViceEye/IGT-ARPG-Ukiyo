@@ -1,55 +1,63 @@
 ﻿using System;
+using Framework;
 using Ukiyo.Common;
 using Ukiyo.Serializable;
+using Ukiyo.UI.Inventory;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Ukiyo.UI.Slot
 {
-    public abstract class UIBaseSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+    public abstract class UIBaseSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
     {
         public Color empty;
         public Color hover;
         public float fadeSpeed;
+        
+        public UIToolTip toolTip;
+        public UIPickedItem pickedItem;
 
         protected Image image;
 
         [SerializeField]
         protected UIItemData uiItem;
-        public UIItemData UIItem => uiItem;
-        
+        public UIItemData UIItem
+        {
+            get => uiItem;
+            set => uiItem = value;
+        }
+
         [SerializeField]
         protected int slotID;
         public int SlotId => slotID;
-
+        public bool active;
+        
         public virtual void Init(int id)
         {
             slotID = id;
             name = "Slot-" + id;
         }
 
-        public virtual void CreateItem(ItemData itemData)
+        public virtual void SetItem(ItemData itemData)
         {
-            GameObject itemGo = Resources.Load<GameObject>("UI Prefabs/Item");
-            GameObject item = Instantiate(itemGo, transform);
-            item.SetActive(true);
-            UIItemData uiItemData = item.GetComponent<UIItemData>();
-            uiItemData.Init();
-            uiItemData.SetItem(itemData);
-
-            SetItem(uiItemData);
-        }
-        
-        public virtual void SetItem(UIItemData item)
-        {
-            if (item == null)
+            if (itemData == null)
             {
                 SetEmpty();
                 return;
             }
-
-            uiItem = item;
+            
+            if (uiItem == null)
+            {
+                GameObject itemGo = Resources.Load<GameObject>(UIDefines.UI_Inventory_Item);
+                GameObject item = Instantiate(itemGo, transform);
+                item.SetActive(true);
+                UIItemData uiItemData = item.GetComponent<UIItemData>();
+                uiItemData.Init();
+                UIItem = uiItemData;
+            }
+            
+            UIItem.SetItem(itemData);
         }
 
         public virtual int SetEmpty()
@@ -64,16 +72,30 @@ namespace Ukiyo.UI.Slot
         public void OnPointerEnter(PointerEventData eventData)
         {
             StartCoroutine(Utils.Coloring(image, hover, fadeSpeed));
+
+            if (UIItem != null && active)
+            {
+                toolTip.Show(this, transform.position);   
+            }
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             StartCoroutine(Utils.Coloring(image, empty, fadeSpeed));
+            
+            if (UIItem != null)
+            {
+                toolTip.Hide();   
+            }
         }
 
-        public void OnPointerClick(PointerEventData eventData)
+        public void OnPointerDown(PointerEventData eventData)
         {
-            
+            if (UIItem != null && active && eventData.button == PointerEventData.InputButton.Right)
+            {
+                pickedItem.PickUpItem(this);
+                Hide();
+            }
         }
 
         private void Awake()
@@ -82,6 +104,20 @@ namespace Ukiyo.UI.Slot
             uiItem = GetComponentInChildren<UIItemData>();
         }
 
+        protected virtual void Hide()
+        {
+            if (UIItem != null)
+                UIItem.gameObject.SetActive(false);
+            active = false;
+        }
+
+        public virtual void Show()
+        {
+            if (UIItem != null)
+                UIItem.gameObject.SetActive(true);
+            active = true;
+        }
+        
         public override string ToString()
         {
             return SlotId + ": " + (UIItem == null ? "null" : UIItem.item);

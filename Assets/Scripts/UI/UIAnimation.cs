@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Ukiyo.Common;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Ukiyo.UI
 {
@@ -13,6 +14,7 @@ namespace Ukiyo.UI
             Scale,
             MoveX,
             MoveY,
+            Fill,
             Color,
         }
 
@@ -67,6 +69,13 @@ namespace Ukiyo.UI
                         StartCoroutine(Utils.MoveY(gameObject, uiAnimationSet.finishValueOnOpen,
                             uiAnimationSet.duration));
                         break;
+                    case AnimationType.Fill:
+                        if (uiAnimationSet.doReset)
+                            GetComponent<Image>().fillAmount = uiAnimationSet.finishValueOnClose;
+
+                        StartCoroutine(Utils.Filling(gameObject, uiAnimationSet.finishValueOnOpen,
+                            uiAnimationSet.duration));
+                        break;
                 }
             }
         }
@@ -95,8 +104,20 @@ namespace Ukiyo.UI
                         StartCoroutine(Utils.MoveY(gameObject, uiAnimationSet.finishValueOnClose,
                             uiAnimationSet.duration));
                         break;
+                    case AnimationType.Fill:
+                        StartCoroutine(Utils.MoveY(gameObject, uiAnimationSet.finishValueOnClose,
+                            uiAnimationSet.duration));
+                        break;
                 }
             }
+        }
+
+        private new T GetComponent<T>() where T : Component
+        {
+            T component = GetComponent<T>();
+            if (component == null)
+                component = gameObject.AddComponent<T>();
+            return component;
         }
     }
 }

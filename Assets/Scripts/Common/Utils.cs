@@ -137,6 +137,29 @@ namespace Ukiyo.Common
 
             color.color = target;
         }
+        
+        public static IEnumerator Filling(GameObject image, float target, float duration)
+        {
+            if (image != null)
+            {
+                yield return Filling(image.GetComponent<Image>(), target, duration);
+            }
+            yield return null;
+        }
+
+        public static IEnumerator Filling(Image image, float target, float duration)
+        {
+            var time = 0.0f;
+            var originalFillAmount = image.fillAmount;
+            while (time < duration)
+            {
+                time += Time.deltaTime;
+                image.fillAmount = Mathf.Lerp(originalFillAmount, target, time / duration);
+                yield return new WaitForEndOfFrame();
+            }
+
+            image.fillAmount = target;
+        }
 
         #endregion
 
@@ -162,7 +185,6 @@ namespace Ukiyo.Common
             str = Unicode2String(str);
             string filePath = Application.dataPath + savaDataFilePath;
 
-            Debug.Log(str);
             File.WriteAllText(filePath + fileName, str);
         }
 
@@ -174,7 +196,6 @@ namespace Ukiyo.Common
 
         public static T LoadResource<T>(string path) where T : UnityEngine.Object
         {
-            Debug.Log(path);
             T obj = null;
             try
             {
@@ -184,7 +205,6 @@ namespace Ukiyo.Common
             {
                 Debug.LogError(e.ToString());
             }
-            Debug.Log(obj);
             return obj;
         }
 
@@ -192,7 +212,6 @@ namespace Ukiyo.Common
         public static string GetResourcePath(UnityEngine.Object obj)
         {
             string fullPath = AssetDatabase.GetAssetPath(obj);
-            Debug.Log(fullPath);
             string resourcePath = fullPath.Replace("Assets/Resources/", "");
             return resourcePath.Substring(0, resourcePath.LastIndexOf("."));
         }

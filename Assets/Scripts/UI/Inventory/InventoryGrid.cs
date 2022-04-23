@@ -1,30 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ukiyo.Common;
 using Ukiyo.UI.Slot;
 using UnityEngine;
 
 namespace Ukiyo.UI.Inventory
 {
+    /// <summary>
+    /// View of inventory
+    /// </summary>
     public class InventoryGrid : MonoBehaviour
     {
-        public GameObject slotGO;
-        
-        public int __maxGridSize;
-        [NonSerialized]protected int _maxGridSize;
-        public int MaxGridSize { get => _maxGridSize; set => _maxGridSize = value; }
+        public UIToolTip UIToolTip;
+        public UIPickedItem UIPickedItem;
+        public Dictionary<int, InventorySlot> slotList = new Dictionary<int, InventorySlot>();
 
-        public Dictionary<int, InventorySlot> Init()
+        public void Init(int maxGridSize)
         {
-            Dictionary<int, InventorySlot> slotList = new Dictionary<int, InventorySlot>();
-            MaxGridSize = __maxGridSize;
-            for (int i = 1; i <= MaxGridSize; i++)
+            for (int i = 1; i <= maxGridSize; i++)
             {
-                GameObject slot = Instantiate(slotGO, transform);   // Instantiate Slot Case
+                GameObject slotGo = Resources.Load<GameObject>(UIDefines.UI_Inventory_Slot);
+                GameObject slot = Instantiate(slotGo, transform);   // Instantiate Slot Case
                 InventorySlot inventorySlot = slot.GetComponent<InventorySlot>();
-                
+                inventorySlot.toolTip = UIToolTip;
+                inventorySlot.pickedItem = UIPickedItem;
+                inventorySlot.Init(i);
                 slotList.Add(i, inventorySlot);
             }
-            return slotList;
         }
     }
 }

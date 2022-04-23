@@ -145,18 +145,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 807150136481842730}
-        m_TargetAssemblyTypeName: Ukiyo.UI.Inventory.InventorySystem, Assembly-CSharp
-        m_MethodName: SaveInventoryData
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &807150135242559453
 GameObject:
   m_ObjectHideFlags: 0
@@ -1001,6 +989,8 @@ GameObject:
   m_Component:
   - component: {fileID: 807150136481842729}
   - component: {fileID: 807150136481842708}
+  - component: {fileID: 2980867564202111989}
+  - component: {fileID: 7402780563002987671}
   - component: {fileID: 807150136481842709}
   - component: {fileID: 807150136481842731}
   - component: {fileID: 807150136481842730}
@@ -1041,6 +1031,44 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 807150136481842728}
   m_CullTransparentMesh: 1
+--- !u!223 &2980867564202111989
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 807150136481842728}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!114 &7402780563002987671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 807150136481842728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!225 &807150136481842709
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -1095,6 +1123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e890caa70e84466eb89fa7ba8e0fc153, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _itemDictionary: []
   openTagTextColor: {r: 0.10588236, g: 0.7058824, b: 0.8588236, a: 1}
   closeTagTextColor: {r: 0.17254902, g: 0.3647059, b: 0.5294118, a: 1}
   panelBtnList:
@@ -1103,6 +1132,7 @@ MonoBehaviour:
   panelBtnTextList:
   - {fileID: 807150135313123380}
   - {fileID: 807150137009594893}
+  _maxGridSize: 64
   _currentOpenedPanel: 0
   btnAnimationDuration: 0.2
 --- !u!1 &807150136673408270
@@ -1719,10 +1749,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d26e964ed7b4362af3eefdbc78d5e7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotGO: {fileID: 2927980079203696079, guid: e1ac93c07b3e432419e1817007f6afb7, type: 3}
-  itemGO: {fileID: 2390940954550890790, guid: 44bc921f01d783f48ac945d5126c1a5a, type: 3}
-  slotList: []
-  __maxGridSize: 64
+  UIToolTip: {fileID: 0}
+  UIPickedItem: {fileID: 0}
 --- !u!1001 &807150135957135250
 PrefabInstance:
   m_ObjectHideFlags: 0

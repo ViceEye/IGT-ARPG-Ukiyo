@@ -30,20 +30,21 @@ namespace Ukiyo.Serializable
         }
         
         // Save Inventory Data
-        public void SaveInventoryData(List<InventorySlot> value)
+        public void SaveInventoryData(List<ItemSlotData> value)
         {
             List<InventoryJsonData> inventoryJsonDataList = new List<InventoryJsonData>();
             
             foreach (var slot in value)
             {
-                inventoryJsonDataList.Add(new InventoryJsonData(slot.SlotId, slot.UIItem.Item));
+                if (slot.Item != null)
+                    inventoryJsonDataList.Add(new InventoryJsonData(slot.SlotId, slot.Item));
             }
             
             Utils.WriteIntoFile(inventoryJsonDataList, savaDataFilePath, inventoryFileName);
         }
 
         // Load Inventory Data
-        public Dictionary<int, ItemData> LoadInventoryData(InventoryModule module)
+        public Dictionary<int, ItemData> LoadInventoryData()
         {
             Dictionary<int, ItemData> inventoryItemDataList = new Dictionary<int, ItemData>();
 
