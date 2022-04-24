@@ -1,13 +1,30 @@
+using Ukiyo.Framework;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Ukiyo.Player
 {
-    public class AnimationManager : MonoBehaviour
+    public class AnimationManager : MonoBehaviour, IAnimatorListener
     {
     
         public Animator animator;
         public ThirdPersonController thirdPersonController;
+        [SerializeField]
+        private bool acceptingCombo;
+        
+        #region AnimationParameterIndex
+    
+        private static readonly int Combo = Animator.StringToHash("Combo");
+        private static readonly int IsGrounded = Animator.StringToHash("IsGrounded");
+        private static readonly int XZ = Animator.StringToHash("xz");
+        private static readonly int X = Animator.StringToHash("x");
+        private static readonly int Y = Animator.StringToHash("y");
+        private static readonly int Z = Animator.StringToHash("z");
+        private static readonly int Run = Animator.StringToHash("Run");
+        private static readonly int Jump = Animator.StringToHash("Jump");
+        private static readonly int Equip = Animator.StringToHash("Equip");
+        private static readonly int DoEquip = Animator.StringToHash("DoEquip");
+
+        #endregion
         
         public void Awake()
         {
@@ -23,59 +40,118 @@ namespace Ukiyo.Player
                 Debug.Log("Animator Failed #2");
         }
 
-        #region AnimationParameterIndex
-    
-        private static readonly int AttackState = Animator.StringToHash("AttackState");
-        private static readonly int IsIdle = Animator.StringToHash("IsIdle");
-        private static readonly int XZ = Animator.StringToHash("xz");
-        private static readonly int X = Animator.StringToHash("x");
-        private static readonly int Y = Animator.StringToHash("y");
-        private static readonly int Z = Animator.StringToHash("z");
-
-        #endregion
-
-        private void Update()
+        // WASD movement, LShift run, Q equip/un-equip, E inventory, C roll
+        public void OnUpdate()
         {
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
             
-            // Controls Idle and Run
+            // Magnitude of absolute movement speed
             animator.SetFloat(XZ, new Vector3(horizontal, 0f, vertical).magnitude);
-            animator.SetFloat(X, horizontal);
             
-            // Controls Jump begin, loop and end.
+            // Velocity of the three axes
+            animator.SetFloat(X, horizontal);
             animator.SetFloat(Y, thirdPersonController.verticalVelocity.y);
             animator.SetFloat(Z, vertical);
+
+            // Is running
+            animator.SetBool(Run, Input.GetKey(KeyCode.LeftShift));
             
-            // Controls transition between IdleNRun and Jump
-            animator.SetBool(IsIdle, false);
+            // Equip/Un-Equip
+            bool qDown = Input.GetKeyUp(KeyCode.Q);
+            if (qDown)
+                TryEquip();
 
             if (thirdPersonController.IsGrounded)
-                animator.SetBool(IsIdle, true);
+                animator.SetBool(IsGrounded, true);
             else if (!thirdPersonController.IsGrounded && thirdPersonController.verticalVelocity.y > 0)
-                animator.SetBool(IsIdle, false);
+                animator.SetBool(IsGrounded, false);
             
-            // todo: Attack State should be accept when animation is nearly finish
-            if (Input.GetButtonDown("Fire1"))
-                // Combo + 1
-                SetAttackState(GetAttackState() + 1);
+            TrySetCombo();
         }
 
-        #region AttackState
+        public void OnAnimatorBehaviourMessage(string message, object value)
+        {
+            switch (message)
+            {
+                case "BeginCombo":
+                {
+                    SetCombo(1);
+                    break;
+                }
+                case "AcceptingCombo":
+                {
+                    acceptingCombo = true;
+                    break;
+                }
+                case "EndingCombo":
+                {
+                    acceptingCombo = false;
+                    break;
+                }
+                case "EndCombo":
+                {
+                    acceptingCombo = false;
+                    SetCombo(0);
+                    break;
+                }
+                case "SwitchEquip":
+                {
+                    thirdPersonController.DoEquip();
+                    thirdPersonController.allowMovement = true;
+                    animator.SetBool(Equip, thirdPersonController.isEquipped);
+                    break;
+                }
+            }
+        }
 
+        public void DoJump()
+        {
+            animator.SetTrigger(Jump);
+        }
+
+        public void TryEquip()
+        {
+            if (!animator.GetBool(Run))
+            {
+                thirdPersonController.allowMovement = false;
+                animator.SetTrigger(DoEquip);
+            }
+        }
+
+        #region Combo
+
+        public void TrySetCombo()
+        {
+            if (Input.GetButtonDown("Fire1"))
+            {
+                if (GetCombo() == 0 && !acceptingCombo)
+                {
+                    SetCombo(GetCombo() + 1);
+                    return;
+                }
+                if (acceptingCombo)
+                {
+                    Debug.Log("Combo +1");
+                    SetCombo(GetCombo() + 1);
+                    acceptingCombo = false;
+                }
+            }
+        }
+        
         public bool IsNotAttacking()
         {
-            return GetAttackState() == 0;
+            return GetCombo() == 0;
         }
     
-        private int GetAttackState()
+        private int GetCombo()
         {
-            return (int) animator.GetFloat(AttackState);
+            return (int) animator.GetFloat(Combo);
         }
     
-        private void SetAttackState(int state)
+        private void SetCombo(int state)
         {
-            animator.SetFloat(AttackState, state);
+            animator.SetFloat(Combo, state);
         }
 
         #endregion

@@ -1,8 +1,6 @@
-﻿using System;
-using Ukiyo.Common.Singleton;
-using Ukiyo.UI.Inventory;
+﻿using Ukiyo.Common.Singleton;
 
-namespace Framework
+namespace Ukiyo.Framework
 {
     public class UIManager : MonoSingleton<UIManager>
     {

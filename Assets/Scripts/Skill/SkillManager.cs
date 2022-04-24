@@ -1,35 +1,30 @@
 using System.Collections;
+using Ukiyo.Framework;
 using Ukiyo.Player;
 using UnityEngine;
 
 namespace Ukiyo.Skill
 {
-    public class SkillManager : MonoBehaviour
+    public class SkillManager : MonoBehaviour, IAnimatorListener
     {
-        public Transform position;
+        protected ThirdPersonController _controller;
+        public Transform selfPosition;
+        public Transform forwardPosition;
         public GameObject[] prefabs;
-
-        public void PlaySkill(int number)
+        
+        public SkillManager(ThirdPersonController controller)
         {
-            // switch (number)
-            // {
-            //     case 1:
-            //         Instantiate(prefabs[0], position.position,
-            //             new Quaternion(-0.132389709f, -0.0443884619f, -0.971372426f, 0.192193419f), null);
-            //         break;
-            //     case 2:
-            //         Instantiate(prefabs[1], position.position,
-            //             new Quaternion(0.0341425501f,-0.328095704f,0.166466668f,0.929234266f), null);
-            //         break;
-            //     case 3:
-            //         Instantiate(prefabs[2], position.position,
-            //             new Quaternion(0.241348505f,-0.202374473f,0.91386658f,0.256209761f), null);
-            //         break;
-            //     case 4:
-            //         Instantiate(prefabs[3], position.position,
-            //             new Quaternion(0.309731603f,0.309731513f,0.635662138f,-0.635662138f), null);
-            //         break;
-            // }
+            _controller = controller;
+        }
+
+        public void PlaySkill(int number, bool self = false)
+        {
+            if (prefabs.Length <= number)
+            {
+                Vector3 direction = Quaternion.Euler(0f, _controller.TargetAngle, 0f) * Vector3.forward;
+                Instantiate(prefabs[number], self ? selfPosition.position : forwardPosition.position,
+                    Quaternion.Euler(direction), null);
+            }
         }
 
         public void DoAttack()
@@ -38,18 +33,22 @@ namespace Ukiyo.Skill
             foreach (GameObject obj in gameObjects)
             {
                 bool attack = CollisionDetector.Instance.FanShapedCheck(transform, obj.transform, 160, 2);
-                Debug.Log(attack);
                 if (attack)
                 {
-                    //obj.GetComponent<MeshRenderer>().materials[0].SetColor("_AlbedoTint", Color.red);
-                    //StartCoroutine(ResetMaterial(0.2f, obj));
-
-                    EnemyController ec = obj.GetComponent<EnemyController>();
-                    if (ec != null)
-                    {
-                        ec.TakeHit(gameObject);
-                    }
+                    EnemyController enemy = obj.GetComponent<EnemyController>();
+                    if (enemy != null)
+                        enemy.TakeHit(gameObject);
                 }
+            }
+        }
+
+        void SetMaterial(GameObject obj)
+        {
+            MeshRenderer meshRenderer = obj.GetComponent<MeshRenderer>();
+            if (meshRenderer != null)
+            {
+                meshRenderer.materials[0].SetColor("_AlbedoTint", Color.red);
+                StartCoroutine(ResetMaterial(0.2f, obj));
             }
         }
 
@@ -59,5 +58,21 @@ namespace Ukiyo.Skill
             obj.GetComponent<MeshRenderer>().materials[0].SetColor("_AlbedoTint", Color.white);
         }
 
+        public void OnAnimatorBehaviourMessage(string message, object value)
+        {
+            switch (message)
+            {
+                case "DoAttack":
+                {
+                    DoAttack();
+                    break;
+                }
+                case "PlayerSkill":
+                {
+                    PlaySkill((int) value);
+                    break;
+                }
+            }
+        }
     }
 }

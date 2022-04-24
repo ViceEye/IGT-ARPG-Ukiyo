@@ -1,6 +1,4 @@
-﻿using System;
-using Framework;
-using Ukiyo.Common;
+﻿using Ukiyo.Common;
 using Ukiyo.Serializable;
 using Ukiyo.UI.Inventory;
 using UnityEngine;
