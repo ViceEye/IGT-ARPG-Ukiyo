@@ -118,6 +118,12 @@ namespace Ukiyo.Player
             }
         }
 
+        protected override void CheckGrounded()
+        {
+            Debug.Log("New");
+            isGrounded = Physics.Raycast(transform.position + Vector3.up * 0.1f, Vector3.down, out _, groundCheckRadius);
+        }
+
         public void DoEquip()
         {
             isEquipped = !isEquipped;

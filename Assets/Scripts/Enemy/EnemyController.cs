@@ -27,6 +27,8 @@ public class EnemyController : BaseController
 
     protected override void Update()
     {
+        base.Update();
+        
         // Move Speed Calculation
         var position = transform.position;
         Vector3 currentPosition = position - previousPosition;

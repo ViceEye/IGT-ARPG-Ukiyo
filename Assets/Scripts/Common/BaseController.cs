@@ -22,8 +22,7 @@ namespace Ukiyo.Common
     
         // Vertical velocity for jump
         public Vector3 verticalVelocity;
-        [SerializeField]
-        private bool isGrounded;
+        [SerializeField] protected bool isGrounded;
         public  bool IsGrounded => isGrounded;
         public float groundCheckRadius = 0.4f;
 
@@ -35,7 +34,7 @@ namespace Ukiyo.Common
         // Update is called once per frame
         protected virtual void Update()
         {
-
+            CheckGrounded();
         }
 
         protected virtual void FixedUpdate()
@@ -51,8 +50,6 @@ namespace Ukiyo.Common
 
         protected virtual void Gravity()
         {
-            isGrounded = CheckGrounded();
-
             // When player is grounded and vertical velocity is less than 0 = descending 
             if (isGrounded && verticalVelocity.y < 0)
             {
@@ -63,9 +60,10 @@ namespace Ukiyo.Common
             controller.Move(verticalVelocity * Time.deltaTime);
         }
         
-        private bool CheckGrounded()
+        protected virtual void CheckGrounded()
         {
-            return Physics.Raycast(transform.position + (Vector3.up * 0.1f), Vector3.down, out _, groundCheckRadius);
+            Debug.Log("Old");
+            isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundMask);
         }
     }
 }
