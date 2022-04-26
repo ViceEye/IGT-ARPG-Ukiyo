@@ -29,7 +29,8 @@ namespace Ukiyo.UI.Slot
         [SerializeField]
         protected int slotID;
         public int SlotId => slotID;
-        public bool active;
+        public bool active = true;
+        public bool allowPickup = true;
         
         public virtual void Init(int id)
         {
@@ -89,7 +90,7 @@ namespace Ukiyo.UI.Slot
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            if (UIItem != null && active && eventData.button == PointerEventData.InputButton.Right)
+            if (UIItem != null && active && allowPickup && eventData.button == PointerEventData.InputButton.Right)
             {
                 pickedItem.PickUpItem(this);
                 Hide();

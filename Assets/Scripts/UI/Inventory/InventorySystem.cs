@@ -75,18 +75,67 @@ namespace Ukiyo.UI.Inventory
 
         public void UpdatePanel()
         {
-            // Debug data viewer
-            _itemDictionary.Clear();
-            for (var i = 0; i < _inventoryModule.slotDataMap.Values.Count; i++)
-                _itemDictionary.Add(_inventoryModule.slotDataMap.Values.ToArray()[i].ToString());
-            
-            foreach (var itemSlotData in _inventoryModule.slotDataMap.Values)
-            {
-                _gridObj.slotList[itemSlotData.SlotId].SetItem(itemSlotData.Item);
-                _gridObj.slotList[itemSlotData.SlotId].active = true;
-            }
+            UpdatePanel(_currentOpenedPanel);
+        }
 
+        private void UpdatePanel(EnumInventoryItemType type)
+        {
+            DeactivateAllItems();
+
+            switch (type)
+            {
+                case EnumInventoryItemType.Content:
+                {
+                    _itemDictionary.Clear();
+                    foreach (var itemSlotData in _inventoryModule.slotDataMap.Values)
+                    {
+                        _itemDictionary.Add(itemSlotData.ToString());
+                        _gridObj.slotList[itemSlotData.SlotId].SetItem(itemSlotData.Item);
+                        if (_gridObj.slotList[itemSlotData.SlotId].UIItem != null)
+                            _gridObj.slotList[itemSlotData.SlotId].UIItem.gameObject.SetActive(true);
+                        _gridObj.slotList[itemSlotData.SlotId].active = true;
+                        _gridObj.slotList[itemSlotData.SlotId].allowPickup = true;
+                    }
+                    break;
+                }
+                case EnumInventoryItemType.Equipment:
+                case EnumInventoryItemType.Consumable:
+                {
+                    int index = 1;
+                    Debug.Log(index);
+                    _itemDictionary.Clear();
+                    foreach (var itemSlotData in _inventoryModule.GetAllItemSlotsWithType(type))
+                    {
+                        _itemDictionary.Add(itemSlotData.ToString());
+                        _gridObj.slotList[index].SetItem(itemSlotData.Item);
+                        _gridObj.slotList[index].UIItem.gameObject.SetActive(true);
+                        _gridObj.slotList[index].active = true;
+                        _gridObj.slotList[itemSlotData.SlotId].allowPickup = false;
+                        index++;
+                    }
+                    break;
+                }
+            }
             SaveInventoryData();
+        }
+
+        protected void SwitchPanel(int type)
+        {
+            if (type > 2) return;
+            EnumInventoryItemType itemType = (EnumInventoryItemType) type;
+            if (_currentOpenedPanel == itemType)
+                return;
+            
+            // Move in current button and change font color
+            StartCoroutine(Utils.MoveY(panelBtnList[(int) _currentOpenedPanel], 0, btnAnimationDuration));
+            panelBtnTextList[(int) _currentOpenedPanel].color = closeTagTextColor;
+            
+            // Move out Consumable button and change font color
+            StartCoroutine(Utils.MoveY(panelBtnList[type], 20, btnAnimationDuration));
+            panelBtnTextList[type].color = openTagTextColor;
+            
+            _currentOpenedPanel = (EnumInventoryItemType) type;
+            UpdatePanel();
         }
 
         private void Update()
@@ -94,25 +143,11 @@ namespace Ukiyo.UI.Inventory
             if (Input.GetKeyUp(KeyCode.E))
             {
                 if (_canvasGroup.alpha >= 1.0f)
-                {
                     _canvasGroup.alpha = 0;
-                    foreach (var slot in _gridObj.slotList.Values)
-                    {
-                        if (slot != null && slot.UIItem != null)
-                        {
-                            slot.active = false;
-                            slot.toolTip.Hide();
-                        }
-                    }
-                }
                 else
                 {
                     _canvasGroup.alpha = 1.0f;
-                    foreach (var slot in _gridObj.slotList.Values)
-                    {
-                        if (slot != null && slot.UIItem != null)
-                            slot.active = true;
-                    }
+                    UpdatePanel();
                 }
             }
         }
@@ -130,7 +165,6 @@ namespace Ukiyo.UI.Inventory
 
         public void Add(int source)
         {
-            Debug.Log(source);
             _inventoryModule.AddItem(source);
         }
 
@@ -139,35 +173,23 @@ namespace Ukiyo.UI.Inventory
             _inventoryModule.RemoveItem(source);
         }
 
-        public void SwitchPanel()
+        public void Sort()
         {
-            switch (CurrentOpenedPanel)
+            _inventoryModule.SortAllItemsById();
+            UpdatePanel();
+        }
+
+        private void DeactivateAllItems()
+        {
+            foreach (var slot in _gridObj.slotList.Values)
             {
-                case EnumInventoryItemType.Equipment:
+                if (slot != null && slot.UIItem != null)
                 {
-                    // Move out Consumable button and change font color
-                    StartCoroutine(Utils.MoveY(panelBtnList[(int) EnumInventoryItemType.Consumable], 20, btnAnimationDuration));
-                    panelBtnTextList[(int) EnumInventoryItemType.Consumable].color = openTagTextColor;
+                    slot.active = false;
+                    slot.allowPickup = false;
                     
-                    // Move in Equipment button and change font color
-                    StartCoroutine(Utils.MoveY(panelBtnList[(int) EnumInventoryItemType.Equipment], 0, btnAnimationDuration));
-                    panelBtnTextList[(int) EnumInventoryItemType.Equipment].color = closeTagTextColor;
-                    
-                    _currentOpenedPanel = EnumInventoryItemType.Consumable;
-                    break;
-                }
-                case EnumInventoryItemType.Consumable:
-                {
-                    // Move out Equipment button and change font color
-                    StartCoroutine(Utils.MoveY(panelBtnList[(int) EnumInventoryItemType.Equipment], 20, btnAnimationDuration));
-                    panelBtnTextList[(int) EnumInventoryItemType.Equipment].color = openTagTextColor;
-                    
-                    // Move in Consumable button and change font color
-                    StartCoroutine(Utils.MoveY(panelBtnList[(int) EnumInventoryItemType.Consumable], 0, btnAnimationDuration));
-                    panelBtnTextList[(int) EnumInventoryItemType.Consumable].color = closeTagTextColor;
-                    
-                    _currentOpenedPanel = EnumInventoryItemType.Equipment;
-                    break;
+                    slot.toolTip.Hide();
+                    slot.UIItem.gameObject.SetActive(false);
                 }
             }
         }

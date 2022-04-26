@@ -145,6 +145,7 @@ GameObject:
   - component: {fileID: 5012302888597224488}
   - component: {fileID: 5012302888597224489}
   - component: {fileID: 5012302888597224494}
+  - component: {fileID: 259580787}
   m_Layer: 5
   m_Name: AvatarStatus
   m_TagString: Untagged
@@ -159,7 +160,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5012302888597224491}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -218,7 +219,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &5012302888597224489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,6 +256,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &259580787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5012302888597224491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 185f98223336b874e9c97a5b6df707ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  percentage: 1
+  enable: 0
 --- !u!1 &5012302888600656714
 GameObject:
   m_ObjectHideFlags: 0
@@ -466,6 +481,11 @@ PrefabInstance:
       propertyPath: newMaterial
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7947212156295450320, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
+        type: 3}
+      propertyPath: targetColor
+      value: 
+      objectReference: {fileID: 2800000, guid: 6d42416a4fad1234e97d4456421ccb4a, type: 3}
     - target: {fileID: 7947212157416213267, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
         type: 3}
       propertyPath: newMaterial
@@ -589,7 +609,7 @@ PrefabInstance:
     - target: {fileID: 7947212157577633917, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
         type: 3}
       propertyPath: m_PresetInfoIsWorld
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7947212157826281332, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
         type: 3}
@@ -769,7 +789,7 @@ PrefabInstance:
     - target: {fileID: 7947212157577633917, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
         type: 3}
       propertyPath: m_PresetInfoIsWorld
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7947212157826281332, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
         type: 3}
@@ -954,7 +974,7 @@ PrefabInstance:
     - target: {fileID: 7947212157577633917, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
         type: 3}
       propertyPath: m_PresetInfoIsWorld
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7947212157826281332, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
         type: 3}

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Ukiyo.Common;
 using Ukiyo.Common.Object;
 using Ukiyo.Serializable;
 using UnityEngine;
@@ -131,6 +133,60 @@ namespace Ukiyo.UI.Inventory
         #endregion
 
         #region Functions
+        
+        // Sort all slot by id
+        public ItemSlotData[] SortAllItemsById()
+        {
+            List<ItemSlotData> listSlots = new List<ItemSlotData>();
+            
+            foreach (var itemSlotData in slotDataMap.Values)
+                if (itemSlotData.Item != null)
+                    listSlots.Add(itemSlotData);
+            
+            listSlots.Sort((x, y) => x.Item.ID.CompareTo(y.Item.ID));
+            slotDataMap.Clear();
+            
+            for (var i = 1; i <= _maxGridSize; i++)
+            {
+                if (i <= listSlots.Count)
+                {
+                    listSlots[i - 1].SlotId = i;
+                    slotDataMap.Add(i, listSlots[i - 1]);
+                    continue;
+                }
+                slotDataMap.Add(i, new ItemSlotData(i));
+            }
+            
+            return listSlots.ToArray();
+        }
+        
+        // Get all slots of the same type
+        public ItemSlotData[] GetAllItemSlotsWithType(EnumInventoryItemType type)
+        {
+            List<ItemSlotData> listSlots = new List<ItemSlotData>();
+            switch (type)
+            {
+                case EnumInventoryItemType.Content:
+                {
+                    return slotDataMap.Values.ToArray();
+                }
+                case EnumInventoryItemType.Equipment:
+                case EnumInventoryItemType.Consumable:
+                {
+            
+                    foreach (var slot in slotDataMap.Values)
+                    {
+                        if (slot.Item != null && slot.Item.Type == type)
+                            listSlots.Add(slot);
+                    }
+                    break;
+                }
+            }
+            
+            listSlots.Sort((x, y) => x.Item.ID.CompareTo(y.Item.ID));
+            
+            return listSlots.ToArray();
+        }
 
         // Get the one with the smallest number of items in all the slots occupied by an item
         public ItemSlotData GetSlotWithMinAmountOfItem(ItemData item)
@@ -166,7 +222,7 @@ namespace Ukiyo.UI.Inventory
             
             foreach (var slot in slotDataMap.Values)
             {
-                if (slot.Item == null || slot.Item.ID == itemData.ID)
+                if (slot.Item != null || slot.Item.ID == itemData.ID)
                     listSlots.Add(slot);
             }
 
