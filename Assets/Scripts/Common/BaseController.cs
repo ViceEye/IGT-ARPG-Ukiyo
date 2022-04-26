@@ -62,7 +62,6 @@ namespace Ukiyo.Common
         
         protected virtual void CheckGrounded()
         {
-            Debug.Log("Old");
             isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundMask);
         }
     }

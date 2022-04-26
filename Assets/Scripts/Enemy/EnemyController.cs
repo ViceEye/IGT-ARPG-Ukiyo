@@ -12,7 +12,6 @@ public class EnemyController : BaseController
     
     private Vector3 previousPosition;
 
-    public GameObject followTarget;
     public float currentSpeed;
     
     private static readonly int XZ = Animator.StringToHash("xz");
@@ -43,14 +42,13 @@ public class EnemyController : BaseController
     
     public void TakeHit(GameObject from)
     {
-        followTarget = from;
         animator.SetTrigger(Hit);
     }
 
     public void SetDizzy(float dizzyTime)
     {
-        animator.SetFloat(Dizzy, 1.0f);
-        StartCoroutine(ResetDizzy(1.0f));
+        animator.SetFloat(Dizzy, dizzyTime);
+        StartCoroutine(ResetDizzy(dizzyTime));
     }
 
     IEnumerator ResetDizzy(float dizzyTime)

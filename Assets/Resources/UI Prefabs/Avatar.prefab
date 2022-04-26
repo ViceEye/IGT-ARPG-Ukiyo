@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 2790eb91fbed0fd47953fd2d489d15a5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d12644e1851b2e441a0f5e8f84e2e81d, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -90,10 +90,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shader: {fileID: -6465566751694194690, guid: 5356ba56e484f184cbd0b140be9553e4, type: 3}
   targetImage: {fileID: 7947212156295450318}
-  targetShape: {fileID: 2800000, guid: 2790eb91fbed0fd47953fd2d489d15a5, type: 3}
-  targetColor: {fileID: 2800000, guid: 92729c013b3824dc9be3c6cc69abba4d, type: 3}
+  targetShape: {fileID: 2800000, guid: d12644e1851b2e441a0f5e8f84e2e81d, type: 3}
+  targetColor: {fileID: 2800000, guid: 7e49b6a3e78f3ff459afe9a007af823d, type: 3}
   newMaterial: {fileID: 0}
-  doUpdate: 1
+  doUpdate: 0
 --- !u!1 &7947212157416213265
 GameObject:
   m_ObjectHideFlags: 0
@@ -160,7 +160,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6fa10bfb52ebe411dba7066ae78836d9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2fb11e6e4bedc2644862dc3f5bf6352e, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -184,10 +184,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shader: {fileID: -6465566751694194690, guid: 5356ba56e484f184cbd0b140be9553e4, type: 3}
   targetImage: {fileID: 7947212157416213268}
-  targetShape: {fileID: 2800000, guid: 6fa10bfb52ebe411dba7066ae78836d9, type: 3}
+  targetShape: {fileID: 2800000, guid: 2fb11e6e4bedc2644862dc3f5bf6352e, type: 3}
   targetColor: {fileID: 2800000, guid: a05f051d1f8020441b401b13349d616a, type: 3}
   newMaterial: {fileID: 0}
-  doUpdate: 1
+  doUpdate: 0
 --- !u!1 &7947212157577633914
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,7 +356,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6fa10bfb52ebe411dba7066ae78836d9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2fb11e6e4bedc2644862dc3f5bf6352e, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -380,7 +380,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shader: {fileID: -6465566751694194690, guid: 5356ba56e484f184cbd0b140be9553e4, type: 3}
   targetImage: {fileID: 7947212157826281333}
-  targetShape: {fileID: 2800000, guid: 6fa10bfb52ebe411dba7066ae78836d9, type: 3}
-  targetColor: {fileID: 0}
+  targetShape: {fileID: 2800000, guid: 2fb11e6e4bedc2644862dc3f5bf6352e, type: 3}
+  targetColor: {fileID: 2800000, guid: 8fcf58f61a55f4044b6c17008fe30fd3, type: 3}
   newMaterial: {fileID: 0}
-  doUpdate: 1
+  doUpdate: 0
