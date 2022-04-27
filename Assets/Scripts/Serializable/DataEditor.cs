@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Ukiyo.Serializable
 {
+#if UNITY_EDITOR
     public class DataEditor : MonoBehaviour
     {
         
@@ -90,4 +91,5 @@ namespace Ukiyo.Serializable
             Type = objectData.Type;
         }
     }
+#endif
 }

@@ -12,6 +12,7 @@ namespace Ukiyo.UI
         private CanvasGroup canvasGroup;
         [SerializeField]
         private Slider slider;
+        public Slider Slider => slider;
         [SerializeField]
         private Text percentage;
         [SerializeField]
@@ -19,19 +20,7 @@ namespace Ukiyo.UI
         [SerializeField] 
         private Image refresh;
 
-        private void OnEnable()
-        {
-            CircleRefresh.OnCompleted += AllowOpenScene;
-        }
-
         private int cycleCount;
-        private bool allowOpenScene;
-
-        private void AllowOpenScene()
-        {
-            allowOpenScene = true;
-            CircleRefresh.OnCompleted -= AllowOpenScene;
-        }
 
         private void Start()
         {
@@ -76,43 +65,6 @@ namespace Ukiyo.UI
             if (refresh != null)
             {
                 refresh.gameObject.SetActive(true);
-            }
-        }
-
-        // If player has hit start button trigger load new scene
-        public void OpenScene()
-        {
-            // Only ran Coroutine when self is active
-            if (slider.IsActive())
-                StartCoroutine(AysncLoadNewScene("DebugScene"));
-        }
-
-        private IEnumerator AysncLoadNewScene(string sceneName)
-        {
-            yield return new WaitForSeconds(0.5f);
-            AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
-
-            if (async == null) yield break;
-            
-            // Do not active scene as soon as it loaded
-            async.allowSceneActivation = false;
-            // While the operation to load the new scene is not complete, continue waiting and update progress percentage
-            while (!async.isDone)
-            {
-                float progress = Mathf.Clamp01(async.progress / 0.9f);
-                slider.value = progress;
-                    
-                // When the scene is loaded, wait 3s and load scene
-                if (progress >= 1.0f)
-                {
-                    if (allowOpenScene)
-                    {
-                        // Load next scene
-                        async.allowSceneActivation = true;
-                    }
-                }
-                    
-                yield return null;
             }
         }
     }

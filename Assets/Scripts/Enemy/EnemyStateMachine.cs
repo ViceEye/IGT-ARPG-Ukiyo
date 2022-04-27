@@ -17,7 +17,7 @@ namespace Enemy
             Attack,
         }
 
-        public static Dictionary<ActionEnum, FSMAction> dicActions = new Dictionary<ActionEnum, FSMAction>();
+        public Dictionary<ActionEnum, FSMAction> dicActions = new Dictionary<ActionEnum, FSMAction>();
 
         private void RegisterAllActions()
         {

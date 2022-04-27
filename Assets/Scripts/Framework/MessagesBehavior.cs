@@ -24,7 +24,7 @@ namespace Ukiyo.Framework
         public MessageItem[] onExitMessage; //Store messages to send it when Exit  the animation State
         public MessageItem[] onTimeMessage; //Store messages to send on a specific time  in the animation State
 
-        IAnimatorListener[] listeners; //To all the MonoBehavious that Have this 
+        IAnimatorListener[] listeners; //To all the MonoBehaviors that Have this 
 
 
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
