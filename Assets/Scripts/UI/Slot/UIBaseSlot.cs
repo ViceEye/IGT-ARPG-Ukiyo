@@ -48,7 +48,7 @@ namespace Ukiyo.UI.Slot
             
             if (uiItem == null)
             {
-                GameObject itemGo = Resources.Load<GameObject>(UIDefines.UI_Inventory_Item);
+                GameObject itemGo = Resources.Load<GameObject>(PrefabDefines.UI_INVENTORY_ITEM);
                 GameObject item = Instantiate(itemGo, transform);
                 item.SetActive(true);
                 UIItemData uiItemData = item.GetComponent<UIItemData>();
@@ -70,7 +70,7 @@ namespace Ukiyo.UI.Slot
         
         public void OnPointerEnter(PointerEventData eventData)
         {
-            StartCoroutine(Utils.Coloring(image, hover, fadeSpeed));
+            StartCoroutine(Utils.Coloring(image, hover, fadeSpeed, 0));
 
             if (UIItem != null && active)
             {
@@ -80,7 +80,7 @@ namespace Ukiyo.UI.Slot
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            StartCoroutine(Utils.Coloring(image, empty, fadeSpeed));
+            StartCoroutine(Utils.Coloring(image, empty, fadeSpeed, 0));
             
             if (UIItem != null)
             {

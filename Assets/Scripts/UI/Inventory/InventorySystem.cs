@@ -127,11 +127,11 @@ namespace Ukiyo.UI.Inventory
                 return;
             
             // Move in current button and change font color
-            StartCoroutine(Utils.MoveY(panelBtnList[(int) _currentOpenedPanel], 0, btnAnimationDuration));
+            StartCoroutine(Utils.MoveY(panelBtnList[(int) _currentOpenedPanel], 0, btnAnimationDuration, 0));
             panelBtnTextList[(int) _currentOpenedPanel].color = closeTagTextColor;
             
             // Move out Consumable button and change font color
-            StartCoroutine(Utils.MoveY(panelBtnList[type], 20, btnAnimationDuration));
+            StartCoroutine(Utils.MoveY(panelBtnList[type], 20, btnAnimationDuration, 0));
             panelBtnTextList[type].color = openTagTextColor;
             
             _currentOpenedPanel = (EnumInventoryItemType) type;

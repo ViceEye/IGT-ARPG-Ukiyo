@@ -1296,8 +1296,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 185f98223336b874e9c97a5b6df707ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  percentage: 1
-  enable: 1
+  percentage: 0
+  enable: 0
 --- !u!1 &807150136673408270
 GameObject:
   m_ObjectHideFlags: 0

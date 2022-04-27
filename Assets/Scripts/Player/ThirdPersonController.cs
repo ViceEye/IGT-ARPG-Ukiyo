@@ -51,6 +51,7 @@ namespace Ukiyo.Player
 
         protected override void Update()
         {
+            base.Update();
             CameraLock();
             if (enableJump && animationManager.IsNotAttacking())
                 Jump();

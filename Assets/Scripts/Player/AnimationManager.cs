@@ -132,7 +132,6 @@ namespace Ukiyo.Player
                 }
                 if (acceptingCombo)
                 {
-                    Debug.Log("Combo +1");
                     SetCombo(GetCombo() + 1);
                     acceptingCombo = false;
                 }

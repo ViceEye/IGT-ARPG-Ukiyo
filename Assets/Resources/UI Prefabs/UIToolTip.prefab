@@ -348,11 +348,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a047d60d89c844ec8a152cee3dfedb5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autoPlay: 0
   ListUIAnimationSet:
   - type: 1
     finishValueOnOpen: 1
     finishValueOnClose: 0.8
     doReset: 1
+    delay: 0
     duration: 0.15
 --- !u!1 &6651761933740012117
 GameObject:

@@ -11,20 +11,21 @@ namespace Ukiyo.Common
 {
     public static class Utils
     {
-        // Aysnc user interface animation
+        // Aysnc user interface animation, similar to DoTween
         #region UI Animations
 
-        public static IEnumerator Zoom(GameObject transform, Vector3 scale, float duration)
+        public static IEnumerator Zoom(GameObject transform, Vector3 scale, float duration, float delay)
         {
             if (transform != null)
             {
-                yield return Zoom(transform.GetComponent<RectTransform>(), scale, duration);
+                yield return Zoom(transform.GetComponent<RectTransform>(), scale, duration, delay);
             }
             yield return null;
         }
         
-        public static IEnumerator Zoom(RectTransform transform, Vector3 scale, float duration)
+        public static IEnumerator Zoom(RectTransform transform, Vector3 scale, float duration, float delay)
         {
+            yield return new WaitForSeconds(delay);
             var time = 0.0f;
             var originalScale = transform.localScale;
             while (time < duration)
@@ -40,17 +41,72 @@ namespace Ukiyo.Common
             transform.localScale = scale;
         }
         
-        public static IEnumerator Fade(GameObject group, float alpha, float duration)
+        public static IEnumerator ScaleX(GameObject transform, float xValue, float duration, float delay)
+        {
+            if (transform != null)
+            {
+                yield return ScaleX(transform.GetComponent<RectTransform>(), xValue, duration, delay);
+            }
+            yield return null;
+        }
+        
+        public static IEnumerator ScaleX(RectTransform transform, float xValue, float duration, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            var time = 0.0f;
+            var originalPosition = transform.localScale;
+            while (time < duration)
+            {
+                time += Time.deltaTime;
+                transform.localScale = new Vector3(
+                    Mathf.Lerp(originalPosition.x, xValue, time / duration),
+                    originalPosition.y,
+                    originalPosition.z);
+                yield return new WaitForEndOfFrame();
+            }
+
+            transform.localScale = new Vector3(xValue, originalPosition.y, originalPosition.z);
+        }
+        
+        public static IEnumerator ScaleY(GameObject transform, float yValue, float duration, float delay)
+        {
+            if (transform != null)
+            {
+                yield return ScaleY(transform.GetComponent<RectTransform>(), yValue, duration, delay);
+            }
+            yield return null;
+        }
+        
+        public static IEnumerator ScaleY(RectTransform transform, float yValue, float duration, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            var time = 0.0f;
+            var originalPosition = transform.localScale;
+            while (time < duration)
+            {
+                time += Time.deltaTime;
+                transform.localScale = new Vector3(
+                    originalPosition.x,
+                    Mathf.Lerp(originalPosition.y, yValue, time / duration),
+                    originalPosition.z);
+                yield return new WaitForEndOfFrame();
+            }
+
+            transform.localScale = new Vector3(originalPosition.x, yValue, originalPosition.z);
+        }
+        
+        public static IEnumerator Fade(GameObject group, float alpha, float duration, float delay)
         {
             if (group != null)
             {
-                yield return Fade(group.GetComponent<CanvasGroup>(), alpha, duration);
+                yield return Fade(group.GetComponent<CanvasGroup>(), alpha, duration, delay);
             }
             yield return null;
         }
 
-        public static IEnumerator Fade(CanvasGroup group, float alpha, float duration)
+        public static IEnumerator Fade(CanvasGroup group, float alpha, float duration, float delay)
         {
+            yield return new WaitForSeconds(delay);
             var time = 0.0f;
             var originalAlpha = group.alpha;
             while (time < duration)
@@ -63,17 +119,18 @@ namespace Ukiyo.Common
             group.alpha = alpha;
         }
         
-        public static IEnumerator MoveX(GameObject transform, float xValue, float duration)
+        public static IEnumerator MoveX(GameObject transform, float xValue, float duration, float delay)
         {
             if (transform != null)
             {
-                yield return MoveX(transform.GetComponent<RectTransform>(), xValue, duration);
+                yield return MoveX(transform.GetComponent<RectTransform>(), xValue, duration, delay);
             }
             yield return null;
         }
         
-        public static IEnumerator MoveX(RectTransform transform, float xValue, float duration)
+        public static IEnumerator MoveX(RectTransform transform, float xValue, float duration, float delay)
         {
+            yield return new WaitForSeconds(delay);
             var time = 0.0f;
             var originalPosition = transform.localPosition;
             while (time < duration)
@@ -89,17 +146,18 @@ namespace Ukiyo.Common
             transform.localPosition = new Vector3(xValue, originalPosition.y, originalPosition.z);
         }
         
-        public static IEnumerator MoveY(GameObject transform, float yValue, float duration)
+        public static IEnumerator MoveY(GameObject transform, float yValue, float duration, float delay)
         {
             if (transform != null)
             {
-                yield return MoveY(transform.GetComponent<RectTransform>(), yValue, duration);
+                yield return MoveY(transform.GetComponent<RectTransform>(), yValue, duration, delay);
             }
             yield return null;
         }
         
-        public static IEnumerator MoveY(RectTransform transform, float yValue, float duration)
+        public static IEnumerator MoveY(RectTransform transform, float yValue, float duration, float delay)
         {
+            yield return new WaitForSeconds(delay);
             var time = 0.0f;
             var originalPosition = transform.localPosition;
             while (time < duration)
@@ -115,17 +173,18 @@ namespace Ukiyo.Common
             transform.localPosition = new Vector3(originalPosition.x, yValue, originalPosition.z);
         }
         
-        public static IEnumerator Coloring(GameObject color, Color target, float duration)
+        public static IEnumerator Coloring(GameObject color, Color target, float duration, float delay)
         {
             if (color != null)
             {
-                yield return Coloring(color.GetComponent<Graphic>(), target, duration);
+                yield return Coloring(color.GetComponent<Graphic>(), target, duration, delay);
             }
             yield return null;
         }
 
-        public static IEnumerator Coloring(Graphic color, Color target, float duration)
+        public static IEnumerator Coloring(Graphic color, Color target, float duration, float delay)
         {
+            yield return new WaitForSeconds(delay);
             var time = 0.0f;
             var originalColor = color.color;
             while (time < duration)
@@ -138,17 +197,18 @@ namespace Ukiyo.Common
             color.color = target;
         }
         
-        public static IEnumerator Filling(GameObject image, float target, float duration)
+        public static IEnumerator Filling(GameObject image, float target, float duration, float delay)
         {
             if (image != null)
             {
-                yield return Filling(image.GetComponent<Image>(), target, duration);
+                yield return Filling(image.GetComponent<Image>(), target, duration, delay);
             }
             yield return null;
         }
 
-        public static IEnumerator Filling(Image image, float target, float duration)
+        public static IEnumerator Filling(Image image, float target, float duration, float delay)
         {
+            yield return new WaitForSeconds(delay);
             var time = 0.0f;
             var originalFillAmount = image.fillAmount;
             while (time < duration)

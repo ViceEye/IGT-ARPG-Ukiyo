@@ -19,7 +19,7 @@ namespace Ukiyo.UI.Inventory
         {
             for (int i = 1; i <= maxGridSize; i++)
             {
-                GameObject slotGo = Resources.Load<GameObject>(UIDefines.UI_Inventory_Slot);
+                GameObject slotGo = Resources.Load<GameObject>(PrefabDefines.UI_INVENTORY_SLOT);
                 GameObject slot = Instantiate(slotGo, transform);   // Instantiate Slot Case
                 InventorySlot inventorySlot = slot.GetComponent<InventorySlot>();
                 inventorySlot.toolTip = UIToolTip;
