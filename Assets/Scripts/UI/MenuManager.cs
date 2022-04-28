@@ -84,7 +84,7 @@ namespace Ukiyo.UI
                     if (allowOpenScene)
                     {
                         // Load next scene
-                        //async.allowSceneActivation = true;
+                        async.allowSceneActivation = true;
                     }
                 }
                     
