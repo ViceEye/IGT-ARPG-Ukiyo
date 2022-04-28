@@ -71,6 +71,7 @@ namespace Ukiyo.UI.Inventory
         private void Start()
         {
             UpdatePanel();
+            DeactivateAllItems();
         }
 
         public void UpdatePanel()

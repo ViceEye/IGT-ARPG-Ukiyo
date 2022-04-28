@@ -491,11 +491,36 @@ PrefabInstance:
       propertyPath: targetColor
       value: 
       objectReference: {fileID: 2800000, guid: 6d42416a4fad1234e97d4456421ccb4a, type: 3}
+    - target: {fileID: 7947212157416213266, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 160
+      objectReference: {fileID: 0}
+    - target: {fileID: 7947212157416213266, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 160
+      objectReference: {fileID: 0}
+    - target: {fileID: 7947212157416213266, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7947212157416213266, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -20
+      objectReference: {fileID: 0}
     - target: {fileID: 7947212157416213267, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
         type: 3}
       propertyPath: newMaterial
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7947212157416213267, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
+        type: 3}
+      propertyPath: targetColor
+      value: 
+      objectReference: {fileID: 2800000, guid: 3bc01c1f330fa1c429577731a321415a, type: 3}
     - target: {fileID: 7947212157416213268, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
         type: 3}
       propertyPath: m_Material
@@ -676,11 +701,36 @@ PrefabInstance:
       propertyPath: targetColor
       value: 
       objectReference: {fileID: 2800000, guid: d08aa4411f5bac94791aa96d0b153a3f, type: 3}
+    - target: {fileID: 7947212157416213266, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 160
+      objectReference: {fileID: 0}
+    - target: {fileID: 7947212157416213266, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 160
+      objectReference: {fileID: 0}
+    - target: {fileID: 7947212157416213266, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7947212157416213266, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -20
+      objectReference: {fileID: 0}
     - target: {fileID: 7947212157416213267, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
         type: 3}
       propertyPath: newMaterial
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7947212157416213267, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
+        type: 3}
+      propertyPath: targetColor
+      value: 
+      objectReference: {fileID: 2800000, guid: 3bc01c1f330fa1c429577731a321415a, type: 3}
     - target: {fileID: 7947212157416213268, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
         type: 3}
       propertyPath: m_Material
@@ -871,11 +921,36 @@ PrefabInstance:
       propertyPath: targetColor
       value: 
       objectReference: {fileID: 2800000, guid: d08aa4411f5bac94791aa96d0b153a3f, type: 3}
+    - target: {fileID: 7947212157416213266, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 160
+      objectReference: {fileID: 0}
+    - target: {fileID: 7947212157416213266, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 160
+      objectReference: {fileID: 0}
+    - target: {fileID: 7947212157416213266, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7947212157416213266, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -20
+      objectReference: {fileID: 0}
     - target: {fileID: 7947212157416213267, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
         type: 3}
       propertyPath: newMaterial
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7947212157416213267, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
+        type: 3}
+      propertyPath: targetColor
+      value: 
+      objectReference: {fileID: 2800000, guid: 3bc01c1f330fa1c429577731a321415a, type: 3}
     - target: {fileID: 7947212157416213268, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
         type: 3}
       propertyPath: m_Material

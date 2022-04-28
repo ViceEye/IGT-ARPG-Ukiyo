@@ -6,6 +6,7 @@ namespace Ukiyo.UI
     [ExecuteAlways]
     public class HudDebugController : MonoBehaviour
     {
+# if (UNITY_EDITOR)
         [Range(0.0f, 1.0f)] 
         public float percentage;
         public bool enable;
@@ -20,10 +21,8 @@ namespace Ukiyo.UI
             // UnityEditor.EditorApplication.QueuePlayerLoopUpdate();
             
             // Call when changes
-# if (UNITY_EDITOR)
             UnityEditor.EditorApplication.delayCall += UnityEditor.EditorApplication.QueuePlayerLoopUpdate;
             UnityEditor.SceneView.RepaintAll();
-#endif
         }
 
         private void Update()
@@ -44,6 +43,6 @@ namespace Ukiyo.UI
                 image.fillAmount = percentage;
             }
         }
+#endif
     }
-
 }
