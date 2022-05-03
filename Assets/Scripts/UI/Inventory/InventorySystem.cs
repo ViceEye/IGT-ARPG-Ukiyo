@@ -144,7 +144,10 @@ namespace Ukiyo.UI.Inventory
             if (Input.GetKeyUp(KeyCode.E))
             {
                 if (_canvasGroup.alpha >= 1.0f)
+                {
                     _canvasGroup.alpha = 0;
+                    DeactivateAllItems();
+                }
                 else
                 {
                     _canvasGroup.alpha = 1.0f;
