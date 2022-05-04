@@ -58,8 +58,7 @@ namespace Ukiyo.Player
             animator.SetBool(Run, Input.GetKey(KeyCode.LeftShift));
             
             // Equip/Un-Equip
-            bool qDown = Input.GetKeyUp(KeyCode.Q);
-            if (qDown)
+            if (Input.GetKeyUp(KeyCode.Q))
                 TryEquip();
 
             if (thirdPersonController.IsGrounded)
@@ -110,6 +109,11 @@ namespace Ukiyo.Player
             animator.SetTrigger(Jump);
         }
 
+        public bool IsEquip()
+        {
+            return animator.GetBool(Equip);
+        }
+        
         public void TryEquip()
         {
             if (!animator.GetBool(Run))

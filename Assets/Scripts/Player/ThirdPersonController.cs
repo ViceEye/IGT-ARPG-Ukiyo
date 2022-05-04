@@ -56,6 +56,8 @@ namespace Ukiyo.Player
             if (enableJump && animationManager.IsNotAttacking())
                 Jump();
             animationManager.OnUpdate();
+            isEquipped = animationManager.IsEquip();
+            UpdateEquip();
         }
 
         protected override void FixedUpdate()
@@ -127,6 +129,10 @@ namespace Ukiyo.Player
         public void DoEquip()
         {
             isEquipped = !isEquipped;
+        }
+
+        private void UpdateEquip()
+        {
             if (isEquipped)
             {
                 handSword.SetActive(true);
