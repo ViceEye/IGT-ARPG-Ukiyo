@@ -129,7 +129,7 @@ namespace Ukiyo.Player
         {
             if (Input.GetButtonDown("Fire1"))
             {
-                if (GetCombo() == 0 && !acceptingCombo)
+                if (GetCombo() == 0 && !acceptingCombo && IsEquip())
                 {
                     SetCombo(GetCombo() + 1);
                     return;

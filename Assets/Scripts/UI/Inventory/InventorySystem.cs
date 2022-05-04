@@ -147,11 +147,13 @@ namespace Ukiyo.UI.Inventory
                 {
                     _canvasGroup.alpha = 0;
                     DeactivateAllItems();
+                    Cursor.visible = false;
                 }
                 else
                 {
                     _canvasGroup.alpha = 1.0f;
                     UpdatePanel();
+                    Cursor.visible = true;
                 }
             }
         }

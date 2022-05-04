@@ -28,8 +28,10 @@ namespace Ukiyo.Player
             _navMeshAgent = GetComponent<NavMeshAgent>();
             _navMeshPath = new NavMeshPath();
             
+            // The agent should be stationary and syncs the position with target
             _navMeshAgent.isStopped = true;
 
+            // Style of line
             _lineRenderer.startWidth = 0.15f;
             _lineRenderer.endWidth = 0.15f;
             _lineRenderer.positionCount = 0;

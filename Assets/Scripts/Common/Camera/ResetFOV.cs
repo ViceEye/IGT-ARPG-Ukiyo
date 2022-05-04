@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using Cinemachine;
 using UnityEngine;
 
@@ -10,12 +9,17 @@ namespace Ukiyo.Common.Camera
     {
         public CinemachineFreeLook cinemachineFreeLookPar;
         public GameObject player;
+
+        public InGamePopupMsg inGamePopupMsg;
+        public InGamePopupMsg.PopupMsg popupMsg = new InGamePopupMsg.PopupMsg("Press G to spawn", -1.0f);
+        
         public float duration = 1.0f;
+        public float defaultFov = 55.0f;
         
         private void Start()
         {
             cinemachineFreeLookPar = GetComponent<CinemachineFreeLook>();
-            cinemachineFreeLookPar.m_Lens.FieldOfView = 55;
+            cinemachineFreeLookPar.m_Lens.FieldOfView = defaultFov;
         }
 
         private bool pulled = false;
@@ -24,16 +28,22 @@ namespace Ukiyo.Common.Camera
         {
             if (!Application.isPlaying)
             {
-                cinemachineFreeLookPar.m_Lens.FieldOfView = 55;
+                cinemachineFreeLookPar.m_Lens.FieldOfView = defaultFov;
             }
             else
             {
                 if (!player.activeSelf)
                 {
+                    if (inGamePopupMsg.CheckRemainingTime(popupMsg) > -1.0f)
+                    {
+                        inGamePopupMsg.AddText(popupMsg);
+                    }
                     if (Input.GetKeyDown(KeyCode.G))
                     {
                         player.SetActive(true);
+                        Cursor.visible = false;
                         StartCoroutine(PullClose());
+                        inGamePopupMsg.RemoveText(popupMsg);
                     }
                 }
                 else if (player.activeSelf && !pulled)
@@ -50,7 +60,7 @@ namespace Ukiyo.Common.Camera
             while (time < duration)
             {
                 time += Time.deltaTime;
-                cinemachineFreeLookPar.m_Lens.FieldOfView = Mathf.Lerp(55, 18, time / duration);
+                cinemachineFreeLookPar.m_Lens.FieldOfView = Mathf.Lerp(defaultFov, 18, time / duration);
                 yield return new WaitForEndOfFrame();
             }
             cinemachineFreeLookPar.m_Lens.FieldOfView = 18;

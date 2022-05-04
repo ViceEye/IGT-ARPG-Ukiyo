@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Ukiyo.Common.Singleton;
 using UnityEngine;
 
@@ -25,9 +22,10 @@ namespace Ukiyo.Player
             {
                 if (pathFinder.target != null)
                 {   
-                    Debug.Log(pathFinder.gameObject.activeSelf);
                     if (!pathFinder.gameObject.activeSelf)
                     {
+                        // Set the position of the path finder before activation
+                        // Prevent agents from getting stuck on obstacles
                         pathFinder.gameObject.transform.position = pathFinder.target.transform.position;
                         pathFinder.gameObject.SetActive(true);
                     }
