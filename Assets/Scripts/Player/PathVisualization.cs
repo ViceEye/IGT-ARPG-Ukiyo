@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Ukiyo.Common.Singleton;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,10 +11,12 @@ namespace Ukiyo.Player
     {
         public GameObject player;
         public GameObject target;
+        public NavMeshPathStatus status;
         [SerializeField] 
         private LineRenderer _lineRenderer;
         [SerializeField] 
         private NavMeshAgent _navMeshAgent;
+        private NavMeshPath _navMeshPath;
         [Description("The lower number the more precise of path when be generated, but more calculation needs")]
         public float offset = 2.0f;
         
@@ -23,25 +26,39 @@ namespace Ukiyo.Player
             
             _lineRenderer = GetComponent<LineRenderer>();
             _navMeshAgent = GetComponent<NavMeshAgent>();
+            _navMeshPath = new NavMeshPath();
             
             _navMeshAgent.isStopped = true;
 
             _lineRenderer.startWidth = 0.15f;
             _lineRenderer.endWidth = 0.15f;
             _lineRenderer.positionCount = 0;
+            
+            gameObject.SetActive(false);
         }
 
         void Update()
         {
             if (null != target)
             {
-                _navMeshAgent.SetDestination(target.transform.position);
-            }
-            if (_navMeshAgent.hasPath)
-            {
-                DrawLine();
+                // Calculate ground point of player
+                RaycastHit hit = new RaycastHit();
+                // Run raycast from up to bottom to determine the ground point
+                // Avoid invalid path because the player is in the air
+                Physics.Raycast(player.transform.position + Vector3.up * 0.1f, Vector3.down, out hit, 10.0f);
+                
+                _navMeshAgent.CalculatePath(hit.point, _navMeshPath);
+                status = _navMeshPath.status;
+                
+                // Only draw line when path is not invalid.
+                if (status != NavMeshPathStatus.PathInvalid)
+                    DrawLine();
             }
         }
+
+        // Debug values
+        public List<Vector3> points = new List<Vector3>();
+        public List<Vector3> hits = new List<Vector3>();
 
         void DrawLine()
         {
@@ -49,13 +66,14 @@ namespace Ukiyo.Player
             if (offset == 0)
                 offset = 1.0f;
             
-            // Sync with player position
-            transform.position = player.transform.position;
+            // Sync with target position
+            _navMeshAgent.gameObject.transform.position = target.transform.position;
             
             // Corners calculated by nav mesh agent
-            var corners = _navMeshAgent.path.corners;
+            var corners = _navMeshPath.corners;
             // Points calculated for ground attachment
-            List<Vector3> points = new List<Vector3>();
+            // List<Vector3> points = new List<Vector3>();
+            points.Clear();
 
             // Init variables
             Vector3? startPoint = null;
@@ -108,7 +126,8 @@ namespace Ukiyo.Player
             }
 
             // Raycast list
-            List<Vector3> hits = new List<Vector3>();
+            //List<Vector3> hits = new List<Vector3>();
+            hits.Clear();
             foreach (var vector3 in points)
             {
                 RaycastHit hit = new RaycastHit();
@@ -122,13 +141,13 @@ namespace Ukiyo.Player
             _lineRenderer.positionCount = hits.Count;
             _lineRenderer.SetPosition(0, transform.position + Vector3.up * 0.1f);
 
-            if (_navMeshAgent.path.corners.Length < 2) return;
+            if (_navMeshPath.corners.Length < 2) return;
 
             for (int i = 1; i < hits.Count; i++)
             {
                 if (i == hits.Count - 1)
                 {
-                    _lineRenderer.SetPosition(i, target.transform.position + Vector3.up * 0.1f);
+                    _lineRenderer.SetPosition(i, player.transform.position + Vector3.up * 0.1f);
                     break;
                 }
                 _lineRenderer.SetPosition(i, hits[i] + Vector3.up * 0.1f);

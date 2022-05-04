@@ -18,17 +18,29 @@ namespace Ukiyo.Common.Camera
             cinemachineFreeLookPar.m_Lens.FieldOfView = 55;
         }
 
+        private bool pulled = false;
+
         private void Update()
         {
             if (!Application.isPlaying)
             {
                 cinemachineFreeLookPar.m_Lens.FieldOfView = 55;
             }
-            
-            if (Input.GetKeyDown(KeyCode.G))
+            else
             {
-                player.SetActive(true);
-                StartCoroutine(PullClose());
+                if (!player.activeSelf)
+                {
+                    if (Input.GetKeyDown(KeyCode.G))
+                    {
+                        player.SetActive(true);
+                        StartCoroutine(PullClose());
+                    }
+                }
+                else if (player.activeSelf && !pulled)
+                {
+                    pulled = true;
+                    StartCoroutine(PullClose());
+                }
             }
         }
 

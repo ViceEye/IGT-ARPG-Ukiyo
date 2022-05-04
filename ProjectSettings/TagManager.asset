@@ -15,6 +15,7 @@ TagManager:
   - SpawnPoint
   - Cinemachine
   - TestCamera
+  - PathFinder
   layers:
   - Default
   - TransparentFX
