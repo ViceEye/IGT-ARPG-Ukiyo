@@ -50,6 +50,7 @@ namespace Ukiyo.Common.Camera
                 {
                     pulled = true;
                     StartCoroutine(PullClose());
+                    inGamePopupMsg.RemoveText(popupMsg);
                 }
             }
         }
