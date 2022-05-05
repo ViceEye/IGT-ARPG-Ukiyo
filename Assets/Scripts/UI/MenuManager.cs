@@ -74,7 +74,7 @@ namespace Ukiyo.UI
             // While the operation to load the new scene is not complete, continue waiting and update progress percentage
             while (!async.isDone)
             {
-                Debug.Log(async.progress);
+                // Debug.Log(async.progress);
                 float progress = Mathf.Clamp01(async.progress / 0.9f);
                 sliderSync.Slider.value = progress;
                 

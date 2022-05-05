@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 1891895605726434566}
   - component: {fileID: 1891895605726434562}
   - component: {fileID: 1891895605726434575}
-  - component: {fileID: 1891895605726434561}
   m_Layer: 0
   m_Name: Orc
   m_TagString: Enemy
@@ -116,9 +115,13 @@ MonoBehaviour:
   gravity: -9.81
   verticalVelocity: {x: 0, y: 0, z: 0}
   isGrounded: 1
-  groundCheckRadius: 0.15
+  groundCheckRadius: 0.3
   agent: {fileID: 0}
   animator: {fileID: 0}
+  target: {fileID: 0}
+  spawnPosition: {x: 0, y: 0, z: 0}
+  hatredRadius: 10
+  spawnStopDistance: 1.55
   currentSpeed: 0
 --- !u!114 &1891895605726434575
 MonoBehaviour:
@@ -134,20 +137,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _initialState: {fileID: 0}
   _currentState: {fileID: 0}
---- !u!114 &1891895605726434561
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1891895605726434567}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8fba418f74b4cef8e6b3dfde2cb4b2f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _player: {fileID: 0}
-  _distance: 0
 --- !u!1 &1891895607022859590
 GameObject:
   m_ObjectHideFlags: 0
@@ -172,7 +161,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1891895607022859590}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1891895605726434565}

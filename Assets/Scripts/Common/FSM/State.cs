@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Ukiyo.Common.FSM
@@ -15,8 +16,30 @@ namespace Ukiyo.Common.FSM
         /// </summary>
         public List<Transition> Transitions = new List<Transition>();
 
+        public void AddTransition(Func<bool> transitionCondition, BaseState trueState, BaseState falseState)
+        {
+            Transition transition = CreateInstance<Transition>();
+            transition.Func = transitionCondition;
+            transition.TrueState = trueState;
+            transition.FalseState = falseState;
+            
+            Transitions.Add(transition);
+        }
+        
+        public void AddTransition(Decision transitionCondition, BaseState trueState, BaseState falseState)
+        {
+            Transition transition = CreateInstance<Transition>();
+            transition.Decision = transitionCondition;
+            transition.TrueState = trueState;
+            transition.FalseState = falseState;
+            
+            Transitions.Add(transition);
+        }
+
         public override void BeforeExecute(BaseStateMachine stateMachine)
         {
+            isExit = false;
+            
             foreach (var fsmAction in Actions)
                 fsmAction.BeforeExecute(stateMachine);
             

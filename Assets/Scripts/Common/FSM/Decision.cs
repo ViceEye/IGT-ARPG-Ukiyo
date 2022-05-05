@@ -10,6 +10,6 @@ namespace Ukiyo.Common.FSM
     /// </summary>
     public abstract class Decision : ScriptableObject
     {
-        public abstract bool Decide(BaseStateMachine state);
+        public abstract bool Decide(BaseStateMachine stateMachine);
     }
 }
