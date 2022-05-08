@@ -15,6 +15,7 @@ namespace Ukiyo.Common.Camera
         
         public float duration = 1.0f;
         public float defaultFov = 55.0f;
+        public float targetFov = 13.5f;
         
         private void Start()
         {
@@ -61,10 +62,10 @@ namespace Ukiyo.Common.Camera
             while (time < duration)
             {
                 time += Time.deltaTime;
-                cinemachineFreeLookPar.m_Lens.FieldOfView = Mathf.Lerp(defaultFov, 18, time / duration);
+                cinemachineFreeLookPar.m_Lens.FieldOfView = Mathf.Lerp(defaultFov, targetFov, time / duration);
                 yield return new WaitForEndOfFrame();
             }
-            cinemachineFreeLookPar.m_Lens.FieldOfView = 18;
+            cinemachineFreeLookPar.m_Lens.FieldOfView = targetFov;
         }
     }
 }
