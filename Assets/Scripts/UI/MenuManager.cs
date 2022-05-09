@@ -1,5 +1,6 @@
 using System.Collections;
 using Ukiyo.Common;
+using Ukiyo.UI.Interface;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 

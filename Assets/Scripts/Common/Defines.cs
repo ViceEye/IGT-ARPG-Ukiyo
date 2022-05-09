@@ -34,4 +34,28 @@
 
         #endregion
     }
+
+    public enum EnumEntityStatsType
+    {
+        CharacterKen,
+        Golem,
+        MonsterPlant,
+        Orc,
+        Skeleton,
+    }
+
+    public static class StatsDefine
+    {
+        public static readonly string STATS_PATH = "/Resources/SaveData/Stats/";
+        
+        public static readonly string CHARACTER_KEN_STATS = "CharacterKenStats.json";
+        
+        public static readonly string GOLEM_STATS = "GolemStats.json";
+        
+        public static readonly string MONSTER_PLANT_STATS = "MonsterPlantStats.json";
+        
+        public static readonly string ORC_STATS = "OrcStats.json";
+        
+        public static readonly string SKELETON_STATS = "SkeletonStats.json";
+    }
 }

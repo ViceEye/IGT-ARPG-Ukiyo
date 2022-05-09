@@ -153,3 +153,54 @@ MonoBehaviour:
     _capacity: 64
     _description: This should be the token for a quest.
     _type: 0
+  entityStats:
+  - path: CharacterKenStats.json
+    entityStat:
+      _health: 1000
+      _maxHealth: 1000
+      _damage: 10
+      _mana: 500
+      _maxMana: 500
+      _criticalRate: 10
+      _criticalDamage: 10
+      _exp: 0
+  - path: GolemStats.json
+    entityStat:
+      _health: 200
+      _maxHealth: 200
+      _damage: 50
+      _mana: 0
+      _maxMana: 0
+      _criticalRate: 0
+      _criticalDamage: 0
+      _exp: 100
+  - path: MonsterPlantStats.json
+    entityStat:
+      _health: 150
+      _maxHealth: 150
+      _damage: 30
+      _mana: 0
+      _maxMana: 0
+      _criticalRate: 0
+      _criticalDamage: 0
+      _exp: 80
+  - path: OrcStats.json
+    entityStat:
+      _health: 300
+      _maxHealth: 300
+      _damage: 30
+      _mana: 0
+      _maxMana: 0
+      _criticalRate: 0
+      _criticalDamage: 0
+      _exp: 120
+  - path: SkeletonStats.json
+    entityStat:
+      _health: 220
+      _maxHealth: 220
+      _damage: 28
+      _mana: 0
+      _maxMana: 0
+      _criticalRate: 0
+      _criticalDamage: 0
+      _exp: 80

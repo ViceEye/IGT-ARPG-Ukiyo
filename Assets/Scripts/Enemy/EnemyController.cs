@@ -1,5 +1,8 @@
 using System.Collections;
 using Ukiyo.Common;
+using Ukiyo.Common.Object;
+using Ukiyo.Serializable.Entity;
+using Ukiyo.UI.WorldSpace;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,7 +13,8 @@ namespace Ukiyo.Enemy
         [Header("Components")] public NavMeshAgent agent;
         public Animator animator;
 
-        [Header("Runtime Variables")] public GameObject target;
+        [Header("Runtime Variables")] 
+        public GameObject target;
         public Vector3 spawnPosition;
         public float hatredRadius;
         public float spawnStopDistance;
@@ -18,6 +22,11 @@ namespace Ukiyo.Enemy
 
         public float currentSpeed;
 
+        [Header("Attributes")] 
+        public EnumEntityStatsType entityType;
+        public EntityStat enemyStats;
+        public HealthBarComponent healthBar;
+        
         #region AnimationParameterIndex
 
         private static readonly int AttackState = Animator.StringToHash("AttackState");
@@ -34,6 +43,8 @@ namespace Ukiyo.Enemy
             agent = GetComponent<NavMeshAgent>();
             animator = GetComponentInChildren<Animator>();
             spawnPosition = transform.position;
+            enemyStats = ObjectPool.Instance.GetStatByType(entityType);
+            healthBar = GetComponentInChildren<HealthBarComponent>();
         }
 
         protected override void Update()
@@ -50,6 +61,12 @@ namespace Ukiyo.Enemy
             animator.SetFloat(XZ, currentSpeed);
             // If self is in dizzy state, pause the navigation
             agent.isStopped = animator.GetFloat(Dizzy) > -1.0f;
+        }
+
+        protected override void FixedUpdate()
+        {
+            base.FixedUpdate();
+            healthBar.SetHealth(enemyStats.Health, enemyStats.MaxHealth);
         }
 
         protected override void CheckGrounded()

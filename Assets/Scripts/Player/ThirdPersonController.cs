@@ -1,7 +1,11 @@
 ﻿using Cinemachine;
 using Ukiyo.Common;
+using Ukiyo.Common.Object;
 using Ukiyo.Framework;
+using Ukiyo.Serializable;
+using Ukiyo.Serializable.Entity;
 using Ukiyo.Skill;
+using Ukiyo.UI.Interface;
 using UnityEngine;
 
 namespace Ukiyo.Player
@@ -23,7 +27,8 @@ namespace Ukiyo.Player
         public float cameraYAxisSpeed = 2.0f;
         public float cameraXAxisSpeed = 300.0f;
 
-        [Header("Attributes")]
+        [Header("Attributes")] 
+        public EntityStat playerStats;
         public float walkSpeed = 6f;
         public float runSpeed = 10f;
         [SerializeField]
@@ -47,6 +52,7 @@ namespace Ukiyo.Player
             if (skillManager == null)
                 gameObject.AddComponent<SkillManager>();
             animationManager = gameObject.AddComponent<AnimationManager>();
+            playerStats = ObjectPool.Instance.GetStatByType(EnumEntityStatsType.CharacterKen);
         }
 
         protected override void Update()
@@ -65,6 +71,7 @@ namespace Ukiyo.Player
             base.FixedUpdate();
             if (animationManager.IsNotAttacking())
                 Movement();
+            SyncStats();
         }
         
         void CameraLock()
@@ -124,6 +131,18 @@ namespace Ukiyo.Player
         protected override void CheckGrounded()
         {
             isGrounded = Physics.Raycast(transform.position + Vector3.up * 0.1f, Vector3.down, out _, groundCheckRadius);
+        }
+
+        public void SyncStats()
+        {
+            PlayerHealthMana.Instance.SetValue(EnumHealthMana.Health, playerStats.Health, playerStats.MaxHealth);
+            PlayerHealthMana.Instance.SetValue(EnumHealthMana.Mana, playerStats.Mana, playerStats.MaxMana);
+            SavePlayerStats();
+        }
+
+        public void SavePlayerStats()
+        {
+            Utils.WriteIntoFile(playerStats, StatsDefine.STATS_PATH, StatsDefine.CHARACTER_KEN_STATS);
         }
 
         public void DoEquip()

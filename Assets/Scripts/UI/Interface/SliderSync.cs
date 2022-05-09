@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace Ukiyo.UI
+namespace Ukiyo.UI.Interface
 {
     [ExecuteInEditMode]
     public class SliderSync : MonoBehaviour

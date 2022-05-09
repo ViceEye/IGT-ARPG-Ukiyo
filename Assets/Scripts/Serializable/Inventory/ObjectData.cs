@@ -35,6 +35,18 @@ namespace Ukiyo.Serializable
         protected EnumInventoryItemType _type;
         public EnumInventoryItemType Type { get => _type; set => _type = value; }
 
+        public ObjectData() {}
+
+        public ObjectData(ObjectDataJson dataJson)
+        {
+            ID = dataJson.ID;
+            DisplayName = dataJson.DisplayName;
+            Icon = Utils.LoadResource<Sprite>(dataJson.Icon);
+            Capacity = dataJson.Capacity;
+            Description = dataJson.Description;
+            Type = dataJson.Type;
+        }
+        
         public void Init(ObjectData data)
         {
             ID = data._id;

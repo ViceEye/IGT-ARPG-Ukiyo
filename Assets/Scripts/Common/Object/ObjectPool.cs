@@ -3,20 +3,25 @@ using System.Collections.Generic;
 using LitJson;
 using Ukiyo.Common.Singleton;
 using Ukiyo.Serializable;
+using Ukiyo.Serializable.Entity;
 using UnityEngine;
 
 namespace Ukiyo.Common.Object
 {
     public class ObjectPool : MonoSingleton<ObjectPool>, IObject
     {
-        private string savaDataFilePath = "/Resources/SaveData/";
+        private string saveDataFilePath = "/Resources/SaveData/";
         private string itemsFileName = "EquipmentItemsData.json";
         
+        private string saveStatsFilePath = "/Resources/SaveData/Stats/";
+        
         private readonly Dictionary<int, ObjectData> itemPool = new Dictionary<int, ObjectData>();
+        private readonly Dictionary<EnumEntityStatsType, EntityStat> statsPool = new Dictionary<EnumEntityStatsType, EntityStat>();
 
         public void Init()
         {
             LoadItemsFromJsonFile();
+            LoadAllStatsFromJsonFile();
         }
 
         public void OnSpawn()
@@ -27,10 +32,12 @@ namespace Ukiyo.Common.Object
         {
         }
 
+        #region Item
+        
         // Load Al Items From Json File and cache to Item Pool
         private void LoadItemsFromJsonFile()
         {
-            string allItemsJson = Utils.GetJsonStr(savaDataFilePath, itemsFileName);
+            string allItemsJson = Utils.GetJsonStr(saveDataFilePath, itemsFileName);
 
             if (allItemsJson != "" && allItemsJson != "[{}]")
             {
@@ -38,15 +45,8 @@ namespace Ukiyo.Common.Object
 
                 foreach (JsonData jsonData in allItemsJsonData)
                 {
-                    ObjectData objectData = new ObjectData
-                    {
-                        ID = int.Parse(jsonData["ID"].ToString()),
-                        DisplayName = jsonData["DisplayName"].ToString(),
-                        Icon = Utils.LoadResource<Sprite>(jsonData["Icon"].ToString()),
-                        Capacity = int.Parse(jsonData["Capacity"].ToString()),
-                        Description = jsonData["Description"].ToString(),
-                        Type = (EnumInventoryItemType) int.Parse(jsonData["Type"].ToString())
-                    };
+                    ObjectDataJson objectDataJson = JsonMapper.ToObject<ObjectDataJson>(jsonData.ToJson());
+                    ObjectData objectData = new ObjectData(objectDataJson);
                     // Cache item to item pool
                     if (!itemPool.ContainsKey(objectData.ID))
                         itemPool.Add(objectData.ID, objectData);
@@ -62,6 +62,40 @@ namespace Ukiyo.Common.Object
             }
             return null;
         }
-        
+
+        #endregion
+
+
+        #region Stats
+
+        private void LoadAllStatsFromJsonFile()
+        {
+            string characterKenString = Utils.GetJsonStr(saveStatsFilePath, StatsDefine.CHARACTER_KEN_STATS);
+            statsPool.Add(EnumEntityStatsType.CharacterKen, JsonMapper.ToObject<EntityStat>(characterKenString));
+            
+            string golemString = Utils.GetJsonStr(saveStatsFilePath, StatsDefine.GOLEM_STATS);
+            statsPool.Add(EnumEntityStatsType.Golem, JsonMapper.ToObject<EntityStat>(golemString));
+            
+            string monsterPlantString = Utils.GetJsonStr(saveStatsFilePath, StatsDefine.MONSTER_PLANT_STATS);
+            statsPool.Add(EnumEntityStatsType.MonsterPlant, JsonMapper.ToObject<EntityStat>(monsterPlantString));
+
+            string orcString = Utils.GetJsonStr(saveStatsFilePath, StatsDefine.ORC_STATS);
+            statsPool.Add(EnumEntityStatsType.Orc, JsonMapper.ToObject<EntityStat>(orcString));
+
+            string skeletonString = Utils.GetJsonStr(saveStatsFilePath, StatsDefine.SKELETON_STATS);
+            statsPool.Add(EnumEntityStatsType.Skeleton, JsonMapper.ToObject<EntityStat>(skeletonString));
+            
+        }
+
+        public EntityStat GetStatByType(EnumEntityStatsType type)
+        {
+            if (statsPool.ContainsKey(type))
+            {
+                return statsPool[type];
+            }
+            return null;
+        }
+
+        #endregion
     }
 }

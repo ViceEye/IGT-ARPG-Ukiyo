@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using LitJson;
 using Ukiyo.Common;
+using Ukiyo.Serializable.Entity;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,21 +13,18 @@ namespace Ukiyo.Serializable
     public class DataEditor : MonoBehaviour
     {
         
-        private string savaDataFilePath = "/Resources/SaveData/";
+        private string saveDataFilePath = "/Resources/SaveData/";
         private string itemsFileName = "EquipmentItemsData.json";
+
+        private string saveStatsFilePath = "/Resources/SaveData/Stats/";
+        private string newStatsFileName = "/Entity.json";
         
         [SerializeField]
         private List<ObjectData> listItemDataSettings;
         [SerializeField]
         private List<ObjectData> previewListItemDataSettings;
-
-        [ContextMenu("Test")]
-        public void Test()
-        {
-            Utils.GetResourcePath(this);
-        }
         
-        [ContextMenu("GenerateItemJsonFile")]
+        [ContextMenu("Generate Item Json File")]
         private void GenerateItemJsonFile()
         {
             List<ObjectDataJson> listItemJsons = new List<ObjectDataJson>();
@@ -32,16 +32,16 @@ namespace Ukiyo.Serializable
             {
                 listItemJsons.Add(new ObjectDataJson(listItemDataSetting));
             }
-            Utils.WriteIntoFile(listItemJsons, savaDataFilePath, itemsFileName);
+            Utils.WriteIntoFile(listItemJsons, saveDataFilePath, itemsFileName);
             Debug.Log("Generated Item Json");
         }
 
-        [ContextMenu("LoadItemsFromJsonFile")]
+        [ContextMenu("Load Items From Json File")]
         private void LoadItemsFromJsonFile()
         {
             List<ObjectData> listItems = new List<ObjectData>();
 
-            string allItemsJson = Utils.GetJsonStr(savaDataFilePath, itemsFileName);
+            string allItemsJson = Utils.GetJsonStr(saveDataFilePath, itemsFileName);
             
             if (allItemsJson != "" && allItemsJson != "[{}]")
             {
@@ -49,25 +49,65 @@ namespace Ukiyo.Serializable
 
                 foreach (JsonData jsonData in allItemsJsonData)
                 {
-                    ObjectData objectData = new ObjectData
-                    {
-                        ID = int.Parse(jsonData["ID"].ToString()),
-                        DisplayName = jsonData["DisplayName"].ToString(),
-                        Icon = Utils.LoadResource<Sprite>(jsonData["Icon"].ToString()),
-                        Capacity = int.Parse(jsonData["Capacity"].ToString()),
-                        Description = jsonData["Description"].ToString(),
-                        Type = (EnumInventoryItemType) int.Parse(jsonData["Type"].ToString())
-                    };
+                    ObjectDataJson objectDataJson = JsonMapper.ToObject<ObjectDataJson>(jsonData.ToJson());
+                    ObjectData objectData = new ObjectData(objectDataJson);
                     listItems.Add(objectData);
                 }
 
                 previewListItemDataSettings = listItems;
             }
         }
+        
+        [SerializeField]
+        private List<EntityStatData> entityStats = new List<EntityStatData>();
+
+        [ContextMenu("Create A Entity Stats")]
+        private void CreateEntityStatsFile()
+        {
+            Utils.WriteIntoFile(new EntityStat(), saveStatsFilePath, newStatsFileName);
+        }
+
+        [ContextMenu("Load Local Entity Stats")]
+        private void LoadAllEntityStats()
+        {
+            entityStats.Clear();
+            DirectoryInfo directory = new DirectoryInfo(Application.dataPath + saveStatsFilePath);
+            foreach (var fileInfo in directory.GetFiles())
+            {
+                if (!fileInfo.Name.Contains(".meta") && fileInfo.Name.Contains(".json"))
+                {
+                    string str = Utils.GetJsonStr(saveStatsFilePath, fileInfo.Name);
+                    EntityStat stat = JsonMapper.ToObject<EntityStat>(str);
+                    entityStats.Add(new EntityStatData(fileInfo.Name, stat));
+                }
+            }
+        }
+
+        [ContextMenu("Save All Entity Stats")]
+        private void SaveAllEntityStats()
+        {
+            foreach (var entityStatData in entityStats)
+            {
+                Utils.WriteIntoFile(entityStatData.entityStat, saveStatsFilePath, entityStatData.path);
+            }
+        }
 
     }
 
-    class ObjectDataJson
+    [Serializable]
+    public class EntityStatData
+    {
+        public string path;
+        public EntityStat entityStat;
+
+        public EntityStatData(string str, EntityStat stat)
+        {
+            path = str;
+            entityStat = stat;
+        }
+    }
+
+    public class ObjectDataJson
     {
         public int ID { get; set; }
 
@@ -81,6 +121,8 @@ namespace Ukiyo.Serializable
 
         public EnumInventoryItemType Type { get; set; }
         
+        public ObjectDataJson() {}
+        
         public ObjectDataJson(ObjectData objectData)
         {
             ID = objectData.ID;
@@ -89,6 +131,16 @@ namespace Ukiyo.Serializable
             Capacity = objectData.Capacity;
             Description = objectData.Description;
             Type = objectData.Type;
+        }
+
+        public override string ToString()
+        {
+            return $"{nameof(ID)}: {ID}," +
+                   $" {nameof(DisplayName)}: {DisplayName}," +
+                   $" {nameof(Icon)}: {Icon}," +
+                   $" {nameof(Capacity)}: {Capacity}," +
+                   $" {nameof(Description)}: {Description}," +
+                   $" {nameof(Type)}: {Type}";
         }
     }
 #endif
