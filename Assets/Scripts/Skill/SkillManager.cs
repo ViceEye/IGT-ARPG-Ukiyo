@@ -8,15 +8,10 @@ namespace Ukiyo.Skill
 {
     public class SkillManager : MonoBehaviour, IAnimatorListener
     {
-        protected ThirdPersonController _controller;
+        public ThirdPersonController _controller;
         public Transform selfPosition;
         public Transform forwardPosition;
         public GameObject[] prefabs;
-        
-        public SkillManager(ThirdPersonController controller)
-        {
-            _controller = controller;
-        }
 
         public void PlaySkill(int number, bool self = false)
         {
@@ -33,12 +28,15 @@ namespace Ukiyo.Skill
             GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Enemy");
             foreach (GameObject obj in gameObjects)
             {
-                bool attack = CollisionDetector.Instance.FanShapedCheck(transform, obj.transform, 160, 2);
+                bool attack = CollisionDetector.Instance.FanShapedCheck(transform, obj.transform, 160, 4);
                 if (attack)
                 {
                     EnemyController enemy = obj.GetComponent<EnemyController>();
+                    Debug.Log(enemy);
                     if (enemy != null)
-                        enemy.TakeHit(gameObject);
+                    {
+                        enemy.TakeHit(_controller.gameObject, _controller.GetDamage());
+                    }
                 }
             }
         }

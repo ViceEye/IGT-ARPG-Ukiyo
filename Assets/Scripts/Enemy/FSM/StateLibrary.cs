@@ -58,6 +58,7 @@ namespace Ukiyo.Enemy.FSM
             var enemyController = stateMachine.GetComponent<EnemyController>();
 
             Actions.Add(stateMachine.GetAction<ChaseAction>());
+            Actions.Add(stateMachine.GetAction<AttackAction>());
 
             // Too complex to setup, so simplified
             // Transitions.Add(stateMachine.GetTransition<ChaseTransition>());

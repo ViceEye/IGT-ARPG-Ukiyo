@@ -1,3 +1,4 @@
+using System;
 using Ukiyo.Framework;
 using UnityEngine;
 
@@ -23,6 +24,8 @@ namespace Ukiyo.Player
         private static readonly int Jump = Animator.StringToHash("Jump");
         private static readonly int Equip = Animator.StringToHash("Equip");
         private static readonly int DoEquip = Animator.StringToHash("DoEquip");
+        private static readonly int Dead = Animator.StringToHash("Dead");
+        private static readonly int Hit = Animator.StringToHash("Hit");
 
         #endregion
         
@@ -121,6 +124,21 @@ namespace Ukiyo.Player
                 thirdPersonController.allowMovement = false;
                 animator.SetTrigger(DoEquip);
             }
+        }
+
+        public void PlayDead()
+        {
+            animator.SetBool(Dead, true);
+        }
+
+        public void PlayRespawn()
+        {
+            animator.SetBool(Dead, false);
+        }
+
+        public void TakeHit()
+        {
+            animator.SetTrigger(Hit);
         }
 
         #region Combo

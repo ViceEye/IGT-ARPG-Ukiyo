@@ -1,7 +1,8 @@
 using UnityEngine;
 
 namespace Ukiyo.Framework
-{public interface IAnimatorListener
+{
+    public interface IAnimatorListener
     {
         /// <summary>
         /// Recieve messages from the Animator State Machine Behaviours
@@ -17,7 +18,7 @@ namespace Ukiyo.Framework
         }
         */
     }
-    
+
     public class MessagesBehavior : StateMachineBehaviour
     {
         public MessageItem[] onEnterMessage; //Store messages to send it when Enter the animation State
@@ -100,7 +101,7 @@ namespace Ukiyo.Framework
                     break;
             }
         }
-        
+
         [System.Serializable]
         public class MessageItem
         {

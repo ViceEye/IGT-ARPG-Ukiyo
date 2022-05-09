@@ -4,7 +4,6 @@ using LitJson;
 using Ukiyo.Common.Singleton;
 using Ukiyo.Serializable;
 using Ukiyo.Serializable.Entity;
-using UnityEngine;
 
 namespace Ukiyo.Common.Object
 {
@@ -18,6 +17,9 @@ namespace Ukiyo.Common.Object
         private readonly Dictionary<int, ObjectData> itemPool = new Dictionary<int, ObjectData>();
         private readonly Dictionary<EnumEntityStatsType, EntityStat> statsPool = new Dictionary<EnumEntityStatsType, EntityStat>();
 
+        private Random _random = new Random();
+        public Random Random => _random;
+        
         public void Init()
         {
             LoadItemsFromJsonFile();

@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using Ukiyo.Common;
 using Ukiyo.Common.Object;
+using Ukiyo.Player;
 using Ukiyo.Serializable.Entity;
 using Ukiyo.UI.WorldSpace;
 using UnityEngine;
@@ -27,6 +29,11 @@ namespace Ukiyo.Enemy
         public EntityStat enemyStats;
         public HealthBarComponent healthBar;
         
+        public float attackHalfAngle = 80.0f;
+        public float attackRadius = 3.0f;
+        public float attackCooldown = 1.8f;
+        public long lastAttackTime;
+
         #region AnimationParameterIndex
 
         private static readonly int AttackState = Animator.StringToHash("AttackState");
@@ -42,6 +49,8 @@ namespace Ukiyo.Enemy
         {
             agent = GetComponent<NavMeshAgent>();
             animator = GetComponentInChildren<Animator>();
+            EnemyAnimationListener listener = animator.gameObject.AddComponent<EnemyAnimationListener>();
+            listener.enemyController = this;
             spawnPosition = transform.position;
             enemyStats = ObjectPool.Instance.GetStatByType(entityType);
             healthBar = GetComponentInChildren<HealthBarComponent>();
@@ -61,6 +70,11 @@ namespace Ukiyo.Enemy
             animator.SetFloat(XZ, currentSpeed);
             // If self is in dizzy state, pause the navigation
             agent.isStopped = animator.GetFloat(Dizzy) > -1.0f;
+
+            if (enemyStats.Health <= 0)
+            {
+                PlayDeath();
+            }
         }
 
         protected override void FixedUpdate()
@@ -73,6 +87,19 @@ namespace Ukiyo.Enemy
         {
             isGrounded = Physics.Raycast(transform.position + Vector3.up * 0.1f, Vector3.down, out _,
                 groundCheckRadius);
+        }
+
+        #region AnimationPlayers
+
+        public void ResetAttack()
+        {
+            animator.SetInteger(AttackState, 0);
+        }
+        
+        public void PlayAttack(int attackType)
+        {
+            lastAttackTime = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+            animator.SetInteger(AttackState, attackType);
         }
 
         public void SetDizzy(float dizzyTime)
@@ -92,15 +119,30 @@ namespace Ukiyo.Enemy
             animator.SetBool(Battle, battle);
         }
 
-        public void TakeHit(GameObject from)
+        public void TakeHit(GameObject from, double damage)
         {
+            target = from;
+            SetBattle(true);
+            ApplyDamage(damage);
             animator.SetTrigger(Hit);
         }
 
-        public void PlayDeath(GameObject from)
+        public void ApplyDamage(double damage)
+        {
+            if (enemyStats.Health - damage > 0)
+                enemyStats.Health -= damage;
+            else
+                enemyStats.Health = 0;
+        }
+
+        public void PlayDeath()
         {
             animator.SetTrigger(Die);
         }
+
+        #endregion
+
+        #region FsmFunctions
 
         public bool Ping()
         {
@@ -131,6 +173,21 @@ namespace Ukiyo.Enemy
             return Vector3.Distance(transform.position, spawnPosition);
         }
 
+        public void DamageInFront()
+        {
+            Debug.Log("Attack");
+            bool check = CollisionDetector.Instance.FanShapedCheck(transform, target.transform,
+                attackHalfAngle, attackRadius);
+            
+            Debug.Log(check);
+            if (check)
+            {
+                ThirdPersonController player = target.GetComponent<ThirdPersonController>();
+                player.ApplyDamage(enemyStats.Damage);
+            }
+        }
+
+        #endregion
     }
 
 }

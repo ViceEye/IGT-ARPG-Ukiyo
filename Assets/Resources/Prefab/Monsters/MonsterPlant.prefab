@@ -121,17 +121,24 @@ MonoBehaviour:
   animator: {fileID: 0}
   target: {fileID: 0}
   spawnPosition: {x: 0, y: 0, z: 0}
-  hatredRadius: 0
-  spawnStopDistance: 0
+  hatredRadius: 10
+  spawnStopDistance: 1.55
   currentSpeed: 0
-  entityType: 0
+  entityType: 2
   enemyStats:
     _health: 0
+    _maxHealth: 0
     _damage: 0
     _mana: 0
+    _maxMana: 0
     _criticalRate: 0
     _criticalDamage: 0
     _exp: 0
+  healthBar: {fileID: 0}
+  attackHalfAngle: 80
+  attackRadius: 1.5
+  attackCooldown: 1.8
+  lastAttackTime: 0
 --- !u!114 &1891895605726434575
 MonoBehaviour:
   m_ObjectHideFlags: 0

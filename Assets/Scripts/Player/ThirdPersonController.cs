@@ -34,6 +34,7 @@ namespace Ukiyo.Player
         [SerializeField]
         protected float targetAngle;
         public float TargetAngle => targetAngle;
+        public GameObject lockTarget;
         
         [Header("Sword")] 
         public bool isEquipped = true;
@@ -45,14 +46,21 @@ namespace Ukiyo.Player
         protected override void Start()
         {
             cameraTransform = GameObject.FindGameObjectWithTag("MainCamera").transform;
+            
             cinemachineFreeLookPar = GameObject.FindGameObjectWithTag("Cinemachine").GetComponent<CinemachineFreeLook>();
             cinemachineFreeLookPar.Follow = transform;
             cinemachineFreeLookPar.LookAt = lookingAt;
+            
             skillManager = gameObject.GetComponent<SkillManager>();
             if (skillManager == null)
                 gameObject.AddComponent<SkillManager>();
+            skillManager._controller = this;
+            
             animationManager = gameObject.AddComponent<AnimationManager>();
             playerStats = ObjectPool.Instance.GetStatByType(EnumEntityStatsType.CharacterKen);
+            
+            GameObject spawnPoint = GameObject.FindWithTag("SpawnPoint");
+            transform.position = spawnPoint.transform.position;
         }
 
         protected override void Update()
@@ -133,6 +141,27 @@ namespace Ukiyo.Player
             isGrounded = Physics.Raycast(transform.position + Vector3.up * 0.1f, Vector3.down, out _, groundCheckRadius);
         }
 
+        public void ApplyDamage(double damage)
+        {
+            animationManager.TakeHit();
+            if (playerStats.Health - damage > 0)
+                playerStats.Health -= damage;
+            else
+                playerStats.Health = 0;
+        }
+
+        public double GetDamage()
+        {
+            int randomInt = ObjectPool.Instance.Random.Next(0, 100);
+            double damage = playerStats.Damage;
+            if (randomInt >= playerStats.CriticalRate)
+            {
+                damage += playerStats.CriticalDamage;
+            }
+
+            return damage;
+        }
+        
         public void SyncStats()
         {
             PlayerHealthMana.Instance.SetValue(EnumHealthMana.Health, playerStats.Health, playerStats.MaxHealth);

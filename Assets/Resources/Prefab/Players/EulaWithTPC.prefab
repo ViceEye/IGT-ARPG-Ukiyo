@@ -3510,7 +3510,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6680276930566014797
 Transform:
   m_ObjectHideFlags: 0
@@ -3599,9 +3599,19 @@ MonoBehaviour:
   turnSmoothTime: 0.1
   cameraYAxisSpeed: 2
   cameraXAxisSpeed: 300
+  playerStats:
+    _health: 0
+    _maxHealth: 0
+    _damage: 0
+    _mana: 0
+    _maxMana: 0
+    _criticalRate: 0
+    _criticalDamage: 0
+    _exp: 0
   walkSpeed: 6
   runSpeed: 10
   targetAngle: 0
+  lockTarget: {fileID: 0}
   isEquipped: 1
   backSword: {fileID: 0}
   handSword: {fileID: 0}
