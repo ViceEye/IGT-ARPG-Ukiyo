@@ -71,6 +71,16 @@ namespace Ukiyo.Skill
                     PlaySkill((int) value);
                     break;
                 }
+                case "PlayTrail":
+                {
+                    _controller.activeTrail = true;
+                    break;
+                }
+                case "EndTrail":
+                {
+                    _controller.activeTrail = false;
+                    break;
+                }
             }
         }
     }

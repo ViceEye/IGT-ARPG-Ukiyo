@@ -205,13 +205,25 @@ MonoBehaviour:
   turnSmoothTime: 0.1
   cameraYAxisSpeed: 2
   cameraXAxisSpeed: 300
+  playerStats:
+    _health: 0
+    _maxHealth: 0
+    _damage: 0
+    _mana: 0
+    _maxMana: 0
+    _criticalRate: 0
+    _criticalDamage: 0
+    _exp: 0
   walkSpeed: 4
   runSpeed: 8
   targetAngle: 0
+  lockTarget: {fileID: 0}
+  allowMovement: 0
   isEquipped: 1
   backSword: {fileID: 9094432428717592250}
   handSword: {fileID: 5148467720266382847}
-  allowMovement: 0
+  swordTrail: {fileID: 3516543208404688625}
+  activeTrail: 0
 --- !u!114 &125886110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,6 +236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72d381e17613532468185f4d5cf52cf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _controller: {fileID: 0}
   selfPosition: {fileID: 0}
   forwardPosition: {fileID: 0}
   prefabs: []
@@ -267,7 +280,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 22, guid: ebba67da0a474394bbbe4ac1ae955eaa, type: 3}
       propertyPath: m_Name
-      value: Ken
+      value: Sword_Ken
       objectReference: {fileID: 0}
     - target: {fileID: 22, guid: ebba67da0a474394bbbe4ac1ae955eaa, type: 3}
       propertyPath: m_IsActive
@@ -419,6 +432,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7397877756326091197, guid: a523b6a9e1e982748a503afcd3327958,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8302401256556799076, guid: a523b6a9e1e982748a503afcd3327958,
         type: 3}
       propertyPath: m_Name
@@ -439,6 +457,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6943794694034317508}
     m_Modifications:
+    - target: {fileID: 1009394670565721262, guid: a523b6a9e1e982748a503afcd3327958,
+        type: 3}
+      propertyPath: MyColor.b
+      value: 0.98823535
+      objectReference: {fileID: 0}
+    - target: {fileID: 1009394670565721262, guid: a523b6a9e1e982748a503afcd3327958,
+        type: 3}
+      propertyPath: MyColor.g
+      value: 0.83921576
+      objectReference: {fileID: 0}
+    - target: {fileID: 1009394670565721262, guid: a523b6a9e1e982748a503afcd3327958,
+        type: 3}
+      propertyPath: MyColor.r
+      value: 0.49803925
+      objectReference: {fileID: 0}
     - target: {fileID: 4234152949288914704, guid: a523b6a9e1e982748a503afcd3327958,
         type: 3}
       propertyPath: m_RootOrder
@@ -504,6 +537,12 @@ PrefabInstance:
 --- !u!4 &5685997355791378855 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4234152949288914704, guid: a523b6a9e1e982748a503afcd3327958,
+    type: 3}
+  m_PrefabInstance: {fileID: 8370507069354714807}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3516543208404688625 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4965014896267671622, guid: a523b6a9e1e982748a503afcd3327958,
     type: 3}
   m_PrefabInstance: {fileID: 8370507069354714807}
   m_PrefabAsset: {fileID: 0}

@@ -35,13 +35,14 @@ namespace Ukiyo.Player
         protected float targetAngle;
         public float TargetAngle => targetAngle;
         public GameObject lockTarget;
+        public bool allowMovement;
         
         [Header("Sword")] 
         public bool isEquipped = true;
         public GameObject backSword;
         public GameObject handSword;
-
-        public bool allowMovement;
+        public GameObject swordTrail;
+        public bool activeTrail = false;
         
         protected override void Start()
         {
@@ -191,6 +192,7 @@ namespace Ukiyo.Player
                 handSword.SetActive(false);
                 backSword.SetActive(true);
             }
+            swordTrail.SetActive(activeTrail);
         }
 
         public void OnAnimatorBehaviourMessage(string message, object value)
