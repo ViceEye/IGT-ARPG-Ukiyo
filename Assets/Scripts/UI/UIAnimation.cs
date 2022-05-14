@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Ukiyo.Common;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Ukiyo.UI
@@ -35,7 +37,23 @@ namespace Ukiyo.UI
         public bool autoPlay;
         public List<UIAnimationSet> ListUIAnimationSet;
 
-        private void Start()
+        #region UiAnimationEvents
+
+        [Serializable]
+        public class UIAnimationEvent : UnityEvent{ }
+
+        public UIAnimationEvent OnOpened;
+        public UIAnimationEvent OnClosed;
+        
+        IEnumerator Invoke(UIAnimationEvent uiEvent, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            uiEvent?.Invoke();
+        }
+
+        #endregion
+
+        private void OnEnable()
         {
             if (autoPlay)
                 PlayOpenAnimation();
@@ -124,6 +142,7 @@ namespace Ukiyo.UI
                         break;
                     }
                 }
+                StartCoroutine(Invoke(OnOpened, uiAnimationSet.duration + uiAnimationSet.openDelay));
             }
         }
 
@@ -156,6 +175,7 @@ namespace Ukiyo.UI
                             uiAnimationSet.duration, uiAnimationSet.closeDelay));
                         break;
                 }
+                StartCoroutine(Invoke(OnClosed, uiAnimationSet.duration + uiAnimationSet.closeDelay));
             }
         }
     }
