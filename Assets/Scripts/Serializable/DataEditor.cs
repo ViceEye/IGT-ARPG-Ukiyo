@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using LitJson;
+using Task;
 using Ukiyo.Common;
 using Ukiyo.Serializable.Entity;
 using UnityEditor;
@@ -12,12 +13,10 @@ namespace Ukiyo.Serializable
 #if UNITY_EDITOR
     public class DataEditor : MonoBehaviour
     {
+        #region Item
         
         private string saveDataFilePath = "/Resources/SaveData/";
         private string itemsFileName = "EquipmentItemsData.json";
-
-        private string saveStatsFilePath = "/Resources/SaveData/Stats/";
-        private string newStatsFileName = "/Entity.json";
         
         [SerializeField]
         private List<ObjectData> listItemDataSettings;
@@ -57,6 +56,13 @@ namespace Ukiyo.Serializable
                 previewListItemDataSettings = listItems;
             }
         }
+
+        #endregion
+
+        #region Entity
+        
+        private string saveStatsFilePath = "/Resources/SaveData/Stats/";
+        private string newStatsFileName = "/Entity.json";
         
         [SerializeField]
         private List<EntityStatData> entityStats = new List<EntityStatData>();
@@ -92,8 +98,48 @@ namespace Ukiyo.Serializable
             }
         }
 
+        #endregion
+
+        #region Task
+        
+        [SerializeField]
+        private List<TaskData> listTaskDataSettings;
+        [SerializeField]
+        private List<TaskData> previewListTaskDataSettings;
+        
+        private string saveTasksFilePath = "/Resources/SaveData/Tasks/";
+        private string tasksDataFileName = "TasksData.json";
+
+        [ContextMenu("Generate Tasks Json File")]
+        private void GenerateTaskJsonFile()
+        {
+            Debug.Log(tasksDataFileName);
+            Utils.WriteIntoFile(listTaskDataSettings, saveTasksFilePath, tasksDataFileName);
+            Debug.Log("Generated Task Json");
+        }
+        
+
+        [ContextMenu("Load Tasks From Json File")]
+        private void LoadTasksFromJsonFile()
+        {
+            string allItemsJson = Utils.GetJsonStr(saveTasksFilePath, tasksDataFileName);
+            
+            if (allItemsJson != "" && allItemsJson != "[{}]")
+            {
+                JsonData allItemsJsonData = JsonMapper.ToObject(allItemsJson);
+
+                foreach (JsonData jsonData in allItemsJsonData)
+                {
+                    TaskData taskData = JsonMapper.ToObject<TaskData>(jsonData.ToJson());
+                    previewListTaskDataSettings.Add(taskData);
+                }
+            }
+        }
+        #endregion
     }
 
+    #region JsonDataObject
+    
     [Serializable]
     public class EntityStatData
     {
@@ -143,5 +189,7 @@ namespace Ukiyo.Serializable
                    $" {nameof(Type)}: {Type}";
         }
     }
+    
+    #endregion
 #endif
 }

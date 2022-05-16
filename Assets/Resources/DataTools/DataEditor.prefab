@@ -204,3 +204,25 @@ MonoBehaviour:
       _criticalRate: 0
       _criticalDamage: 0
       _exp: 80
+  listTaskDataSettings:
+  - _id: 1
+    _type: 0
+    _progress: 0
+    _target: 1
+    _detail: Barrel
+  - _id: 2
+    _type: 3
+    _progress: 0
+    _target: 1
+    _detail: Orc
+  previewListTaskDataSettings:
+  - _id: 1
+    _type: 0
+    _progress: 0
+    _target: 1
+    _detail: Barrel
+  - _id: 2
+    _type: 3
+    _progress: 0
+    _target: 1
+    _detail: Orc

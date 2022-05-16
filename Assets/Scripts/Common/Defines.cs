@@ -58,4 +58,12 @@
         
         public static readonly string SKELETON_STATS = "SkeletonStats.json";
     }
+    
+    public enum EnumTaskType
+    {
+        Chat,
+        Move,
+        Collection,
+        Elimination,
+    }
 }
