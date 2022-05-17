@@ -6,25 +6,17 @@ using UnityEngine.UI;
 
 public class InGamePopupMsg : MonoBehaviour
 {
+    public static InGamePopupMsg Instance;
+    
     public Text msgText;
     public UIAnimation msgAnimation;
     public List<PopupMsg> cachedPopupMessages = new List<PopupMsg>();
 
     void Start()
     {
+        if (Instance == null)
+            Instance = this;
         msgText.gameObject.SetActive(false);
-    }
-
-    [ContextMenu("Add A Msg")]
-    public void Test()
-    {
-        AddText("Test Msg to show", -1.0f);
-    }
-    
-    [ContextMenu("Test Remove Msg")]
-    public void TestRemove()
-    {
-        RemoveText("Test Msg to show");
     }
 
     #region CRUD

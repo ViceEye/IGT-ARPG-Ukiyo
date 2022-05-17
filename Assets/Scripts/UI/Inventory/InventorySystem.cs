@@ -20,6 +20,7 @@ namespace Ukiyo.UI.Inventory
         
         protected InventoryGrid _gridObj;
         private CanvasGroup _canvasGroup;
+        private UIAnimation _uiAnimation;
 
         // Panel Button Settings
         [Header("Panel Button Settings")]
@@ -53,6 +54,7 @@ namespace Ukiyo.UI.Inventory
             // Register Components
             _gridObj = GetComponentInChildren<InventoryGrid>();
             _canvasGroup = GetComponent<CanvasGroup>();
+            _uiAnimation = GetComponent<UIAnimation>();
             
             // Initialization
             if (_gridObj == null)
@@ -145,13 +147,13 @@ namespace Ukiyo.UI.Inventory
             {
                 if (_canvasGroup.alpha >= 1.0f)
                 {
-                    _canvasGroup.alpha = 0;
+                    _uiAnimation.PlayCloseAnimation();
                     DeactivateAllItems();
                     Cursor.visible = false;
                 }
                 else
                 {
-                    _canvasGroup.alpha = 1.0f;
+                    _uiAnimation.PlayOpenAnimation();
                     UpdatePanel();
                     Cursor.visible = true;
                 }

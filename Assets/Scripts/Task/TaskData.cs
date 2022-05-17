@@ -24,7 +24,16 @@ namespace Task
         public int Target { get => _target; set => _target = value; }
 
         [SerializeField] 
+        protected string _nav;
+        public string Nav { get => _nav; set => _nav = value; }
+
+        [SerializeField] 
         protected string _detail;
         public string Detail { get => _detail; set => _detail = value; }
+
+        public override string ToString()
+        {
+            return $"{nameof(ID)}: {ID}, {nameof(Type)}: {Type}, {nameof(Progress)}: {Progress}, {nameof(Target)}: {Target}, {nameof(Nav)}: {Nav}, {nameof(Detail)}: {Detail}";
+        }
     }
 }

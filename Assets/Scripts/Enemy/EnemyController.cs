@@ -34,6 +34,13 @@ namespace Ukiyo.Enemy
         public float attackCooldown = 1.8f;
         public long lastAttackTime;
 
+        #region Event Delegates
+        
+        public delegate void OnEnemyDeathEvent(EnumEntityStatsType type);
+        public static event OnEnemyDeathEvent OnDeathEvent;
+
+        #endregion
+
         #region AnimationParameterIndex
 
         private static readonly int AttackState = Animator.StringToHash("AttackState");
@@ -74,6 +81,7 @@ namespace Ukiyo.Enemy
             if (enemyStats.Health <= 0)
             {
                 PlayDeath();
+                OnDeathEvent?.Invoke(entityType);
             }
         }
 

@@ -9,8 +9,6 @@ namespace Ukiyo.Common.Camera
     {
         public CinemachineFreeLook cinemachineFreeLookPar;
         public GameObject player;
-
-        public InGamePopupMsg inGamePopupMsg;
         public InGamePopupMsg.PopupMsg popupMsg = new InGamePopupMsg.PopupMsg("Press G to spawn", -1.0f);
         
         public float duration = 1.0f;
@@ -35,23 +33,23 @@ namespace Ukiyo.Common.Camera
             {
                 if (!player.activeSelf)
                 {
-                    if (inGamePopupMsg.CheckRemainingTime(popupMsg) > -1.0f)
+                    if (InGamePopupMsg.Instance.CheckRemainingTime(popupMsg) > -1.0f)
                     {
-                        inGamePopupMsg.AddText(popupMsg);
+                        InGamePopupMsg.Instance.AddText(popupMsg);
                     }
                     if (Input.GetKeyDown(KeyCode.G))
                     {
                         player.SetActive(true);
                         Cursor.visible = false;
                         StartCoroutine(PullClose());
-                        inGamePopupMsg.RemoveText(popupMsg);
+                        InGamePopupMsg.Instance.RemoveText(popupMsg);
                     }
                 }
                 else if (player.activeSelf && !pulled)
                 {
                     pulled = true;
                     StartCoroutine(PullClose());
-                    inGamePopupMsg.RemoveText(popupMsg);
+                    InGamePopupMsg.Instance.RemoveText(popupMsg);
                 }
             }
         }

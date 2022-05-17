@@ -12,9 +12,7 @@ namespace Ukiyo.UI.Interface
         private void Start()
         {
             if (Instance == null)
-            {
                 Instance = this;
-            }
         }
 
         public List<Image> _cdMasks = new List<Image>();
