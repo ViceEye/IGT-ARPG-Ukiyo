@@ -170,6 +170,7 @@ namespace Ukiyo.Serializable
         
         public ObjectDataJson() {}
         
+#if UNITY_EDITOR
         public ObjectDataJson(ObjectData objectData)
         {
             ID = objectData.ID;
@@ -179,6 +180,7 @@ namespace Ukiyo.Serializable
             Description = objectData.Description;
             Type = objectData.Type;
         }
+#endif
 
         public override string ToString()
         {
