@@ -16,6 +16,7 @@ TagManager:
   - Cinemachine
   - TestCamera
   - PathFinder
+  - NavPoint
   layers:
   - Default
   - TransparentFX

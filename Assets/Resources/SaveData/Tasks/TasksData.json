@@ -1,1 +1,1 @@
-[{"ID":1,"Type":0,"Progress":0,"Target":1,"Nav":"","Detail":"Barrel"},{"ID":2,"Type":3,"Progress":0,"Target":1,"Nav":"","Detail":"Orc"}]
+[{"ID":1,"Type":3,"Progress":0,"Target":2,"Nav":"Orc","Detail":"Orc"},{"ID":2,"Type":3,"Progress":0,"Target":2,"Nav":"Skeleton","Detail":"Skeleton"},{"ID":3,"Type":3,"Progress":0,"Target":2,"Nav":"Golem","Detail":"Golem"}]

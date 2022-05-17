@@ -41,7 +41,7 @@ namespace Ukiyo.Player
 
         void Update()
         {
-            if (null != target)
+            if (null != target && null != player)
             {
                 // Calculate ground point of player
                 RaycastHit hit = new RaycastHit();

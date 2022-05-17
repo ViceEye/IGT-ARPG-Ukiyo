@@ -138,6 +138,7 @@ namespace Ukiyo.Serializable
         #endregion
     }
 
+#endif
     #region JsonDataObject
     
     [Serializable]
@@ -191,5 +192,4 @@ namespace Ukiyo.Serializable
     }
     
     #endregion
-#endif
 }

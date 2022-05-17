@@ -245,7 +245,6 @@ namespace Ukiyo.Common
             str = Unicode2String(str);
             string filePath = Application.dataPath + savaDataFilePath;
 
-            Debug.Log(filePath + fileName);
             File.WriteAllText(filePath + fileName, str);
         }
 

@@ -4,6 +4,8 @@ using System.Linq;
 using LitJson;
 using Ukiyo.Common;
 using Ukiyo.Enemy;
+using Ukiyo.Player;
+using Ukiyo.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,6 +23,13 @@ namespace Task
         public static TaskManager Instance;
 
         public List<Text> tasksUI;
+        public UIAnimation hudComponent;
+        public UIAnimation panelComponent;
+
+        public GameObject taskSlotList;
+        public GameObject taskSlotObj;
+        
+        private bool hudOn = true;
         [SerializeField]
         protected List<TaskData> onGoingTasks;
 
@@ -28,12 +37,63 @@ namespace Task
         {
             if (Instance == null)
                 Instance = this;
+            
             LoadTasksFromJsonFile();
+            
             EnemyController.OnDeathEvent += ListenToEnemyDeath;
             ListenToEnemyDeath(EnumEntityStatsType.Orc);
+            
+            hudComponent.PlayOpenAnimation();
+            panelComponent.PlayCloseAnimation();
+            
+            SyncPanelContent();
         }
         
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                if (hudOn)
+                {
+                    hudComponent.PlayCloseAnimation();
+                    panelComponent.PlayOpenAnimation();
+                    hudOn = false;
+                }
+                else
+                {
+                    hudComponent.PlayOpenAnimation();
+                    panelComponent.PlayCloseAnimation();
+                    hudOn = true;
+                }
+            }
+        }
+
         private void FixedUpdate()
+        {
+            SyncHudContent();
+        }
+        
+        #region Task APIs
+
+        private void SyncPanelContent()
+        {
+            for (var i = 0; i < onGoingTasks.Count; i++)
+            {
+                TaskData task = onGoingTasks[i];
+                GameObject go = Instantiate(taskSlotObj, taskSlotList.transform);
+                
+                TaskButton taskButton = go.GetComponent<TaskButton>();
+                taskButton.TaskData = task;
+                taskButton.OnNavigationEvent += ListenToNavButton;
+                
+                Text text = go.GetComponentInChildren<Text>();
+                text.text = FormatTaskString(task);
+
+                go.name = "Task-" + (i + 1);
+            }
+        }
+
+        private void SyncHudContent()
         {
             if (onGoingTasks.Count < 3)
             {
@@ -48,25 +108,26 @@ namespace Task
             for (var i = 0; i < onGoingTasks.Count; i++)
             {
                 TaskData taskData = onGoingTasks[i];
-                tasksUI[i].text = formatTaskString(taskData);
+                if (taskData.Progress < taskData.Target)
+                    tasksUI[i].text = FormatTaskString(taskData);
             }
         }
-
-        private string formatTaskString(TaskData taskData)
+        
+        private string FormatTaskString(TaskData taskData)
         {
             // 1 > Elimination
             // Kill Orc - 5/5
             string baseStr = "{%id} > {%type} \n {%typeDetail} {%detail} - {%progress}/{%target}";
             baseStr = baseStr.Replace("{%id}", taskData.ID.ToString());
             baseStr = baseStr.Replace("{%type}", taskData.Type.ToString());
-            baseStr = baseStr.Replace("{%typeDetail}", getDetailByType(taskData.Type));
+            baseStr = baseStr.Replace("{%typeDetail}", GetDetailByType(taskData.Type));
             baseStr = baseStr.Replace("{%detail}", taskData.Detail);
             baseStr = baseStr.Replace("{%progress}", taskData.Progress.ToString());
             baseStr = baseStr.Replace("{%target}", taskData.Target.ToString());
             return baseStr;
         }
 
-        private string getDetailByType(EnumTaskType type)
+        private string GetDetailByType(EnumTaskType type)
         {
             switch (type)
             {
@@ -101,13 +162,8 @@ namespace Task
                     tasks.Add(task);
                     continue;
                 }
-                if (includeContains)
-                {
-                    if (task.Detail.Contains(detail))
-                    {
-                        tasks.Add(task);
-                    }
-                }
+                if (includeContains && task.Detail.Contains(detail))
+                    tasks.Add(task);
             }
             return tasks;
         }
@@ -120,6 +176,10 @@ namespace Task
                     tasks.Add(task);
             return tasks;
         }
+        
+        #endregion
+
+        #region Listener
 
         private void ListenToEnemyDeath(EnumEntityStatsType type)
         {
@@ -129,6 +189,20 @@ namespace Task
                         if (task.Detail.Equals(nameof(type)))
                             task.Progress += 1;
         }
+
+        private void ListenToNavButton(string nav)
+        {
+            foreach (var o in GameObject.FindGameObjectsWithTag("NavPoint"))
+            {
+                if (nav.Equals(o.name))
+                {
+                    PathManager.Instance.GetAvailableFinder().target = o;
+                    PathManager.Instance.GetAvailableFinder().player = GameObject.FindWithTag("Player");
+                }
+            }
+        }
+
+        #endregion
 
         private void LoadTasksFromJsonFile()
         {

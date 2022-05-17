@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 1891895605726434563}
   - component: {fileID: 1891895605726434566}
   - component: {fileID: 1891895605726434562}
-  - component: {fileID: 1891895605726434575}
   - component: {fileID: 435898247}
   m_Layer: 0
   m_Name: Orc
@@ -137,23 +136,9 @@ MonoBehaviour:
     _exp: 0
   healthBar: {fileID: 0}
   attackHalfAngle: 80
-  attackRadius: 1.5
+  attackRadius: 5
   attackCooldown: 5
   lastAttackTime: 0
---- !u!114 &1891895605726434575
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1891895605726434567}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f48cf09b95349a082ba9dc231047b50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _initialState: {fileID: 0}
-  _currentState: {fileID: 0}
 --- !u!114 &435898247
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -136,7 +136,7 @@ MonoBehaviour:
     _exp: 0
   healthBar: {fileID: 0}
   attackHalfAngle: 80
-  attackRadius: 1.5
+  attackRadius: 5
   attackCooldown: 1.8
   lastAttackTime: 0
 --- !u!114 &1891895605726434575

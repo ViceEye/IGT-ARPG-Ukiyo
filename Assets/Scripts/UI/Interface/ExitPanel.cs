@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Ukiyo.UI.Interface
 {
@@ -7,12 +8,15 @@ namespace Ukiyo.UI.Interface
     {
         public UIAnimation _inGameAnimation;
         public CanvasGroup _canvasGroup;
+        public GraphicRaycaster _graphicRaycaster;
         public UIAnimation _animation;
         
         private void Start()
         {
             _canvasGroup = GetComponent<CanvasGroup>();
             _animation = GetComponent<UIAnimation>();
+            _graphicRaycaster = GetComponent<GraphicRaycaster>();
+            _graphicRaycaster.enabled = false;
         }
 
         private void Update()
@@ -30,12 +34,14 @@ namespace Ukiyo.UI.Interface
         {
             _animation.PlayOpenAnimation();
             _inGameAnimation.PlayCloseAnimation();
+            _graphicRaycaster.enabled = true;
         }
 
         public void Close()
         {
             _animation.PlayCloseAnimation();
             _inGameAnimation.PlayOpenAnimation();
+            _graphicRaycaster.enabled = false;
         }
         
         public void ExitGame()
