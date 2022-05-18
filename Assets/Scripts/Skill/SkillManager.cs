@@ -15,11 +15,28 @@ namespace Ukiyo.Skill
 
         public void PlaySkill(int number, bool self = false)
         {
-            if (prefabs.Length <= number)
+            if (prefabs.Length <= number + 1)
             {
-                Vector3 direction = Quaternion.Euler(0f, _controller.TargetAngle, 0f) * Vector3.forward;
-                Instantiate(prefabs[number], self ? selfPosition.position : forwardPosition.position,
-                    Quaternion.Euler(direction), null);
+                GameObject go = Instantiate(prefabs[number], transform);
+                go.transform.position = selfPosition.position;
+                go.transform.rotation = selfPosition.rotation;
+                SkillAttack();
+            }
+        }
+
+        public void SkillAttack()
+        {
+            GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Enemy");
+            foreach (GameObject obj in gameObjects)
+            {
+                bool attack = CollisionDetector.Instance.FanShapedCheck(transform, obj.transform, 80, 18);
+                if (attack)
+                {
+                    EnemyController enemy = obj.GetComponent<EnemyController>();
+                    if (enemy != null)
+                        // Skill deals double damage
+                        enemy.TakeHit(_controller.gameObject, _controller.GetDamage() * 2);
+                }
             }
         }
 
@@ -57,6 +74,7 @@ namespace Ukiyo.Skill
 
         public void OnAnimatorBehaviourMessage(string message, object value)
         {
+            Debug.Log(message);
             switch (message)
             {
                 case "DoAttack":
@@ -64,7 +82,7 @@ namespace Ukiyo.Skill
                     DoAttack();
                     break;
                 }
-                case "PlayerSkill":
+                case "PlaySkill":
                 {
                     PlaySkill((int) value);
                     break;

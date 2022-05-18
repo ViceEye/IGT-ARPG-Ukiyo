@@ -27,6 +27,7 @@ namespace Ukiyo.Player
         private static readonly int DoEquip = Animator.StringToHash("DoEquip");
         private static readonly int Dead = Animator.StringToHash("Dead");
         private static readonly int Hit = Animator.StringToHash("Hit");
+        private static readonly int CastSkill = Animator.StringToHash("CastSkill");
 
         #endregion
         
@@ -64,6 +65,10 @@ namespace Ukiyo.Player
             // Equip/Un-Equip
             if (Input.GetKeyUp(KeyCode.Q))
                 TryEquip();
+            
+            // Cast Skill
+            if (Input.GetAxisRaw("Fire2") > 0)
+                DoCastSkill();
 
             if (thirdPersonController.IsGrounded)
                 animator.SetBool(IsGrounded, true);
@@ -106,7 +111,6 @@ namespace Ukiyo.Player
 
         public void OnAnimatorBehaviourMessage(string message, object value)
         {
-            Debug.Log(message);
             switch (message)
             {
                 case "BeginCombo":
@@ -149,6 +153,17 @@ namespace Ukiyo.Player
                     animator.SetBool(Equip, thirdPersonController.isEquipped);
                     break;
                 }
+                case "PlaySkill":
+                {
+                    thirdPersonController.playerStats.Mana -= 100;
+                    animator.SetBool(CastSkill, false);
+                    break;
+                }
+                case "EndSkill":
+                {
+                    thirdPersonController.allowMovement = true;
+                    break;
+                }
             }
         }
 
@@ -169,6 +184,16 @@ namespace Ukiyo.Player
                 thirdPersonController.allowMovement = false;
                 animator.SetTrigger(DoEquip);
             }
+        }
+
+        public void DoCastSkill()
+        {
+            thirdPersonController.allowMovement = false;
+            // Each cast of skill cost 100 mana, notify player when no mana
+            if (thirdPersonController.playerStats.Mana >= 100)
+                animator.SetBool(CastSkill, true);
+            else
+                InGamePopupMsg.Instance.AddUniqueText("Not enough Mana", 1);
         }
 
         public void PlayDead()

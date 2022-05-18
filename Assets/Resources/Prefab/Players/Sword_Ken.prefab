@@ -87,7 +87,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 980276454}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 951504245}
@@ -217,8 +217,8 @@ MonoBehaviour:
   walkSpeed: 4
   runSpeed: 8
   targetAngle: 0
-  lockTarget: {fileID: 0}
   allowMovement: 0
+  respawnPoint: {x: 0, y: 0, z: 0}
   isEquipped: 1
   backSword: {fileID: 9094432428717592250}
   handSword: {fileID: 5148467720266382847}
@@ -236,10 +236,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72d381e17613532468185f4d5cf52cf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _controller: {fileID: 0}
-  selfPosition: {fileID: 0}
-  forwardPosition: {fileID: 0}
-  prefabs: []
+  _controller: {fileID: 125886107}
+  selfPosition: {fileID: 980276455}
+  forwardPosition: {fileID: 1543470459}
+  prefabs:
+  - {fileID: 1996079926692674, guid: fb101b1453aec9747a5ed7244075b1a2, type: 3}
 --- !u!1 &9094432428717592250
 GameObject:
   m_ObjectHideFlags: 0
