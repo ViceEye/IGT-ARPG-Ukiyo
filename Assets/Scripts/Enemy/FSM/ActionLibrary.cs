@@ -27,11 +27,9 @@ namespace Ukiyo.Enemy.FSM
             var distance = Vector3.Distance(enemyController.target.transform.position, enemyController.transform.position);
             var targetAttackTime = enemyController.lastAttackTime + (long) (enemyController.attackCooldown * 1000);
             var nowTime = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-            if (distance <= enemyController.attackRadius && targetAttackTime <= nowTime)
-            {
-                Debug.Log("Play");
+            
+            if (distance <= enemyController.attackRadius && targetAttackTime <= nowTime && enemyController.IsTargetAlive())
                 enemyController.PlayAttack(1);
-            }
         }
     }
 

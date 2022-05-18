@@ -9,7 +9,6 @@ namespace Ukiyo.Enemy
 
         public void OnAnimatorBehaviourMessage(string message, object value)
         {
-            Debug.Log(message);
             switch (message)
             {
                 case "EndAttack":
@@ -24,6 +23,7 @@ namespace Ukiyo.Enemy
                 }
                 case "MonsterDied":
                 {
+                    enemyController.InvokeDeathEvent();
                     GameObject go = enemyController.gameObject;
                     go.SetActive(false);
                     Destroy(go, 1.5f);

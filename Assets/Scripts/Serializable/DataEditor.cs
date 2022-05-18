@@ -5,24 +5,43 @@ using LitJson;
 using Task;
 using Ukiyo.Common;
 using Ukiyo.Serializable.Entity;
-using UnityEditor;
 using UnityEngine;
 
 namespace Ukiyo.Serializable
 {
-#if UNITY_EDITOR
     public class DataEditor : MonoBehaviour
     {
-        #region Item
         
         private string saveDataFilePath = "/Resources/SaveData/";
+        
+        private void Start()
+        {
+            // Load preset configurations into local when there is none
+            string path = Application.dataPath + saveDataFilePath;
+            if (!Directory.Exists(path))
+            {
+                InitLocalItemJsons();
+                SaveAllEntityStats();
+                GenerateTaskJsonFile();
+                Debug.LogError("Generated");
+            }
+            else
+            {
+                Debug.LogError("No need generate");
+            }
+        }
+        
+        #region Item
+        
         private string itemsFileName = "EquipmentItemsData.json";
         
         [SerializeField]
-        private List<ObjectData> listItemDataSettings;
+        private List<ObjectData> listItemDataSettings = new List<ObjectData>();
         [SerializeField]
-        private List<ObjectData> previewListItemDataSettings;
-        
+        private List<ObjectDataJson> previewListItemDataSettings = new List<ObjectDataJson>();
+
+// ObjectDataJson contains library only runs in editor
+#if UNITY_EDITOR
         [ContextMenu("Generate Item Json File")]
         private void GenerateItemJsonFile()
         {
@@ -34,13 +53,15 @@ namespace Ukiyo.Serializable
             Utils.WriteIntoFile(listItemJsons, saveDataFilePath, itemsFileName);
             Debug.Log("Generated Item Json");
         }
+#endif
 
         [ContextMenu("Load Items From Json File")]
         private void LoadItemsFromJsonFile()
         {
-            List<ObjectData> listItems = new List<ObjectData>();
+            List<ObjectDataJson> listItems = new List<ObjectDataJson>();
 
             string allItemsJson = Utils.GetJsonStr(saveDataFilePath, itemsFileName);
+            Debug.Log(allItemsJson);
             
             if (allItemsJson != "" && allItemsJson != "[{}]")
             {
@@ -48,13 +69,19 @@ namespace Ukiyo.Serializable
 
                 foreach (JsonData jsonData in allItemsJsonData)
                 {
+                    Debug.Log(jsonData.ToJson());
                     ObjectDataJson objectDataJson = JsonMapper.ToObject<ObjectDataJson>(jsonData.ToJson());
-                    ObjectData objectData = new ObjectData(objectDataJson);
-                    listItems.Add(objectData);
+                    //ObjectData objectData = new ObjectData(objectDataJson);
+                    listItems.Add(objectDataJson);
                 }
 
                 previewListItemDataSettings = listItems;
             }
+        }
+
+        private void InitLocalItemJsons()
+        {
+            Utils.WriteIntoFile(previewListItemDataSettings, saveDataFilePath, itemsFileName);
         }
 
         #endregion
@@ -138,7 +165,6 @@ namespace Ukiyo.Serializable
         #endregion
     }
 
-#endif
     #region JsonDataObject
     
     [Serializable]
@@ -154,22 +180,36 @@ namespace Ukiyo.Serializable
         }
     }
 
+    [Serializable]
     public class ObjectDataJson
     {
-        public int ID { get; set; }
-
-        public string DisplayName { get; set; }
-
-        public string Icon { get; set; }
+        [SerializeField]
+        protected int _id;
+        public int ID { get => _id; set => _id = value; }
         
-        public int Capacity { get; set; }
+        [SerializeField]
+        protected string _displayName;
+        public string DisplayName { get => _displayName; set => _displayName = value; }
+        
+        [SerializeField]
+        protected string _icon;
+        public string Icon { get => _icon; set => _icon = value; }
+        
+        [SerializeField]
+        protected int _capacity;
+        public int Capacity { get => _capacity; set => _capacity = value; }
 
-        public string Description { get; set; }
+        [SerializeField]
+        protected string _description;
+        public string Description { get => _description; set => _description = value; }
 
-        public EnumInventoryItemType Type { get; set; }
+        [SerializeField]
+        protected EnumInventoryItemType _type;
+        public EnumInventoryItemType Type { get => _type; set => _type = value; }
         
         public ObjectDataJson() {}
         
+// ObjectDataJson contains library only runs in editor
 #if UNITY_EDITOR
         public ObjectDataJson(ObjectData objectData)
         {

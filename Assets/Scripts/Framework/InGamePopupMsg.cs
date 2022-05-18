@@ -30,6 +30,17 @@ public class InGamePopupMsg : MonoBehaviour
     {
         cachedPopupMessages.Add(popupMsg);
     }
+    
+    public void AddUniqueText(string text, float time)
+    {
+        AddUniqueText(new PopupMsg(text, time));
+    }
+
+    public void AddUniqueText(PopupMsg popupMsg)
+    {
+        if (!cachedPopupMessages.Contains(popupMsg))
+            cachedPopupMessages.Add(popupMsg);
+    }
 
     public void RemoveText(string text)
     {

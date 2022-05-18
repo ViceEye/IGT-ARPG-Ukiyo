@@ -32,15 +32,13 @@ namespace Ukiyo.Skill
                 if (attack)
                 {
                     EnemyController enemy = obj.GetComponent<EnemyController>();
-                    Debug.Log(enemy);
                     if (enemy != null)
-                    {
                         enemy.TakeHit(_controller.gameObject, _controller.GetDamage());
-                    }
                 }
             }
         }
 
+        // Damage flash effect
         void SetMaterial(GameObject obj)
         {
             MeshRenderer meshRenderer = obj.GetComponent<MeshRenderer>();

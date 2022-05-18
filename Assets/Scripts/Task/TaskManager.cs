@@ -28,6 +28,7 @@ namespace Task
 
         public GameObject taskSlotList;
         public GameObject taskSlotObj;
+        public List<Text> taskSlotObjList;
         
         private bool hudOn = true;
         [SerializeField]
@@ -40,8 +41,12 @@ namespace Task
             
             LoadTasksFromJsonFile();
             
-            EnemyController.OnDeathEvent += ListenToEnemyDeath;
-            ListenToEnemyDeath(EnumEntityStatsType.Orc);
+            GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Enemy");
+            foreach (GameObject obj in gameObjects)
+            {
+                EnemyController enemy = obj.GetComponent<EnemyController>();
+                enemy.OnDeathEvent += ListenToEnemyDeath;
+            }
             
             hudComponent.PlayOpenAnimation();
             panelComponent.PlayCloseAnimation();
@@ -55,14 +60,19 @@ namespace Task
             {
                 if (hudOn)
                 {
+                    ThirdPersonController.locking = true;
                     hudComponent.PlayCloseAnimation();
                     panelComponent.PlayOpenAnimation();
+                    Cursor.visible = true;
                     hudOn = false;
+                    SyncPanelContent();
                 }
                 else
                 {
+                    ThirdPersonController.locking = false;
                     hudComponent.PlayOpenAnimation();
                     panelComponent.PlayCloseAnimation();
+                    Cursor.visible = false;
                     hudOn = true;
                 }
             }
@@ -77,19 +87,31 @@ namespace Task
 
         private void SyncPanelContent()
         {
-            for (var i = 0; i < onGoingTasks.Count; i++)
+            if (taskSlotObjList.Count == 0)
             {
-                TaskData task = onGoingTasks[i];
-                GameObject go = Instantiate(taskSlotObj, taskSlotList.transform);
+                for (var i = 0; i < onGoingTasks.Count; i++)
+                {
+                    TaskData task = onGoingTasks[i];
+                    GameObject go = Instantiate(taskSlotObj, taskSlotList.transform);
                 
-                TaskButton taskButton = go.GetComponent<TaskButton>();
-                taskButton.TaskData = task;
-                taskButton.OnNavigationEvent += ListenToNavButton;
+                    TaskButton taskButton = go.GetComponent<TaskButton>();
+                    taskButton.TaskData = task;
+                    taskButton.OnNavigationEvent += ListenToNavButton;
                 
-                Text text = go.GetComponentInChildren<Text>();
-                text.text = FormatTaskString(task);
+                    Text text = go.GetComponentInChildren<Text>();
+                    text.text = FormatTaskString(task);
+                    taskSlotObjList.Add(text);
 
-                go.name = "Task-" + (i + 1);
+                    go.name = "Task-" + (i + 1);
+                }
+            }
+            else
+            {
+                for (var i = 0; i < taskSlotObjList.Count; i++)
+                {
+                    TaskData task = onGoingTasks[i];
+                    taskSlotObjList[i].text = FormatTaskString(task);
+                }
             }
         }
 
@@ -108,8 +130,7 @@ namespace Task
             for (var i = 0; i < onGoingTasks.Count; i++)
             {
                 TaskData taskData = onGoingTasks[i];
-                if (taskData.Progress < taskData.Target)
-                    tasksUI[i].text = FormatTaskString(taskData);
+                tasksUI[i].text = FormatTaskString(taskData);
             }
         }
         
@@ -183,11 +204,18 @@ namespace Task
 
         private void ListenToEnemyDeath(EnumEntityStatsType type)
         {
+            Debug.Log(type);
             foreach (var task in onGoingTasks)
                 if (task.Type == EnumTaskType.Elimination)
                     if (task.Progress < task.Target)
-                        if (task.Detail.Equals(nameof(type)))
+                    {
+                        if (task.Detail.Equals(type.ToString()))
+                        {
+                            Debug.Log(task.Detail);
+                            Debug.Log(task.Progress);
                             task.Progress += 1;
+                        }
+                    }
         }
 
         private void ListenToNavButton(string nav)

@@ -97,5 +97,10 @@ namespace Ukiyo.Serializable.Entity
                    $" {nameof(CriticalDamage)}: {CriticalDamage}," +
                    $" {nameof(Exp)}: {Exp}";
         }
+
+        public EntityStat Clone()
+        {
+            return new EntityStat(this);
+        }
     }
 }

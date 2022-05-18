@@ -26,6 +26,7 @@ namespace Ukiyo.Player
         private float turnSmoothVelocity;
         public float cameraYAxisSpeed = 2.0f;
         public float cameraXAxisSpeed = 300.0f;
+        public static bool locking = false;
 
         [Header("Attributes")] 
         public EntityStat playerStats;
@@ -34,8 +35,8 @@ namespace Ukiyo.Player
         [SerializeField]
         protected float targetAngle;
         public float TargetAngle => targetAngle;
-        public GameObject lockTarget;
         public bool allowMovement;
+        public Vector3 respawnPoint;
         
         [Header("Sword")] 
         public bool isEquipped = true;
@@ -85,16 +86,34 @@ namespace Ukiyo.Player
         
         void CameraLock()
         {
-            float rightClick = Input.GetAxisRaw("Fire2");
-            bool rightClicked = rightClick > 0;
-            // If rightClicked unlock camera
-            cinemachineFreeLookPar.m_YAxis.m_MaxSpeed = rightClicked ? cameraYAxisSpeed : 0;
-            cinemachineFreeLookPar.m_XAxis.m_MaxSpeed = rightClicked ? cameraXAxisSpeed : 0;
-        
-            // When camera unlocked, scroll could change fov.
             float scroll = Input.GetAxisRaw("Mouse ScrollWheel");
             float fov = cinemachineFreeLookPar.m_Lens.FieldOfView;
-            cinemachineFreeLookPar.m_Lens.FieldOfView = rightClicked ? fov - scroll * 5 : fov;
+            
+            // If any panel on, lock camera
+            if (!locking)
+            {
+                // Only enable right click lock in editor mode
+#if UNITY_EDITOR
+                float rightClick = Input.GetAxisRaw("Fire2");
+                bool rightClicked = rightClick > 0;
+                // If rightClicked unlock camera
+                cinemachineFreeLookPar.m_XAxis.m_MaxSpeed = rightClicked ? cameraXAxisSpeed : 0;
+                cinemachineFreeLookPar.m_YAxis.m_MaxSpeed = rightClicked ? cameraYAxisSpeed : 0;
+        
+                // When camera unlocked, scroll could change fov.
+                cinemachineFreeLookPar.m_Lens.FieldOfView = rightClicked ? fov - scroll * 5 : fov;
+#endif
+#if !UNITY_EDITOR
+                cinemachineFreeLookPar.m_Lens.FieldOfView = fov - scroll * 5;
+                cinemachineFreeLookPar.m_XAxis.m_MaxSpeed = cameraXAxisSpeed;
+                cinemachineFreeLookPar.m_YAxis.m_MaxSpeed = cameraYAxisSpeed;
+#endif
+            }
+            else
+            {
+                cinemachineFreeLookPar.m_XAxis.m_MaxSpeed = 0;
+                cinemachineFreeLookPar.m_YAxis.m_MaxSpeed = 0;
+            }
         }
 
         protected override void Jump()

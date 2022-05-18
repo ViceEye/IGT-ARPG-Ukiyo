@@ -1,4 +1,5 @@
 ﻿using System;
+using Ukiyo.Player;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,16 +33,20 @@ namespace Ukiyo.UI.Interface
 
         public void Open()
         {
+            ThirdPersonController.locking = true;
             _animation.PlayOpenAnimation();
             _inGameAnimation.PlayCloseAnimation();
             _graphicRaycaster.enabled = true;
+            Cursor.visible = true;
         }
 
         public void Close()
         {
+            ThirdPersonController.locking = false;
             _animation.PlayCloseAnimation();
             _inGameAnimation.PlayOpenAnimation();
             _graphicRaycaster.enabled = false;
+            Cursor.visible = false;
         }
         
         public void ExitGame()

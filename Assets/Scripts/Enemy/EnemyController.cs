@@ -37,7 +37,13 @@ namespace Ukiyo.Enemy
         #region Event Delegates
         
         public delegate void OnEnemyDeathEvent(EnumEntityStatsType type);
-        public static event OnEnemyDeathEvent OnDeathEvent;
+        public event OnEnemyDeathEvent OnDeathEvent;
+
+        public void InvokeDeathEvent()
+        {
+            Debug.Log("Invoke " + name + ", " + entityType);
+            OnDeathEvent?.Invoke(entityType);
+        }
 
         #endregion
 
@@ -79,10 +85,7 @@ namespace Ukiyo.Enemy
             agent.isStopped = animator.GetFloat(Dizzy) > -1.0f;
 
             if (enemyStats.Health <= 0)
-            {
                 PlayDeath();
-                OnDeathEvent?.Invoke(entityType);
-            }
         }
 
         protected override void FixedUpdate()
@@ -183,16 +186,25 @@ namespace Ukiyo.Enemy
 
         public void DamageInFront()
         {
-            Debug.Log("Attack");
-            bool check = CollisionDetector.Instance.FanShapedCheck(transform, target.transform,
-                attackHalfAngle, attackRadius);
+            ThirdPersonController player = target.GetComponent<ThirdPersonController>();
             
-            Debug.Log(check);
-            if (check)
+            if (player != null)
             {
-                ThirdPersonController player = target.GetComponent<ThirdPersonController>();
-                player.ApplyDamage(enemyStats.Damage);
+                bool check = CollisionDetector.Instance.FanShapedCheck(transform, target.transform,
+                    attackHalfAngle, attackRadius);
+            
+                if (check)
+                    player.ApplyDamage(enemyStats.Damage);
             }
+        }
+
+        public bool IsTargetAlive()
+        {
+            ThirdPersonController player = target.GetComponent<ThirdPersonController>();
+
+            if (player != null)
+                return player.playerStats.Health > 0;
+            return false;
         }
 
         #endregion

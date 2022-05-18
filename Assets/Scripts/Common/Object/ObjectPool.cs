@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using LitJson;
 using Ukiyo.Common.Singleton;
 using Ukiyo.Serializable;
 using Ukiyo.Serializable.Entity;
+using UnityEngine;
+using Random = System.Random;
 
 namespace Ukiyo.Common.Object
 {
@@ -93,7 +94,7 @@ namespace Ukiyo.Common.Object
         {
             if (statsPool.ContainsKey(type))
             {
-                return statsPool[type];
+                return statsPool[type].Clone();
             }
             return null;
         }

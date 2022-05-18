@@ -11,6 +11,7 @@ namespace Ukiyo.Player
         public ThirdPersonController thirdPersonController;
         [SerializeField]
         private bool acceptingCombo;
+        private bool canRespawn;
         
         #region AnimationParameterIndex
     
@@ -70,10 +71,42 @@ namespace Ukiyo.Player
                 animator.SetBool(IsGrounded, false);
             
             TrySetCombo();
+
+            CheckHealth();            
         }
+
+        private void CheckHealth()
+        {
+            // When player health is equal or less than 0, is dead. Stop movement and play dead animation
+            if (thirdPersonController.playerStats.Health <= 0)
+            {
+                thirdPersonController.allowMovement = false;
+                PlayDead();
+            }
+
+            // When player health is equal or less than 0, is dead. Press H to respawn
+            if (Input.GetKeyDown(KeyCode.H) && canRespawn)
+            {
+                if (thirdPersonController.playerStats.Health <= 0)
+                {
+                    // Reset health
+                    thirdPersonController.playerStats.Health = thirdPersonController.playerStats.MaxHealth;
+                    // Remove popup msg
+                    InGamePopupMsg.Instance.RemoveText("You are dead, press H to respawn");
+                    
+                    // Update spawn point
+                    GameObject spawnPoint = GameObject.FindWithTag("SpawnPoint");
+                    thirdPersonController.gameObject.transform.position = spawnPoint.transform.position;
+                    PlayRespawn();
+                }
+            }
+        }
+
+        #region Animations
 
         public void OnAnimatorBehaviourMessage(string message, object value)
         {
+            Debug.Log(message);
             switch (message)
             {
                 case "BeginCombo":
@@ -95,6 +128,18 @@ namespace Ukiyo.Player
                 {
                     acceptingCombo = false;
                     SetCombo(0);
+                    break;
+                }
+                case "PlayDead":
+                {
+                    canRespawn = false;
+                    break;
+                }
+                case "EndDead":
+                {
+                    // Add popup msg to guide player
+                    InGamePopupMsg.Instance.AddUniqueText("You are dead, press H to respawn", -1);
+                    canRespawn = true;
                     break;
                 }
                 case "SwitchEquip":
@@ -141,6 +186,9 @@ namespace Ukiyo.Player
             animator.SetTrigger(Hit);
         }
 
+        #endregion
+        
+        
         #region Combo
 
         public void TrySetCombo()

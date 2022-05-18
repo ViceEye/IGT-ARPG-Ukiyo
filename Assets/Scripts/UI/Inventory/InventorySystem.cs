@@ -2,6 +2,7 @@
 using System.Linq;
 using Ukiyo.Common;
 using Ukiyo.Common.Object;
+using Ukiyo.Player;
 using Ukiyo.Serializable;
 using UnityEngine;
 using UnityEngine.UI;
@@ -147,12 +148,14 @@ namespace Ukiyo.UI.Inventory
             {
                 if (_canvasGroup.alpha >= 1.0f)
                 {
+                    ThirdPersonController.locking = false;
                     _uiAnimation.PlayCloseAnimation();
                     DeactivateAllItems();
                     Cursor.visible = false;
                 }
                 else
                 {
+                    ThirdPersonController.locking = true;
                     _uiAnimation.PlayOpenAnimation();
                     UpdatePanel();
                     Cursor.visible = true;

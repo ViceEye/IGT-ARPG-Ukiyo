@@ -243,9 +243,22 @@ namespace Ukiyo.Common
         {
             string str = JsonMapper.ToJson(obj);
             str = Unicode2String(str);
-            string filePath = Application.dataPath + savaDataFilePath;
+            string path = Application.dataPath + savaDataFilePath;
 
-            File.WriteAllText(filePath + fileName, str);
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+                Debug.LogError("Create Path");
+            }
+            
+            string filePath = Application.dataPath + savaDataFilePath + fileName;
+            if (!File.Exists(filePath))
+            {
+                File.Create(filePath).Close();
+                Debug.LogError("Create File");
+            }
+
+            File.WriteAllText(filePath, str);
         }
 
         public static string Unicode2String(string source)

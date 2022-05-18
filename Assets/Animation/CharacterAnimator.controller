@@ -879,10 +879,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54854213656b34445a56b3edc98d6693, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onEnterMessage: []
+  onEnterMessage:
+  - message: PlayDead
+    typeM: 4
+    boolValue: 0
+    intValue: 0
+    floatValue: 0
+    stringValue: 
+    time: 0
+    sent: 0
+    Active: 1
   onExitMessage: []
   onTimeMessage:
-  - message: StayDead
+  - message: EndDead
     typeM: 4
     boolValue: 0
     intValue: 0
@@ -2423,7 +2432,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.92105263
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1

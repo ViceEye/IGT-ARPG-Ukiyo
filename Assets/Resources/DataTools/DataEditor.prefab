@@ -101,55 +101,55 @@ MonoBehaviour:
   previewListItemDataSettings:
   - _id: 10001
     _displayName: Sword1
-    _icon: {fileID: 21300000, guid: b168113ccc4565144b01ab1b037f7f1e, type: 3}
+    _icon: ItemSprites/EquipmentItems/Sword/Sword_1
     _capacity: 1
     _description: Standard Sword
     _type: 1
   - _id: 10002
     _displayName: Sword2
-    _icon: {fileID: 21300000, guid: 0f7e4bed16ca51546b0f2ef5efca50a7, type: 3}
+    _icon: ItemSprites/EquipmentItems/Sword/Sword_2
     _capacity: 1
     _description: Nice Sword
     _type: 1
   - _id: 10003
     _displayName: Sword3
-    _icon: {fileID: 21300000, guid: 3682c1eb48c2bf446bc56de6c0c7fa90, type: 3}
+    _icon: ItemSprites/EquipmentItems/Sword/Sword_3
     _capacity: 1
     _description: Extraordinary Sword
     _type: 1
   - _id: 10004
     _displayName: Beer
-    _icon: {fileID: 21300000, guid: d0e22da614c3c6747b2fd5bb73db3d33, type: 3}
+    _icon: "ItemSprites/ConsumableItems/Food/\u5564\u9152"
     _capacity: 8
     _description: Whoa, this can boost your mana.
     _type: 2
   - _id: 10005
     _displayName: Toast
-    _icon: {fileID: 21300000, guid: df6da8f59533b3c46b17fe0377682b9f, type: 3}
+    _icon: "ItemSprites/ConsumableItems/Food/\u5410\u53F8"
     _capacity: 32
     _description: Delicious toast, heal your health
     _type: 2
   - _id: 10006
     _displayName: Unknown Meat
-    _icon: {fileID: 21300000, guid: db5dbd41916dc0c40bedad532188222f, type: 3}
+    _icon: "ItemSprites/ConsumableItems/Food/\u672A\u77E5\u7269\u79CD\u8089"
     _capacity: 64
     _description: Monster drop
     _type: 2
   - _id: 10007
     _displayName: Secret Diary
-    _icon: {fileID: 21300000, guid: c41e74d2d0d479149a7da7e14e74ed2e, type: 3}
+    _icon: ItemSprites/EquipmentItems/Book/Book_1
     _capacity: 4
     _description: Evil content is within it.
     _type: 0
   - _id: 10008
     _displayName: Traveler's Notebook
-    _icon: {fileID: 21300000, guid: 0748e95d38e996246a258493485fd574, type: 3}
+    _icon: ItemSprites/EquipmentItems/Book/Book_2
     _capacity: 1
     _description: Someone dropped this notebook, but you can't understand the language.
     _type: 0
   - _id: 10009
     _displayName: Token
-    _icon: {fileID: 21300000, guid: 3f27d24b25f0ab64c934144415346a15, type: 3}
+    _icon: ItemSprites/EquipmentItems/Book/Book_3
     _capacity: 64
     _description: This should be the token for a quest.
     _type: 0

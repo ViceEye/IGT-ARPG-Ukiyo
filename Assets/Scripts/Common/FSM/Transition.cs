@@ -44,11 +44,11 @@ namespace Ukiyo.Common.FSM
             // Run Scripting friendly Func
             else
             {
-                Debug.Log("Going To True?");
-                Debug.Log(Func() && !(TrueState is RemainInState));
-                Debug.Log("Going To False?");
-                Debug.Log(!Func() && !(FalseState is RemainInState));
-                Debug.Log("===========================");
+                // Debug.Log("Going To True?");
+                // Debug.Log(Func() && !(TrueState is RemainInState));
+                // Debug.Log("Going To False?");
+                // Debug.Log(!Func() && !(FalseState is RemainInState));
+                // Debug.Log("===========================");
                 if (Func() && !(TrueState is RemainInState))
                 {
                     stateMachine.CurrentState.ExitExecute(stateMachine);
