@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 namespace Ukiyo.UI.WorldSpace
 {
+    // In world enemy health bar
     public class HealthBarComponent : MonoBehaviour
     {
         public Slider _healthSlider;

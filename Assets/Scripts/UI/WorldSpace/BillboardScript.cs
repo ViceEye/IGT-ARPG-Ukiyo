@@ -24,6 +24,7 @@ namespace Ukiyo.UI.WorldSpace
                 {
                     _canvasGroup.alpha = 1.0f;
                     var rotation = _camara.transform.rotation;
+                    // Always facing player camera
                     transform.LookAt(transform.position + rotation * Vector3.back, rotation * Vector3.up);
                 }
                 else

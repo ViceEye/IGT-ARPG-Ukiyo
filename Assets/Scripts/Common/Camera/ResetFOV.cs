@@ -5,37 +5,45 @@ using UnityEngine;
 namespace Ukiyo.Common.Camera
 {
     [ExecuteInEditMode]
-    public class ResetFOV : MonoBehaviour
+    public class ResetFov : MonoBehaviour
     {
         public CinemachineFreeLook cinemachineFreeLookPar;
         public GameObject player;
+        // Cached popup msg
         public InGamePopupMsg.PopupMsg popupMsg = new InGamePopupMsg.PopupMsg("Press G to spawn", -1.0f);
         
+        // Settings
         public float duration = 1.0f;
+        // Before spawn
         public float defaultFov = 55.0f;
+        // After spawn
         public float targetFov = 13.5f;
         
         private void Start()
         {
+            // Set default Fov
             cinemachineFreeLookPar = GetComponent<CinemachineFreeLook>();
             cinemachineFreeLookPar.m_Lens.FieldOfView = defaultFov;
         }
 
-        private bool pulled = false;
+        // Check if Fov is updated
+        private bool pulled;
 
         private void Update()
         {
+            // Editor mode lock Fov
             if (!Application.isPlaying)
             {
                 cinemachineFreeLookPar.m_Lens.FieldOfView = defaultFov;
             }
             else
             {
+                // Build mode, notify player and pull the Fov closer when key down
                 if (!player.activeSelf)
                 {
                     if (InGamePopupMsg.Instance.CheckRemainingTime(popupMsg) > -1.0f)
                     {
-                        InGamePopupMsg.Instance.AddText(popupMsg);
+                        InGamePopupMsg.Instance.AddUniqueText(popupMsg);
                     }
                     if (Input.GetKeyDown(KeyCode.G))
                     {
@@ -45,6 +53,7 @@ namespace Ukiyo.Common.Camera
                         InGamePopupMsg.Instance.RemoveText(popupMsg);
                     }
                 }
+                // If editor and player is active
                 else if (player.activeSelf && !pulled)
                 {
                     pulled = true;
@@ -54,6 +63,7 @@ namespace Ukiyo.Common.Camera
             }
         }
 
+        // Pull camera Fov closer
         IEnumerator PullClose()
         {
             var time = 0.0f;

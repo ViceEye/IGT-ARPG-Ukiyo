@@ -2,6 +2,7 @@
 
 namespace Task
 {
+    // Bind button down event to run navigation
     public class TaskButton : MonoBehaviour
     {
         public TaskData TaskData;

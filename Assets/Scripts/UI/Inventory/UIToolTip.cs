@@ -81,8 +81,10 @@ namespace Ukiyo.UI.Inventory
 
             Vector2 pivotPos = Vector2.one;
 
+            // Calculate pivot x by mouse position
             pivotPos = pos.x > Screen.width / 2 ? new Vector2(rightSidePivotX, pivotPos.y) : new Vector2(leftSidePivotX, pivotPos.y);
 
+            // Calculate pivot y by mouse position
             pivotPos = pos.y > Screen.height / 2 ? new Vector2(pivotPos.x, downSidePivotY) : new Vector2(pivotPos.x, upsidePivotY);
 
             rectTransform.pivot = pivotPos;
@@ -93,13 +95,6 @@ namespace Ukiyo.UI.Inventory
         private void SetTooltip(UIBaseSlot slot)
         {
             ItemData item = slot.UIItem.Item;
-
-            // string buyPriceStr = string.Empty;
-
-            // if (slot is UIShopSlot)
-            // {
-            //     buyPriceStr = string.Format("售价：＄{0}\n\n", item.BuyPrice);
-            // }
 
             image.sprite = item.Icon;
             nameText.text = $"<color=white>{item.DisplayName}</color>";

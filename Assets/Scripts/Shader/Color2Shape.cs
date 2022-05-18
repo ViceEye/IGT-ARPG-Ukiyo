@@ -27,6 +27,7 @@ namespace Ukiyo.Menu
 
         private void Start()
         {
+            // Update sprite material
             newMaterial = GenerateMaterial();
             targetImage.material = newMaterial;
         }
@@ -47,6 +48,7 @@ namespace Ukiyo.Menu
 
         private Material GenerateMaterial()
         {
+            // Use shader to dynamic generate material
             Material material = new Material(shader)
             {
                 name = "Color2Shape_" + name

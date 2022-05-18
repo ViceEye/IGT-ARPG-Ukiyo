@@ -2,9 +2,9 @@
 using UnityEngine;
 using UnityEngine.AI;
 
+// Inspector friendly Decision for Transition
 namespace Ukiyo.Enemy.FSM
 {
-    // Inspector friendly
     [CreateAssetMenu(menuName = "FSM/Decisions/In Line Of Sight")]
     public class InSightDecision : Decision
     {

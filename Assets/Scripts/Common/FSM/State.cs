@@ -16,6 +16,7 @@ namespace Ukiyo.Common.FSM
         /// </summary>
         public List<Transition> Transitions = new List<Transition>();
 
+        // Scripting friendly API
         public void AddTransition(Func<bool> transitionCondition, BaseState trueState, BaseState falseState)
         {
             Transition transition = CreateInstance<Transition>();
@@ -26,6 +27,7 @@ namespace Ukiyo.Common.FSM
             Transitions.Add(transition);
         }
         
+        // Designer friendly API
         public void AddTransition(Decision transitionCondition, BaseState trueState, BaseState falseState)
         {
             Transition transition = CreateInstance<Transition>();

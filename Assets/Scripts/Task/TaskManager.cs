@@ -26,6 +26,7 @@ namespace Task
         public UIAnimation hudComponent;
         public UIAnimation panelComponent;
 
+        // Panel variables
         public GameObject taskSlotList;
         public GameObject taskSlotObj;
         public List<Text> taskSlotObjList;
@@ -41,6 +42,7 @@ namespace Task
             
             LoadTasksFromJsonFile();
             
+            // Bind OnDeathEvent of all enemies
             GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Enemy");
             foreach (GameObject obj in gameObjects)
             {
@@ -48,9 +50,11 @@ namespace Task
                 enemy.OnDeathEvent += ListenToEnemyDeath;
             }
             
+            // Show Hud only when start
             hudComponent.PlayOpenAnimation();
             panelComponent.PlayCloseAnimation();
             
+            // Load content
             SyncPanelContent();
         }
         
@@ -60,6 +64,7 @@ namespace Task
             {
                 if (hudOn)
                 {
+                    // Show Panel, Hide Hud
                     ThirdPersonController.locking = true;
                     hudComponent.PlayCloseAnimation();
                     panelComponent.PlayOpenAnimation();
@@ -69,6 +74,7 @@ namespace Task
                 }
                 else
                 {
+                    // Show Hud, Hide Panel
                     ThirdPersonController.locking = false;
                     hudComponent.PlayOpenAnimation();
                     panelComponent.PlayCloseAnimation();
@@ -80,6 +86,7 @@ namespace Task
 
         private void FixedUpdate()
         {
+            // Update Hud Content
             SyncHudContent();
         }
         
@@ -87,6 +94,7 @@ namespace Task
 
         private void SyncPanelContent()
         {
+            // Init Phase
             if (taskSlotObjList.Count == 0)
             {
                 for (var i = 0; i < onGoingTasks.Count; i++)
@@ -94,10 +102,12 @@ namespace Task
                     TaskData task = onGoingTasks[i];
                     GameObject go = Instantiate(taskSlotObj, taskSlotList.transform);
                 
+                    // Bind Navigation Event
                     TaskButton taskButton = go.GetComponent<TaskButton>();
                     taskButton.TaskData = task;
                     taskButton.OnNavigationEvent += ListenToNavButton;
                 
+                    // Format content
                     Text text = go.GetComponentInChildren<Text>();
                     text.text = FormatTaskString(task);
                     taskSlotObjList.Add(text);
@@ -105,10 +115,12 @@ namespace Task
                     go.name = "Task-" + (i + 1);
                 }
             }
+            // Update Phase
             else
             {
                 for (var i = 0; i < taskSlotObjList.Count; i++)
                 {
+                    // Format content
                     TaskData task = onGoingTasks[i];
                     taskSlotObjList[i].text = FormatTaskString(task);
                 }
@@ -117,6 +129,8 @@ namespace Task
 
         private void SyncHudContent()
         {
+            // Show 3 tasks by default
+            // If less then 3 onGoingTasks only show the number of onGoingTasks on Hud
             if (onGoingTasks.Count < 3)
             {
                 int numbersOfTasksUIToDisable = 3 - onGoingTasks.Count;
@@ -129,6 +143,7 @@ namespace Task
 
             for (var i = 0; i < onGoingTasks.Count; i++)
             {
+                // Format content
                 TaskData taskData = onGoingTasks[i];
                 tasksUI[i].text = FormatTaskString(taskData);
             }
@@ -136,8 +151,6 @@ namespace Task
         
         private string FormatTaskString(TaskData taskData)
         {
-            // 1 > Elimination
-            // Kill Orc - 5/5
             string baseStr = "{%id} > {%type} \n {%typeDetail} {%detail} - {%progress}/{%target}";
             baseStr = baseStr.Replace("{%id}", taskData.ID.ToString());
             baseStr = baseStr.Replace("{%type}", taskData.Type.ToString());
@@ -204,18 +217,12 @@ namespace Task
 
         private void ListenToEnemyDeath(EnumEntityStatsType type)
         {
-            Debug.Log(type);
+            // When enemy is dead, check onGoingTasks find target task and update progress
             foreach (var task in onGoingTasks)
                 if (task.Type == EnumTaskType.Elimination)
                     if (task.Progress < task.Target)
-                    {
                         if (task.Detail.Equals(type.ToString()))
-                        {
-                            Debug.Log(task.Detail);
-                            Debug.Log(task.Progress);
                             task.Progress += 1;
-                        }
-                    }
         }
 
         private void ListenToNavButton(string nav)
@@ -224,6 +231,7 @@ namespace Task
             {
                 if (nav.Equals(o.name))
                 {
+                    // Run navigation
                     PathManager.Instance.GetAvailableFinder().target = o;
                     PathManager.Instance.GetAvailableFinder().player = GameObject.FindWithTag("Player");
                 }

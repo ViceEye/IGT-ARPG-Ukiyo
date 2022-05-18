@@ -17,6 +17,7 @@ namespace Ukiyo.UI.Inventory
 
         public void Init(int maxGridSize)
         {
+            // Generate the grids
             for (int i = 1; i <= maxGridSize; i++)
             {
                 GameObject slotGo = Resources.Load<GameObject>(PrefabDefines.UI_INVENTORY_SLOT);

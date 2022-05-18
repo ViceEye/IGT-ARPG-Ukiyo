@@ -282,6 +282,7 @@ namespace Ukiyo.Common
         }
 
 #if UNITY_EDITOR
+        // Convert prefab into string path, editor only
         public static string GetResourcePath(UnityEngine.Object obj)
         {
             string fullPath = AssetDatabase.GetAssetPath(obj);

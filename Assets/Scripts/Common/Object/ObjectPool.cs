@@ -94,6 +94,7 @@ namespace Ukiyo.Common.Object
         {
             if (statsPool.ContainsKey(type))
             {
+                // Get a copy from pool
                 return statsPool[type].Clone();
             }
             return null;

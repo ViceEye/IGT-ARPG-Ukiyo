@@ -28,6 +28,7 @@ namespace Ukiyo.Enemy.FSM
             var targetAttackTime = enemyController.lastAttackTime + (long) (enemyController.attackCooldown * 1000);
             var nowTime = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
             
+            // Damage the target if within attackRadius, and attack CD ready, and target is alive
             if (distance <= enemyController.attackRadius && targetAttackTime <= nowTime && enemyController.IsTargetAlive())
                 enemyController.PlayAttack(1);
         }

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 namespace Ukiyo.UI.Interface
 {
+    // Status Bar
     public class PlayerHealthMana : MonoBehaviour
     {
         public static PlayerHealthMana Instance;

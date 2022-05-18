@@ -91,6 +91,7 @@ namespace Ukiyo.UI.Inventory
                 case EnumInventoryItemType.Content:
                 {
                     _itemDictionary.Clear();
+                    // Update Grid List
                     foreach (var itemSlotData in _inventoryModule.slotDataMap.Values)
                     {
                         _itemDictionary.Add(itemSlotData.ToString());
@@ -108,6 +109,7 @@ namespace Ukiyo.UI.Inventory
                     int index = 1;
                     Debug.Log(index);
                     _itemDictionary.Clear();
+                    // Update Grid List
                     foreach (var itemSlotData in _inventoryModule.GetAllItemSlotsWithType(type))
                     {
                         _itemDictionary.Add(itemSlotData.ToString());

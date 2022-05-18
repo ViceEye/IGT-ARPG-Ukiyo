@@ -26,9 +26,11 @@ namespace Ukiyo.Skill
 
         public void SkillAttack()
         {
+            // Find all enemies
             GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Enemy");
             foreach (GameObject obj in gameObjects)
             {
+                // If enemy is within range
                 bool attack = CollisionDetector.Instance.FanShapedCheck(transform, obj.transform, 80, 18);
                 if (attack)
                 {

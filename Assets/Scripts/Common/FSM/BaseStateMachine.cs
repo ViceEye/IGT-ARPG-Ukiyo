@@ -18,7 +18,10 @@ namespace Ukiyo.Common.FSM
         private Dictionary<Type, BaseState> _cachedStates;
         private Dictionary<Type, Decision> _cachedDecisions;
         private Dictionary<Type, Transition> _cachedTransitions;
-
+        
+        public BaseState CurrentState { get; set; }
+        
+        // Init Cache Components
         protected virtual void Awake()
         {
             CurrentState = _initialState;
@@ -34,8 +37,6 @@ namespace Ukiyo.Common.FSM
         {
             CurrentState.BeforeExecute(this);
         }
-
-        public BaseState CurrentState { get; set; }
 
         protected virtual void Update()
         {

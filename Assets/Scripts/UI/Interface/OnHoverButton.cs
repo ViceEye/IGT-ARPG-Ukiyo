@@ -8,6 +8,7 @@ namespace Ukiyo.UI.Interface
 
         public UIAnimation _background;
 
+        // Background Hover Update
         public void OnPointerEnter(PointerEventData eventData)
         {
             _background.ListUIAnimationSet[0].finishValueOnOpen = transform.localPosition.y;
@@ -15,6 +16,7 @@ namespace Ukiyo.UI.Interface
             _background.PlayOpenAnimation();;
         }
 
+        // Background Hover Update
         public void OnPointerExit(PointerEventData eventData)
         {
             _background.ListUIAnimationSet[0].finishValueOnOpen = -820;

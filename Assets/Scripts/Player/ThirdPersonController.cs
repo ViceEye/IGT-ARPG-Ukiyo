@@ -36,14 +36,13 @@ namespace Ukiyo.Player
         protected float targetAngle;
         public float TargetAngle => targetAngle;
         public bool allowMovement;
-        public Vector3 respawnPoint;
         
         [Header("Sword")] 
         public bool isEquipped = true;
         public GameObject backSword;
         public GameObject handSword;
         public GameObject swordTrail;
-        public bool activeTrail = false;
+        public bool activeTrail;
         
         protected override void Start()
         {
@@ -103,6 +102,7 @@ namespace Ukiyo.Player
                 // When camera unlocked, scroll could change fov.
                 cinemachineFreeLookPar.m_Lens.FieldOfView = rightClicked ? fov - scroll * 5 : fov;
 #endif
+                // Update camera
 #if !UNITY_EDITOR
                 cinemachineFreeLookPar.m_Lens.FieldOfView = fov - scroll * 5;
                 cinemachineFreeLookPar.m_XAxis.m_MaxSpeed = cameraXAxisSpeed;
@@ -184,6 +184,7 @@ namespace Ukiyo.Player
         
         public void SyncStats()
         {
+            // Update status bar
             PlayerHealthMana.Instance.SetValue(EnumHealthMana.Health, playerStats.Health, playerStats.MaxHealth);
             PlayerHealthMana.Instance.SetValue(EnumHealthMana.Mana, playerStats.Mana, playerStats.MaxMana);
             SavePlayerStats();
@@ -201,6 +202,7 @@ namespace Ukiyo.Player
 
         private void UpdateEquip()
         {
+            // Switch active sword
             if (isEquipped)
             {
                 handSword.SetActive(true);
@@ -211,6 +213,7 @@ namespace Ukiyo.Player
                 handSword.SetActive(false);
                 backSword.SetActive(true);
             }
+            // Update sword slash trail
             swordTrail.SetActive(activeTrail);
         }
 

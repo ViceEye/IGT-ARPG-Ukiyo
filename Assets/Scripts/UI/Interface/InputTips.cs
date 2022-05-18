@@ -17,6 +17,7 @@ namespace Ukiyo.UI.Interface
 
         public List<Image> _cdMasks = new List<Image>();
         
+        // Input CD
         public void RunCdMask(EnumKeys type, float cd)
         {
             int key = (int) type;
