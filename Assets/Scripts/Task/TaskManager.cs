@@ -129,6 +129,9 @@ namespace Task
 
         private void SyncHudContent()
         {
+            if (tasksUI.Count == 0)
+                return;
+
             // Show 3 tasks by default
             // If less then 3 onGoingTasks only show the number of onGoingTasks on Hud
             if (onGoingTasks.Count < 3)

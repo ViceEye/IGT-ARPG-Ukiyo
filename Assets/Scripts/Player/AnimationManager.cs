@@ -67,7 +67,7 @@ namespace Ukiyo.Player
                 TryEquip();
             
             // Cast Skill
-            if (Input.GetAxisRaw("Fire2") > 0)
+            if (Input.GetAxisRaw("Fire2") > 0 && IsEquip())
                 DoCastSkill();
 
             if (thirdPersonController.IsGrounded)
@@ -188,10 +188,12 @@ namespace Ukiyo.Player
 
         public void DoCastSkill()
         {
-            thirdPersonController.allowMovement = false;
             // Each cast of skill cost 100 mana, notify player when no mana
             if (thirdPersonController.playerStats.Mana >= 100)
+            {
+                thirdPersonController.allowMovement = false;
                 animator.SetBool(CastSkill, true);
+            }
             else
                 InGamePopupMsg.Instance.AddUniqueText("Not enough Mana", 1);
         }

@@ -218,7 +218,6 @@ MonoBehaviour:
   runSpeed: 8
   targetAngle: 0
   allowMovement: 0
-  respawnPoint: {x: 0, y: 0, z: 0}
   isEquipped: 1
   backSword: {fileID: 9094432428717592250}
   handSword: {fileID: 5148467720266382847}

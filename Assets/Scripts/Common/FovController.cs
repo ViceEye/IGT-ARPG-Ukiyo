@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Ukiyo.Common.Camera
 {
     [ExecuteInEditMode]
-    public class ResetFov : MonoBehaviour
+    public class FovController : MonoBehaviour
     {
         public CinemachineFreeLook cinemachineFreeLookPar;
         public GameObject player;
@@ -43,7 +43,7 @@ namespace Ukiyo.Common.Camera
                 {
                     if (InGamePopupMsg.Instance.CheckRemainingTime(popupMsg) > -1.0f)
                     {
-                        InGamePopupMsg.Instance.AddUniqueText(popupMsg);
+                        InGamePopupMsg.Instance.AddText(popupMsg);
                     }
                     if (Input.GetKeyDown(KeyCode.G))
                     {

@@ -765,6 +765,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SubAvatar2
       objectReference: {fileID: 0}
+    - target: {fileID: 7947212157577633914, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7947212157577633915, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
         type: 3}
       propertyPath: m_Pivot.x
@@ -988,7 +993,7 @@ PrefabInstance:
     - target: {fileID: 7947212157577633914, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7947212157577633915, guid: 98cfb3fa701c460418e8b9a4c7e62c29,
         type: 3}
