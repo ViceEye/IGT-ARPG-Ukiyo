@@ -96,6 +96,7 @@ namespace Ukiyo.Player
                 {
                     // Reset health
                     thirdPersonController.playerStats.Health = thirdPersonController.playerStats.MaxHealth;
+                    thirdPersonController.playerStats.Mana = thirdPersonController.playerStats.MaxMana;
                     // Remove popup msg
                     InGamePopupMsg.Instance.RemoveText("You are dead, press H to respawn");
                     

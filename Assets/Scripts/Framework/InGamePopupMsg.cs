@@ -19,6 +19,13 @@ public class InGamePopupMsg : MonoBehaviour
         msgText.gameObject.SetActive(false);
     }
 
+
+    [ContextMenu("Add Msg")]
+    public void Add()
+    {
+        AddText("This is a popup msg", 3);
+    }
+
     #region CRUD
 
     public void AddText(string text, float time)
