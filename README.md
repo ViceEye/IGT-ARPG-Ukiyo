@@ -1,7 +1,7 @@
 # IGT-ARPG-Ukiyo
 [![License: GPL v3](https://img.shields.io/github/license/ViceEye/IGT-ARPG-Ukiyo?color=brightgreen)](LICENSE)
 
-[![Ljsg78.png](https://s1.ax1x.com/2022/04/29/Ljsg78.png)](https://imgtu.com/i/Ljsg78)
+[![XGQUi9.png](https://s1.ax1x.com/2022/05/31/XGQUi9.png)](https://imgtu.com/i/XGQUi9)
 
 ##### 			Fantasy Action RPG Game
 
@@ -13,7 +13,7 @@
 - [x] Enemy AI - FSM, Dynamic Nav Mesh Pathfinding
 - [x] Inventory System - Storage, MV architecture, Interactivity
 - [x] Monster Animator Controller - Override Animator
+- [x] Quest System - Collection / Elimination
 - [ ] Leveling System - HP/MP increment.
 - [ ] Target Locking System - Combat
 - [ ] NPC Shop/Chat System - Interactivity
-- [ ] Quest System - Collection / Elimination
